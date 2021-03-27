@@ -5,6 +5,11 @@ int main(int argc, char** argv)
     Driver d;
     d.parse(argv[1]);
     if (argc == 3)
-        d.print(argv[2]);
-    d.interpret();
+    {
+        if(argv[2] == "run")
+            d.interpret();
+        else
+            d.print(argv[2]);
+    }
+    
 } 

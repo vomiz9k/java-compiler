@@ -178,5 +178,4 @@ public:
 
 
 #include "delete_visitor.hpp"
-#include "template_visitor.hpp"
 #include "gv_visitor.hpp"

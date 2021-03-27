@@ -2,7 +2,7 @@
 #include "visitor.hpp"
 #include <fstream>
 
-class gv_visitor: public Visitor
+class gv_visitor: public Visitor //works only on optimized visitor
 {
     std::ofstream out;
     void box(const void* ptr, const std::string& name);

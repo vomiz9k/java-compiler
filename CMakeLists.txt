@@ -56,8 +56,10 @@ add_executable(
     ${Compiler_SOURCE_DIR}/nterms/value/value.cpp
     ${Compiler_SOURCE_DIR}/nterms/declaration/declaration.cpp
     ${Compiler_SOURCE_DIR}/nterms/body/body.cpp
+
     ${Compiler_SOURCE_DIR}/visitor/gv_visitor.cpp
     ${Compiler_SOURCE_DIR}/visitor/optimization_visitor.cpp
+    ${Compiler_SOURCE_DIR}/visitor/delete_visitor.cpp
 
 )
 target_include_directories(Compiler PUBLIC

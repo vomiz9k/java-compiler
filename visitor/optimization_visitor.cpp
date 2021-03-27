@@ -122,7 +122,6 @@ void optimization_visitor::visit(Method_invocation_Statement* ptr) {
 
 
 void optimization_visitor::visit(Declarations_with_variable* ptr) {
-    std::cout << "VARDECL";
     ptr->prev_decls->accept(this);
     curr_class->decls.push_back(ptr->var_decl);
     ptr->var_decl->accept(this);

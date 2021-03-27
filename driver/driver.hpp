@@ -16,6 +16,11 @@ class Driver {
  public:
     Driver();
 
+    ~Driver() {
+        delete_visitor v;
+        v.visit(program);
+    }
+
     void print(const std::string& filename) {
         gv_visitor v(filename);
         v.visit(program);

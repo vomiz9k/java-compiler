@@ -11,7 +11,7 @@ void delete_visitor::visit(Program* ptr) {
 
 void delete_visitor::visit(Main_class* ptr) {
 
-    ptr->statements->accept(this);
+    ptr->body->accept(this);
     
     delete ptr->class_name;
     delete ptr;
@@ -47,6 +47,13 @@ void delete_visitor::visit(Not_extended_Class_declaration* ptr) {
     delete ptr->name;
     delete ptr;
 }
+
+void delete_visitor::visit(Body* ptr) {
+    
+    ptr->statements->accept(this);
+    delete ptr;
+}
+
 
 void delete_visitor::visit(Empty_Statements* ptr) {
     
@@ -91,7 +98,7 @@ void delete_visitor::visit(Var_decl_Statement* ptr) {
 
 void delete_visitor::visit(Big_Statement* ptr) {
 
-    ptr->statements->accept(this);
+    ptr->body->accept(this);
     delete ptr;
 }
 
@@ -155,7 +162,7 @@ void delete_visitor::visit(Method_declaration* ptr) {
 
     ptr->type->accept(this);
     ptr->args->accept(this);
-    ptr->statements->accept(this);
+    ptr->body->accept(this);
     //name
     delete ptr->name;
     delete ptr;

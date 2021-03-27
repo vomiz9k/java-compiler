@@ -42,6 +42,12 @@
     void visit(Array_Type*) override;
 
     void visit(Assignment*) override;
+
+    void visit(Single_Lvalue*) override;
+    void visit(Arr_el_Lvalue*) override;
+    void visit(Field_Lvalue*) override;
+    void visit(Field_arr_el_Lvalue*) override;
+
     void visit(Method_invocation*) override;
     void visit(Field_invocation*) override;
 

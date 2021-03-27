@@ -3,14 +3,15 @@
 #include <base.hpp>
 
 class Expr;
+class Lvalue;
 
 class Assignment: public Base
 {
     #include <friends_visitors>
-    Expr* lvalue;
+    Lvalue* lvalue;
     Expr* rvalue;
     
 public:
-    Assignment(Expr* lvalue, Expr* rvalue);
+    Assignment(Lvalue* lvalue, Expr* rvalue);
     void accept(Visitor* visitor) override;
 };

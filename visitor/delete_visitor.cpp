@@ -235,6 +235,34 @@ void delete_visitor::visit(Assignment* ptr) {
     delete ptr;
 }
 
+void delete_visitor::visit(Single_Lvalue* ptr) {
+
+    delete ptr->name;
+    delete ptr;
+}
+
+void delete_visitor::visit(Arr_el_Lvalue* ptr) {
+
+
+    ptr->index->accept(this);
+    delete ptr->name;
+    delete ptr;
+}
+
+void delete_visitor::visit(Field_Lvalue* ptr) {
+    
+    ptr->invocation->accept(this);
+    delete ptr;
+}
+
+
+void delete_visitor::visit(Field_arr_el_Lvalue* ptr) {
+
+    ptr->invocation->accept(this);
+    ptr->index->accept(this);
+}
+
+
 void delete_visitor::visit(Method_invocation* ptr) {
 
     ptr->from->accept(this);

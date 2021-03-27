@@ -119,8 +119,6 @@ void optimization_visitor::visit(Method_invocation_Statement* ptr) {
 
 
 
-
-
 void optimization_visitor::visit(Declarations_with_variable* ptr) {
     ptr->prev_decls->accept(this);
     curr_class->decls.push_back(ptr->var_decl);
@@ -201,6 +199,31 @@ void optimization_visitor::visit(Assignment* ptr) {
 
     ptr->lvalue->accept(this);
     ptr->rvalue->accept(this);
+}
+
+
+void optimization_visitor::visit(Single_Lvalue* ptr) {
+
+    //name
+}
+
+void optimization_visitor::visit(Arr_el_Lvalue* ptr) {
+
+
+    ptr->index->accept(this);
+    //name
+}
+
+void optimization_visitor::visit(Field_Lvalue* ptr) {
+    
+    ptr->invocation->accept(this);
+}
+
+
+void optimization_visitor::visit(Field_arr_el_Lvalue* ptr) {
+
+    ptr->invocation->accept(this);
+    ptr->index->accept(this);
 }
 
 void optimization_visitor::visit(Method_invocation* ptr) {

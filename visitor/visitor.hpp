@@ -54,6 +54,12 @@ class Simple_Type;
 class Array_Type;
 
 class Assignment;
+
+class Single_Lvalue;
+class Arr_el_Lvalue;
+class Field_Lvalue;
+class Field_arr_el_Lvalue;
+
 class Method_invocation;
 class Field_invocation;
 
@@ -139,6 +145,12 @@ public:
     virtual void visit(Array_Type*) = 0;
 
     virtual void visit(Assignment*) = 0;
+
+    virtual void visit(Single_Lvalue*) = 0;
+    virtual void visit(Arr_el_Lvalue*) = 0;
+    virtual void visit(Field_Lvalue*) = 0;
+    virtual void visit(Field_arr_el_Lvalue*) = 0;
+
     virtual void visit(Method_invocation*) = 0;
     virtual void visit(Field_invocation*) = 0;
 
@@ -178,7 +190,20 @@ public:
     virtual void visit(TF_Value*) = 0;
 };
 
+#include "template_visitor.hpp" //template for other visitors
 
 #include "delete_visitor.hpp"
 #include "gv_visitor.hpp"
 #include "optimization_visitor.hpp"
+#include "interpreter_visitor.hpp"
+
+
+
+
+
+
+
+
+
+
+

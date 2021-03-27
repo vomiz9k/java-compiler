@@ -1,7 +1,7 @@
 #include "assignment.hpp"
 
 
-Assignment::Assignment(Expr* lvalue, Expr* rvalue)
+Assignment::Assignment(Lvalue* lvalue, Expr* rvalue)
     :lvalue(lvalue), rvalue(rvalue)
 {
 

@@ -274,6 +274,37 @@ void gv_visitor::visit(Assignment* ptr) {
     ptr->rvalue->accept(this);
 }
 
+
+void gv_visitor::visit(Single_Lvalue* ptr) {
+    box(ptr, "lvalue: " + *ptr->name);
+    //name
+}
+
+void gv_visitor::visit(Arr_el_Lvalue* ptr) {
+
+    box(ptr, "lvalue: " + *ptr->name);
+    arrow(ptr, ptr->index, "index");
+    ptr->index->accept(this);
+    //name
+}
+
+void gv_visitor::visit(Field_Lvalue* ptr) {
+    box(ptr, "field_invoc_lvalue");
+    arrow(ptr, ptr->invocation);
+    ptr->invocation->accept(this);
+}
+
+
+void gv_visitor::visit(Field_arr_el_Lvalue* ptr) {
+    box(ptr, "field_invoc_lvalue ARRAY");
+    arrow(ptr, ptr->invocation, "invocation");
+    ptr->invocation->accept(this);
+    arrow(ptr, ptr->index, "index");
+    ptr->index->accept(this);
+}
+
+
+
 void gv_visitor::visit(Method_invocation* ptr) {
     box(ptr, "method invocation: " + *ptr->name);
     arrow(ptr, ptr->from, "caller");

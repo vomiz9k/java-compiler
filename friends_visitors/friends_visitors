@@ -2,3 +2,4 @@ friend class Visitor;
 friend class optimization_visitor;
 friend class delete_visitor;
 friend class gv_visitor;
+friend class interpreter_visitor;

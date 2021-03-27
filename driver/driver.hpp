@@ -26,6 +26,11 @@ class Driver {
         v.visit(program);
     }
 
+    void interpret() {
+        interpreter_visitor v;
+        v.visit(program);
+    }
+
     std::map<std::string, int> variables;
 
     int parse(const std::string& filename);

@@ -122,6 +122,7 @@
 %nterm <Expr*> expr
 
 %nterm <Body*> body
+%nterm <Lvalue*> lvalue
 
 
 %token <std::string*> IDENTIFIER 
@@ -218,7 +219,13 @@ statement:
 
 
 assignment:
-    expr[lvalue] "=" expr[rvalue] {$$ = new Assignment($lvalue, $rvalue);};
+    lvalue "=" expr[rvalue] {$$ = new Assignment($lvalue, $rvalue);};
+
+lvalue:
+    IDENTIFIER {$$ = new Single_Lvalue($IDENTIFIER);}
+    | IDENTIFIER "[" expr "]" {$$ = new Arr_el_Lvalue($IDENTIFIER, $expr);}
+    | field_invocation {$$ = new Field_Lvalue($field_invocation);}
+    | field_invocation "[" expr "]" {$$ = new Field_arr_el_Lvalue($field_invocation, $expr);}
 
 method_invocation:
     expr "." IDENTIFIER "(" expressions ")" {$$ = new Method_invocation($expr, $IDENTIFIER, $expressions);};

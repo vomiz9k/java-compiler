@@ -4,5 +4,6 @@ int main(int argc, char** argv)
 {
     Driver d;
     d.parse(argv[1]);
-    d.print(argv[2]);
+    if (argc == 3)
+        d.print(argv[2]);
 } 

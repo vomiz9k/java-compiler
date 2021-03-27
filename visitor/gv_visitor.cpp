@@ -258,8 +258,10 @@ void gv_visitor::visit(Assignment* ptr) {
 }
 
 void gv_visitor::visit(Method_invocation* ptr) {
-
+    box(ptr, "method invocation: " + *ptr->name);
+    arrow(ptr, ptr->from, "caller");
     ptr->from->accept(this);
+    arrow(ptr, ptr->args, "args");
     ptr->args->accept(this);
     //name
 }

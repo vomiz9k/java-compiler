@@ -1,0 +1,4 @@
+friend class Visitor;
+friend class template_visitor;
+friend class delete_visitor;
+friend class gv_visitor;

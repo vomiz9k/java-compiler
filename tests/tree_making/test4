@@ -1,0 +1,29 @@
+class Main {
+    public static void main() {
+        System.out.println(new Class().sum(1, 2, 3, 4));
+    }
+}
+
+class Class {
+    public int sum (int a, int b, int c, int d) {
+        new Class().a(a, b, c, d);
+        new Class().b(a, b, d);
+        new Class().c(a, b);
+        new Class().d(a);
+        new Class().e();
+    }
+}
+
+class Class2 extends Class {
+    int c;
+    int[] d;
+    public int proizv(int a, int b) {
+        return a * this.d[1];
+    }
+    public int neg(int a) {
+        return 0-a;
+    }
+    public int one() {
+        return 1;
+    }
+}

@@ -1,4 +1,4 @@
-#include "method_declaration.hpp"
+#include "declaration.hpp"
 
 
  Method_declaration::Method_declaration (Type* type, std::string* name, Method_args* args, Body* body)
@@ -11,4 +11,17 @@ void  Method_declaration::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }
+
+ Variable_declaration::Variable_declaration (Type* type, std::string* name)
+ : type(type), name(name)
+{
+
+}
+                        
+void  Variable_declaration::accept(Visitor* visitor)
+{
+    visitor->visit(this);
+}
+
+
 

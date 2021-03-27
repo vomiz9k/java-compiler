@@ -8,6 +8,7 @@ class Base;
 class Program;
 class Main_class;
 
+class Body;
 class Empty_Statements;
 class Not_empty_Statements;
 
@@ -100,6 +101,7 @@ public:
     virtual void visit(Not_empty_Class_declarations*) = 0;
     virtual void visit(Empty_Class_declarations*) = 0;   
     
+    virtual void visit(Body*) = 0;
     virtual void visit(Empty_Statements*) = 0;
     virtual void visit(Not_empty_Statements*) = 0;
 
@@ -179,3 +181,4 @@ public:
 
 #include "delete_visitor.hpp"
 #include "gv_visitor.hpp"
+#include "optimization_visitor.hpp"

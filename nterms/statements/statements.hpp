@@ -10,6 +10,7 @@ public:
     virtual void accept(Visitor* visitor) = 0;
 };
 
+
 class Empty_Statements: public Statements
 {
     #include <friends_visitors>

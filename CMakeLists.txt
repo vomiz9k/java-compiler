@@ -48,15 +48,17 @@ add_executable(
     ${Compiler_SOURCE_DIR}/nterms/main_class/main_class.cpp
     ${Compiler_SOURCE_DIR}/nterms/method_arg/method_arg.cpp
     ${Compiler_SOURCE_DIR}/nterms/method_args/method_args.cpp
-    ${Compiler_SOURCE_DIR}/nterms/method_declaration/method_declaration.cpp
     ${Compiler_SOURCE_DIR}/nterms/method_invocation/method_invocation.cpp
     ${Compiler_SOURCE_DIR}/nterms/program/program.cpp
     ${Compiler_SOURCE_DIR}/nterms/statement/statement.cpp
     ${Compiler_SOURCE_DIR}/nterms/statements/statements.cpp
     ${Compiler_SOURCE_DIR}/nterms/type/type.cpp
     ${Compiler_SOURCE_DIR}/nterms/value/value.cpp
-    ${Compiler_SOURCE_DIR}/nterms/variable_declaration/variable_declaration.cpp
+    ${Compiler_SOURCE_DIR}/nterms/declaration/declaration.cpp
+    ${Compiler_SOURCE_DIR}/nterms/body/body.cpp
     ${Compiler_SOURCE_DIR}/visitor/gv_visitor.cpp
+    ${Compiler_SOURCE_DIR}/visitor/optimization_visitor.cpp
+
 )
 target_include_directories(Compiler PUBLIC
     ${Compiler_SOURCE_DIR}/driver

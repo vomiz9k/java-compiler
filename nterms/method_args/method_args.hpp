@@ -2,11 +2,13 @@
 
 #include <string>
 #include <base.hpp>
+#include <vector>
 
 class Method_arg;
 
 class Method_args: public Base
 {    
+    std::vector <Method_arg*> args;
     #include <friends_visitors>
 public:    
     virtual void accept(Visitor* visitor) = 0;

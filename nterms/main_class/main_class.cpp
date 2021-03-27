@@ -1,7 +1,7 @@
 #include "main_class.hpp"
 
-Main_class::Main_class(std::string* class_name, Statements* statements)
-    :class_name(class_name), statements(statements)
+Main_class::Main_class(std::string* class_name, Body* body)
+    :class_name(class_name), body(body)
 {
 
 }

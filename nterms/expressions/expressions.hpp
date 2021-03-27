@@ -1,11 +1,13 @@
 #pragma once
 
 #include <base.hpp>
+#include <vector>
 
 class Expr;
 
 class Expressions: public Base
 {
+    std::vector<Expr*> exprs;
     #include <friends_visitors>
     virtual void accept(Visitor* visitor) = 0;
 };

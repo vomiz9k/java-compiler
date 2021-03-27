@@ -118,8 +118,10 @@
 %nterm <Multiple_expressions*> multiple_expressions
 %nterm <Method_invocation*> method_invocation
 %nterm <Field_invocation*> field_invocation
-%nterm <Value*> value;
+%nterm <Value*> value
 %nterm <Expr*> expr
+
+%nterm <Body*> body
 
 
 %token <std::string*> IDENTIFIER 
@@ -150,7 +152,7 @@ program:
     main_class class_declarations {$$ = new Program($1, $2); driver.program = $$; };
 
 main_class: 
-    "class" IDENTIFIER "{" "public" "static" "void" "main" "(" ")" "{" statements "}" "}" {$$ = new Main_class($IDENTIFIER, $statements);};
+    "class" IDENTIFIER "{" "public" "static" "void" "main" "(" ")" "{" body "}" "}" {$$ = new Main_class($IDENTIFIER, $body);};
 
 class_declarations: 
     class_declarations[prev] class_declaration  {$$ = new Not_empty_Class_declarations($prev, $class_declaration);}
@@ -166,7 +168,7 @@ declarations:
     | %empty {$$ = new Empty_Declarations();};
 
 method_declaration:
-    "public" type IDENTIFIER "(" method_args ")" "{" statements "}" {$$ = new Method_declaration($type, $IDENTIFIER, $method_args, $statements);};
+    "public" type IDENTIFIER "(" method_args ")" "{" body "}" {$$ = new Method_declaration($type, $IDENTIFIER, $method_args, $body);};
 
 variable_declaration:
     type IDENTIFIER ";" {$$ = new Variable_declaration($type, $IDENTIFIER);};
@@ -193,6 +195,10 @@ simple_type:
     | "void" {$$ = new  std::string("void");}
     | IDENTIFIER {$$ = $IDENTIFIER;};
 
+body:
+    statements {$$ = new Body($statements);};
+
+
 statements:   
     %empty {$$ = new Empty_Statements();} 
     | statements[prev] statement  {$$ = new Not_empty_Statements($prev, $statement);};
@@ -203,7 +209,7 @@ statement:
     | "if" "(" expr ")" statement[true] %prec "then" {$$ = new If_Statement($expr, $true);}
     | "assert" "(" expr ")" ";" {$$ = new Assert_Statement($expr);}
     | variable_declaration {$$ = new Var_decl_Statement($variable_declaration);}
-    | "{" statements "}" {$$ = new Big_Statement($statements);}
+    | "{" body "}" {$$ = new Big_Statement($body);}
     | "while" "(" expr ")" statement[true] {$$ = new While_Statement($expr, $true);}
     | "System.out.println" "(" expr ")" ";" {$$ = new Print_Statement($expr);}
     | assignment ";" {$$ = new Assignment_Statement($assignment);}

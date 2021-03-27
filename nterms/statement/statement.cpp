@@ -55,8 +55,7 @@ void Var_decl_Statement::accept(Visitor* visitor)
 }
 
 
-Big_Statement::Big_Statement(Statements* statements)
-    :statements(statements)
+Big_Statement::Big_Statement(Body* body) : body(body)
 {
 
 }

@@ -13,13 +13,13 @@ class Method_declaration: public Base
     Type* type;
     std::string* name;
     Method_args* args;
-    Statements* statements;
+    Body* body;
 public:
 
     Method_declaration (Type* type,
                         std::string* name,
                         Method_args* args,
-                        Statements* statements);
+                        Body* body);
                         
     void accept(Visitor* visitor) override;
 };

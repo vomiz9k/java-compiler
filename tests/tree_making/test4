@@ -6,7 +6,11 @@ class Main {
 
 class Class {
     public int sum (int a, int b, int c, int d) {
-        return a + b + c + d;
+        new Class().a(a, b, c, d);
+        new Class().b(a, b, d);
+        new Class().c(a, b);
+        new Class().d(a);
+        new Class().e();
     }
 }
 
@@ -15,5 +19,11 @@ class Class2 extends Class {
     int[] d;
     public int proizv(int a, int b) {
         return a * this.d[1];
+    }
+    public int neg(int a) {
+        return 0-a;
+    }
+    public int one() {
+        return 1;
     }
 }

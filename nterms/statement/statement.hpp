@@ -59,13 +59,14 @@ public:
     void accept(Visitor* visitor) override;  
 };
 
+class Body;
 class Big_Statement: public Statement
 {
     #include <friends_visitors>
-    Statements* statements;
+    Body* body;
     
 public:
-    Big_Statement(Statements* statements);
+    Big_Statement(Body* body);
     void accept(Visitor* visitor) override;
 };
 

@@ -6,11 +6,10 @@ class Main {
         b = true;
 
         if (a > 5 && b)
-            System.out.println(a);
-        if (a > 3)
-            System.out.println(a + a);
-        else
-            System.out.println(a + 1);
+            if (a > 3)
+                System.out.println(a + a);
+            else
+                System.out.println(a + 1);
         
         assert(a > 0);
     }

@@ -16,6 +16,10 @@ set(
     ${Compiler_SOURCE_DIR}/nterms/base/base.hpp
     ${Compiler_SOURCE_DIR}/visitor/visitor.hpp
     ${Compiler_SOURCE_DIR}/friends_visitors/friends_visitors
+
+    ${Compiler_SOURCE_DIR}/scope/base_scope.hpp
+
+    ${Compiler_SOURCE_DIR}/scope/base_symbol.hpp
     )
 
 find_package(FLEX REQUIRED)
@@ -68,6 +72,12 @@ add_executable(
     ${Compiler_SOURCE_DIR}/visitor/optimization_visitor.cpp
     ${Compiler_SOURCE_DIR}/visitor/delete_visitor.cpp
     ${Compiler_SOURCE_DIR}/visitor/interpreter_visitor.cpp
+    ${Compiler_SOURCE_DIR}/visitor/symbol_table_visitor.cpp
+
+    ${Compiler_SOURCE_DIR}/symbols/base_symbol.cpp
+    ${Compiler_SOURCE_DIR}/symbols/class_symbol.cpp
+    ${Compiler_SOURCE_DIR}/symbols/variable_symbol.cpp
+    ${Compiler_SOURCE_DIR}/symbols/method_symbol.cpp
 
 )
 target_include_directories(Compiler PUBLIC
@@ -78,6 +88,8 @@ target_include_directories(Compiler PUBLIC
     ${Compiler_SOURCE_DIR}/nterms
     ${Compiler_SOURCE_DIR}/nterms/base
     ${Compiler_SOURCE_DIR}/friends_visitors
+    ${Compiler_SOURCE_DIR}/scope
+    ${Compiler_SOURCE_DIR}/symbols
 )
 
 

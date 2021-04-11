@@ -31,6 +31,12 @@ class Driver {
         v.visit(program);
     }
 
+    void symb() {
+        symbol_table_visitor v;
+        v.visit(program);
+        v.dump();
+    }
+
     std::map<std::string, int> variables;
 
     int parse(const std::string& filename);

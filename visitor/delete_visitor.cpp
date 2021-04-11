@@ -13,7 +13,7 @@ void delete_visitor::visit(Main_class* ptr) {
 
     ptr->body->accept(this);
     
-    delete ptr->class_name;
+    delete ptr->name;
     delete ptr;
 }
 

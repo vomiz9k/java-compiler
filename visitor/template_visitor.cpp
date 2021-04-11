@@ -5,7 +5,10 @@
 void template_visitor::visit(Program* ptr) {
 
     ptr->main_class->accept(this);
-    ptr->class_declarations->accept(this);
+
+    for (auto i : ptr->declarations) {
+        i->accept(this);
+    }
 }
 
 void template_visitor::visit(Main_class* ptr) {
@@ -27,19 +30,25 @@ void template_visitor::visit(Empty_Class_declarations* ptr) {
 
 void template_visitor::visit(Extended_Class_declaration* ptr) {
 
-    ptr->declarations->accept(this);
+    for (auto i : ptr->decls) {
+        i->accept(this);
+    }
     
     //name, base
 }
 
 void template_visitor::visit(Not_extended_Class_declaration* ptr) {
 
-    ptr->declarations->accept(this);
+    for (auto i : ptr->decls) {
+        i->accept(this);
+    }
     //name
 }
 
 void template_visitor::visit(Body* ptr) {
-    ptr->statements->accept(this);
+    for (auto i: ptr->stmts) {
+        i->accept(this);
+    }
     //nochildren
 }
 
@@ -182,8 +191,9 @@ void template_visitor::visit(Single_Method_args* ptr) {
 
 void template_visitor::visit(Many_Method_args* ptr) {
 
-    ptr->prev_args->accept(this);
-    ptr->arg->accept(this);
+    for(auto i : ptr->args) {
+        i->accept(this);
+    }
 }
 
 void template_visitor::visit(Method_arg* ptr) {
@@ -242,9 +252,9 @@ void template_visitor::visit(Single_Expressions* ptr) {
 }
 
 void template_visitor::visit(Many_Expressions* ptr) {
-
-    ptr->prev_exprs->accept(this);
-    ptr->expr->accept(this);
+    for(auto i: ptr->exprs) {
+        i->accept(this);
+    }
 }
 
 void template_visitor::visit(Single_Multiple_expressions* ptr) {

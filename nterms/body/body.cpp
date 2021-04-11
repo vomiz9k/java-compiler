@@ -7,6 +7,10 @@ Body::Body(Statements* statements)
 
 }
 
+void Body::SetScope(BaseScope* value){
+     scope = value;
+}
+
 void Body::accept(Visitor* visitor)
 {
     visitor->visit(this);

@@ -6,6 +6,7 @@
 class Type;
 class Method_args;
 class Statements;
+class BaseScope;
 
 class Declaration : public Base 
 {
@@ -17,6 +18,7 @@ public:
 class Method_declaration: public Declaration
 {
     #include <friends_visitors>
+    BaseScope* scope;
     Type* type;
     std::string* name;
     Method_args* args;
@@ -29,6 +31,8 @@ public:
                         Body* body);
                         
     void accept(Visitor* visitor) override;
+
+    void SetScope(BaseScope* scope);
 };
 
 class Type;

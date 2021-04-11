@@ -41,7 +41,7 @@ void gv_visitor::visit(Program* ptr) {
 }
 
 void gv_visitor::visit(Main_class* ptr) {
-    box(ptr, "Main_class: " + *ptr->class_name);
+    box(ptr, "Main_class: " + *ptr->name);
     arrow(ptr, ptr->body);
     ptr->body->accept(this);
     //class_name

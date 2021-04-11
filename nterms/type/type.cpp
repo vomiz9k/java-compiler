@@ -1,9 +1,9 @@
 #include "type.hpp"
 
 
-Simple_Type::Simple_Type(std::string* name) : name(name)
+Simple_Type::Simple_Type(std::string* namee)
 {
-
+    name = namee;
 }
 
 void Simple_Type::accept(Visitor* visitor)
@@ -12,9 +12,9 @@ void Simple_Type::accept(Visitor* visitor)
 }
 
 
-Array_Type::Array_Type(std::string* name) : name(name)
+Array_Type::Array_Type(std::string* namee)
 {
-
+    name = namee;
 }
     
 void Array_Type::accept(Visitor* visitor)

@@ -217,7 +217,7 @@ void symbol_table_visitor::visit(Method_declaration* ptr) {
     ptr->args->accept(this);
     ptr->body->accept(this);
 
-    old = curr;
+    curr = old;
     //name
 }
 

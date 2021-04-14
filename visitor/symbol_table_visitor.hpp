@@ -14,13 +14,19 @@ public:
         dump(curr);
     }
 
+    size_t tabs = 0;
     void dump(BaseScope* now) {
         for(auto i: now->symbols) {
+            for(int i = 0; i < tabs; ++i) {
+                std::cout << '\t';
+            }
             std::cout << i.first << ' ';
         }
         std::cout << '\n';
+        ++tabs;
         for (auto i: now->children) {
             dump(i);
         }
+        --tabs;
     }
 };

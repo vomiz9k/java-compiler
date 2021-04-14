@@ -61,8 +61,8 @@ void Field_invocation_Expr::accept(Visitor* visitor)
     visitor->visit(this);
 }
 
-New_arr_Expr::New_arr_Expr(std::string* type, Expr* count)
-    :type(type), count(count)
+New_arr_Expr::New_arr_Expr(std::string* name, Expr* count)
+    :name(name), count(count)
 {
     
 }

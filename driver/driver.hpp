@@ -17,8 +17,8 @@ class Driver {
     Driver();
 
     ~Driver() {
-        delete_visitor v;
-        v.visit(program);
+        //delete_visitor v;
+        //v.visit(program);
     }
 
     void print(const std::string& filename) {
@@ -32,9 +32,10 @@ class Driver {
     }
 
     void symb() {
+
         symbol_table_visitor v;
         v.visit(program);
-        v.dump();
+        //v.dump();
     }
 
     std::map<std::string, int> variables;

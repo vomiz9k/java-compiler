@@ -6,6 +6,8 @@ class Value: public Base
 {
     #include <friends_visitors>
     virtual void accept(Visitor* visitor) = 0;
+public:
+    Simple_Type* type;
 };
 
 class Number_Value: public Value

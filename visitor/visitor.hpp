@@ -197,6 +197,7 @@ public:
 #include "optimization_visitor.hpp"
 #include "interpreter_visitor.hpp"
 #include "symbol_table_visitor.hpp"
+#include "syntax_check_visitor.hpp"
 
 
 

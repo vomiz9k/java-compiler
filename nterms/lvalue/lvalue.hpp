@@ -4,12 +4,14 @@
 #include <base.hpp>
 
 class Expr;
+class Type;
 
 class Lvalue: public Base
 {
     #include <friends_visitors>
         
 public:
+    Type* type;
     virtual void accept(Visitor* visitor) = 0;
 };
 

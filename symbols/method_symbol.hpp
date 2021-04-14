@@ -9,5 +9,7 @@ class MethodSymbol: public BaseSymbol {
 public:
     MethodSymbol(Method_declaration* decl);
     std::vector <VariableSymbol*> arguments;
-    std::string type;
+    Type* type;
+
+    int SymbolType();
 };

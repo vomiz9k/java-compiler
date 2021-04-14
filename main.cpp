@@ -3,7 +3,8 @@
 int main(int argc, char** argv)
 {
     Driver d;
-    d.parse(argv[1]);
+    
+
     // if (argc == 3)
     // {
     //     if(argv[2] == "run")
@@ -11,5 +12,13 @@ int main(int argc, char** argv)
     //     else
     //         d.print(argv[2]);
     // }
-    d.symb();
+    //d.print("gv.gv");
+    try {
+        d.parse(argv[1]);
+        d.symb();
+    } catch (const char* e) {
+        std::cout << e << '\n';
+    } catch (const std::string& e) {
+        std::cout << e << '\n';
+    }
 } 

@@ -5,7 +5,9 @@
 
 class VariableSymbol: public BaseSymbol {
 public:
-    std::string type;
+    Type* type;
     VariableSymbol(Method_arg* arg);
     VariableSymbol(Variable_declaration* decl);
+
+    int SymbolType();
 };

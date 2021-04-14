@@ -11,6 +11,7 @@ class Type: public Base
 public:
     std::string* name;
     virtual void accept(Visitor* visitor) = 0;
+    bool is_array;
 };
 
 class Simple_Type: public Type

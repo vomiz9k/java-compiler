@@ -1,0 +1,11 @@
+Main Class Class2
+
+	sum 
+		a b c d
+
+	c d proizv neg one
+		a b
+		a 
+			b 
+
+

@@ -293,7 +293,10 @@ void symbol_table_visitor::visit(Method_declaration* ptr) {
     
     curr_class->methods.push_back(curr_method);
 
-    ptr->type->accept(this);
+    if (*ptr->type->name != "void") {
+        ptr->type->accept(this);
+    }
+
     ptr->args->accept(this);
     ptr->body->accept(this);
 
@@ -523,7 +526,6 @@ void symbol_table_visitor::visit(Plus_Expr* ptr) {
     ptr->second->accept(this);
     assert_type(ptr->second->type, int_simple);
     ptr->type = int_simple;
-    //type=int
 }
 
 void symbol_table_visitor::visit(Minus_Expr* ptr) {

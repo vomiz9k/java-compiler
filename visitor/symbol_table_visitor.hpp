@@ -64,9 +64,7 @@ public:
 
     void assert_not_declared_in_this_scope(std::string* name);
 
-    void assert_type(std::string* checking, const std::string& needed);
-
-    void assert_type(std::string* checking, const std::string& first, const std::string& second);
+    void assert_type(const Type* checking, const Type* needed);
 
     void assert_array(Type* type);
 };

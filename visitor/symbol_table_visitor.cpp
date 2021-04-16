@@ -33,15 +33,10 @@ void symbol_table_visitor::assert_not_declared_in_this_scope(std::string* name) 
     }
 }
 
-void symbol_table_visitor::assert_type(std::string* checking, const std::string& needed) {
-    if (*checking != needed) {
-        throw "syntax error: got " + *checking + ", " + needed + " expected";
-    }
-}
-
-void symbol_table_visitor::assert_type(std::string* checking, const std::string& first, const std::string& second) {
-    if (*checking != first && *checking != second) {
-        throw "syntax error: got " + *checking + ", " + first + " expected";
+void symbol_table_visitor::assert_type(const Type* checking, const Type* needed) {
+    if (*checking->name != *needed->name || checking->is_array != needed->is_array) {
+        throw "syntax error: got " + *checking->name + (checking->is_array ? "[]" : "") + 
+            ", " + *needed->name + (needed->is_array ? "[]" : "") + " expected";
     }
 }
 
@@ -112,6 +107,13 @@ void symbol_table_visitor::visit(Extended_Class_declaration* ptr) {
     curr->parent = old;
     old->children.push_back(curr);
     
+    auto parent_class = reinterpret_cast<ClassSymbol*>(Find(ptr->base));
+    for(auto& field: parent_class->fields) {
+        curr_class->fields.push_back(field);
+    }
+    for(auto& method: parent_class->methods) {
+        curr_class->methods.push_back(method);
+    }
 
     for(auto i : ptr->decls) {
         i->accept(this);
@@ -172,7 +174,7 @@ void symbol_table_visitor::visit(Not_empty_Statements* ptr) {
 void symbol_table_visitor::visit(If_else_Statement* ptr) {
 
     ptr->condition->accept(this);
-    assert_type(ptr->condition->type->name, "bool");
+    assert_type(ptr->condition->type, bool_simple);
     ptr->do_if_true->accept(this);
     ptr->do_else->accept(this);
 }
@@ -180,14 +182,14 @@ void symbol_table_visitor::visit(If_else_Statement* ptr) {
 void symbol_table_visitor::visit(If_Statement* ptr) {
 
     ptr->condition->accept(this);
-    assert_type(ptr->condition->type->name, "bool");
+    assert_type(ptr->condition->type, bool_simple);
     ptr->do_if_true->accept(this);
 }
 
 
 void symbol_table_visitor::visit(Assert_Statement* ptr) {
     ptr->check->accept(this);
-    assert_type(ptr->check->type->name, "bool");
+    assert_type(ptr->check->type, int_simple);
 }
 
 void symbol_table_visitor::visit(Var_decl_Statement* ptr) {
@@ -201,14 +203,14 @@ void symbol_table_visitor::visit(Big_Statement* ptr) {
 void symbol_table_visitor::visit(While_Statement* ptr) {
 
     ptr->condition->accept(this);
-    assert_type(ptr->condition->type->name, "bool");
+    assert_type(ptr->condition->type, bool_simple);
     ptr->do_if_true->accept(this);
 }
 
 void symbol_table_visitor::visit(Print_Statement* ptr) {
 
     ptr->to_print->accept(this);
-    assert_type(ptr->to_print->type->name, "int");
+    assert_type(ptr->to_print->type, int_simple);
 }
 
 void symbol_table_visitor::visit(Assignment_Statement* ptr) {
@@ -226,7 +228,7 @@ void symbol_table_visitor::visit(Arr_el_Lvalue* ptr) {
     assert_declared(ptr->name, SYMBOL_VARIABLE);
     ptr->type = reinterpret_cast<VariableSymbol*>(Find(ptr->name))->type;
     ptr->index->accept(this);
-    assert_type(ptr->index->type->name, "int");
+    assert_type(ptr->index->type, int_simple);
     //name
 }
 
@@ -241,13 +243,13 @@ void symbol_table_visitor::visit(Field_arr_el_Lvalue* ptr) {
     ptr->type = reinterpret_cast<VariableSymbol*>(Find(ptr->invocation->name))->type;
 
     ptr->index->accept(this);
-    assert_type(ptr->index->type->name, "int");
+    assert_type(ptr->index->type, int_simple);
 }
 
 void symbol_table_visitor::visit(Return_Statement* ptr) {
 
     ptr->to_return->accept(this);
-    assert_type(ptr->to_return->type->name, *curr_method->type->name);
+    assert_type(ptr->to_return->type, curr_method->type);
 }
 
 void symbol_table_visitor::visit(Method_invocation_Statement* ptr) {
@@ -368,7 +370,7 @@ void symbol_table_visitor::visit(Assignment* ptr) {
     ptr->lvalue->accept(this);
     ptr->rvalue->accept(this);
 
-    assert_type(ptr->rvalue->type->name, *ptr->lvalue->type->name);
+    assert_type(ptr->rvalue->type, ptr->lvalue->type);
 }
 
 void symbol_table_visitor::visit(Method_invocation* ptr) {
@@ -402,7 +404,7 @@ void symbol_table_visitor::visit(Method_invocation* ptr) {
         throw "syntax error: can't call " + method_holder->name + "." + calling_method->name + " with this count of arguments";
     }
     for(int i = 0; i < calling_method->arguments.size(); ++i) {
-        assert_type(ptr->args->exprs[i]->type->name, *calling_method->arguments[i]->type->name);
+        assert_type(ptr->args->exprs[i]->type, calling_method->arguments[i]->type);
     }
 
     ptr->type = calling_method->type;
@@ -457,7 +459,6 @@ void symbol_table_visitor::visit(Value_Expr* ptr) {
 }
 
 void symbol_table_visitor::visit(Id_Expr* ptr) {
-
     assert_declared(ptr->name, SYMBOL_VARIABLE);
     ptr->type = reinterpret_cast<VariableSymbol*>(Find(*ptr->name))->type;
     //name
@@ -469,10 +470,11 @@ void symbol_table_visitor::visit(Array_el_Expr* ptr) {
 
 
     ptr->index->accept(this);
-    assert_type(ptr->index->type->name, "int");
+    assert_type(ptr->index->type, int_simple);
 
     ptr->type = new Simple_Type(ptr->array->type->name);
 }
+
 void symbol_table_visitor::visit(Length_Expr* ptr) {
     ptr->array->accept(this);
     assert_array(ptr->array->type);
@@ -489,7 +491,7 @@ void symbol_table_visitor::visit(Field_invocation_Expr* ptr) {
 void symbol_table_visitor::visit(New_arr_Expr* ptr) {
     assert_declared(ptr->name, SYMBOL_CLASS);
     ptr->count->accept(this);
-    assert_type(ptr->count->type->name, "int");
+    assert_type(ptr->count->type, int_simple);
     
     ptr->type = new Array_Type(ptr->name);
 }   //TODO type->name pomenyat vezde
@@ -506,7 +508,7 @@ void symbol_table_visitor::visit(This_Expr* ptr) {
 
 void symbol_table_visitor::visit(Not_Expr* ptr) {
     ptr->expr->accept(this);
-    assert_type(ptr->expr->type->name, "bool");
+    assert_type(ptr->expr->type, bool_simple);
     ptr->type = ptr->expr->type;
 }
 
@@ -520,9 +522,9 @@ void symbol_table_visitor::visit(Method_invocation_Expr* ptr) {
 void symbol_table_visitor::visit(Plus_Expr* ptr) {
 
     ptr->first->accept(this);
-    assert_type(ptr->first->type->name, "int");
+    assert_type(ptr->first->type, int_simple);
     ptr->second->accept(this);
-    assert_type(ptr->second->type->name, "int");
+    assert_type(ptr->second->type, int_simple);
     ptr->type = int_simple;
     //type=int
 }
@@ -530,96 +532,95 @@ void symbol_table_visitor::visit(Plus_Expr* ptr) {
 void symbol_table_visitor::visit(Minus_Expr* ptr) {
 
     ptr->first->accept(this);
-    assert_type(ptr->first->type->name, "int");
+    assert_type(ptr->first->type, int_simple);
     ptr->second->accept(this);
-    assert_type(ptr->second->type->name, "int");
+    assert_type(ptr->second->type, int_simple);
     ptr->type = int_simple;
 }
 
 void symbol_table_visitor::visit(Star_Expr* ptr) {
 
     ptr->first->accept(this);
-    assert_type(ptr->first->type->name, "int");
+    assert_type(ptr->first->type, int_simple);
     ptr->second->accept(this);
-    assert_type(ptr->second->type->name, "int");
+    assert_type(ptr->second->type, int_simple);
     ptr->type = int_simple;
 }
 
 void symbol_table_visitor::visit(Slash_Expr* ptr) {
 
     ptr->first->accept(this);
-    assert_type(ptr->first->type->name, "int");
+    assert_type(ptr->first->type, int_simple);
     ptr->second->accept(this);
-    assert_type(ptr->second->type->name, "int");
+    assert_type(ptr->second->type, int_simple);
     ptr->type = int_simple;
 }
 
 void symbol_table_visitor::visit(Percent_Expr* ptr) {
 
     ptr->first->accept(this);
-    assert_type(ptr->first->type->name, "int");
+    assert_type(ptr->first->type, int_simple);
     ptr->second->accept(this);
-    assert_type(ptr->second->type->name, "int");
+    assert_type(ptr->second->type, int_simple);
     ptr->type = int_simple;
 }
 
 void symbol_table_visitor::visit(And_Expr* ptr) {
 
     ptr->first->accept(this);
-    assert_type(ptr->first->type->name, "bool");
+    assert_type(ptr->first->type, bool_simple);
     ptr->second->accept(this);
-    assert_type(ptr->second->type->name, "bool");
+    assert_type(ptr->second->type, bool_simple);
     ptr->type = bool_simple;
 }
 
 void symbol_table_visitor::visit(Or_Expr* ptr) {
 
     ptr->first->accept(this);
-    assert_type(ptr->first->type->name, "bool");
+    assert_type(ptr->first->type, bool_simple);
     ptr->second->accept(this);
-    assert_type(ptr->second->type->name, "bool");
+    assert_type(ptr->second->type, bool_simple);
     ptr->type = bool_simple;
 }
 
 void symbol_table_visitor::visit(Smaller_Expr* ptr) {
 
     ptr->first->accept(this);
-    assert_type(ptr->first->type->name, "int");
+    assert_type(ptr->first->type, int_simple);
     ptr->second->accept(this);
-    assert_type(ptr->second->type->name, "int");
+    assert_type(ptr->second->type, int_simple);
     ptr->type = bool_simple;
 }
 
 void symbol_table_visitor::visit(Bigger_Expr* ptr) {
 
     ptr->first->accept(this);
-    assert_type(ptr->first->type->name, "int");
+    assert_type(ptr->first->type, int_simple);
     ptr->second->accept(this);
-    assert_type(ptr->second->type->name, "int");
+    assert_type(ptr->second->type, int_simple);
     ptr->type = bool_simple;
 }
 
 void symbol_table_visitor::visit(Equal_Expr* ptr) {
 
     ptr->first->accept(this);
-    assert_type(ptr->first->type->name, "int");
+    assert_type(ptr->first->type, int_simple);
     ptr->second->accept(this);
-    assert_type(ptr->second->type->name, "int");
+    assert_type(ptr->second->type, int_simple);
     ptr->type = bool_simple;
 }
 
 void symbol_table_visitor::visit(Not_equal_Expr* ptr) {
 
     ptr->first->accept(this);
-    assert_type(ptr->first->type->name, "int");
+    assert_type(ptr->first->type, int_simple);
     ptr->second->accept(this);
-    assert_type(ptr->second->type->name, "int");
+    assert_type(ptr->second->type, int_simple);
     ptr->type = bool_simple;
 }
 
 void symbol_table_visitor::visit(Brackets_Expr* ptr) {
     ptr->expr->accept(this);
-    assert_type(ptr->expr->type->name, "int", "bool");
     ptr->type = ptr->expr->type;
 }
 

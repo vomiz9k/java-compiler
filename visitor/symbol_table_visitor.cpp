@@ -47,7 +47,7 @@ void symbol_table_visitor::assert_type(std::string* checking, const std::string&
 
 void symbol_table_visitor::assert_array(Type* type) {
     if (!type->is_array) {
-        throw "syntax error: must be an array";
+        throw std::string("syntax error: must be an array");
     }
 }
 
@@ -172,6 +172,7 @@ void symbol_table_visitor::visit(Not_empty_Statements* ptr) {
 void symbol_table_visitor::visit(If_else_Statement* ptr) {
 
     ptr->condition->accept(this);
+    assert_type(ptr->condition->type->name, "bool");
     ptr->do_if_true->accept(this);
     ptr->do_else->accept(this);
 }
@@ -179,6 +180,7 @@ void symbol_table_visitor::visit(If_else_Statement* ptr) {
 void symbol_table_visitor::visit(If_Statement* ptr) {
 
     ptr->condition->accept(this);
+    assert_type(ptr->condition->type->name, "bool");
     ptr->do_if_true->accept(this);
 }
 
@@ -366,7 +368,7 @@ void symbol_table_visitor::visit(Assignment* ptr) {
     ptr->lvalue->accept(this);
     ptr->rvalue->accept(this);
 
-    assert_type(ptr->lvalue->type->name, *ptr->rvalue->type->name);
+    assert_type(ptr->rvalue->type->name, *ptr->lvalue->type->name);
 }
 
 void symbol_table_visitor::visit(Method_invocation* ptr) {

@@ -1,0 +1,22 @@
+class Main {
+    public static void main() {
+        int a;
+        {
+            bool a;
+            {
+                Declared a;
+                {
+                    int a;
+                }
+                int b;
+                b = a.a();
+            }
+        }
+    }
+}
+
+class Declared {
+    public int a() {
+        return 1;
+    }
+}

@@ -1,0 +1,27 @@
+class Main {
+    public static void main() {
+        Declared a;
+        int b;
+        a.foo(b);
+    }
+}
+
+class Declared {
+    int a;
+    public int foo(int a) {
+        int a;
+        if (a > 0) {
+            int a;
+            {
+                int a;
+            }
+        }
+        {
+            int a;
+        }
+        {
+            bool a;
+        }
+        return 0;
+    }
+}

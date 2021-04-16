@@ -26,9 +26,11 @@ public:
     BaseScope* curr;
 
     void dump() {
+        tabs = 0;
         dump(curr);
     }
 
+    int tabs = 0;
     void dump(BaseScope* now) {
         for(auto i: now->symbols) {
             for(int i = 0; i < tabs; ++i) {

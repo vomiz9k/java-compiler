@@ -479,7 +479,6 @@ void symbol_table_visitor::visit(Length_Expr* ptr) {
     ptr->array->accept(this);
     assert_array(ptr->array->type);
     ptr->type = int_simple;
-    //TODO
     //type=int
 }
 
@@ -494,7 +493,7 @@ void symbol_table_visitor::visit(New_arr_Expr* ptr) {
     assert_type(ptr->count->type, int_simple);
     
     ptr->type = new Array_Type(ptr->name);
-}   //TODO type->name pomenyat vezde
+}
 
 void symbol_table_visitor::visit(New_single_Expr* ptr) {
     assert_declared(ptr->name, SYMBOL_CLASS);
@@ -513,9 +512,7 @@ void symbol_table_visitor::visit(Not_Expr* ptr) {
 }
 
 void symbol_table_visitor::visit(Method_invocation_Expr* ptr) {
-    //TODO ptr->type = ptr->invocation->name
     ptr->invocation->accept(this);
-
     ptr->type =  ptr->invocation->type;
 }
 

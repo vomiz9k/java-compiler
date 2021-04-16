@@ -31,12 +31,17 @@ public:
 
     void dump(BaseScope* now) {
         for(auto i: now->symbols) {
+            for(int i = 0; i < tabs; ++i) {
+                std::cout << '\t';
+            }
             std::cout << i.first << ' ';
         }
         std::cout << '\n';
+        ++tabs;
         for (auto i: now->children) {
             dump(i);
         }
+        --tabs;
     }
 
     BaseSymbol* Find(const std::string& name) {

@@ -9,7 +9,7 @@ int main(int argc, char* argv[2])
         d.interpret();
     }
     else if (cmd == "ast") {
-        d.parse(argv[1]);
+        d.parse(argv[2]);
         d.print(argv[3]);
     }
     else if (cmd == "scope") {

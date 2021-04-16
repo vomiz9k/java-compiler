@@ -17,8 +17,8 @@ tests/tree_making/test3.gv
 tests/tree_making/test3.png
 tests/tree_making/test4.gv
 tests/tree_making/test4.png
-tests/scope_tree/test1_result.png
-tests/scope_tree/test2_result.png
-tests/scope_tree/test3_result.png
-tests/scope_tree/test4_result.png
+tests/scope_tree/test1_result.txt
+tests/scope_tree/test2_result.txt
+tests/scope_tree/test3_result.txt
+tests/scope_tree/test4_result.txt
 .gitignore

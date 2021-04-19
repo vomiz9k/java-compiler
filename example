@@ -1,10 +1,22 @@
 class Main {
     public static void main() {
         int a;
-        a = 1;
-        while (a < 10)
-            a = a * 2;
-        System.out.println(a);
+
     }
 }
 
+
+class A {
+    public int B() {
+        int a;
+
+        if ( 1 > 0) {
+            a = 1;
+        }
+        else {
+
+        }
+
+        
+    }
+}

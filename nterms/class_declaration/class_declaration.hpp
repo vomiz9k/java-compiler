@@ -35,7 +35,11 @@ public:
 class Not_extended_Class_declaration: public Class_declaration
 {
     #include <friends_visitors>
+<<<<<<< HEAD
     
+=======
+    Declarations* declarations;
+>>>>>>> main
 public:
     Not_extended_Class_declaration(std::string* name, Declarations* declarations);
     void accept(Visitor* visitor) override;

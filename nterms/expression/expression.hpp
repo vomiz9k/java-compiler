@@ -2,12 +2,15 @@
 
 #include <base.hpp>
 #include <string>
-
+class Type;
 
 class Expr: public Base
 {
     #include <friends_visitors>
     virtual void accept(Visitor* visitor) = 0;
+
+public:
+    Type* type;
 };
 
 class Value;    
@@ -61,11 +64,11 @@ public:
 class New_arr_Expr: public Expr
 {
     #include <friends_visitors>
-    std::string* type;
+    std::string* name;
     Expr* count;
 
 public:
-    New_arr_Expr(std::string* type, Expr* count);
+    New_arr_Expr(std::string* name, Expr* count);
     void accept(Visitor* visitor) override;
 };
 

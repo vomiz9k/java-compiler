@@ -4,6 +4,7 @@ friend class delete_visitor;
 friend class gv_visitor;
 friend class interpreter_visitor;
 friend class symbol_table_visitor;
+friend class syntax_check_visitor;
 
 friend class BaseSymbol;
 friend class BaseScope;

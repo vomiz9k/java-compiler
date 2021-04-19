@@ -1,0 +1,10 @@
+class Main {
+    public static void main() {
+        Declared a;
+        a = 1;
+    }
+}
+
+class Declared {
+
+}

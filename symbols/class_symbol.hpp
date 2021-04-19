@@ -4,10 +4,15 @@
 
 #include <big_include.hpp>
 
-
+class MethodSymbol;
+class VariableSymbol;
 class ClassSymbol: public BaseSymbol {
 public:
     ClassSymbol(Class_declaration* decl);
     ClassSymbol(Main_class* decl);
-    std::vector <BaseSymbol*> declarations;
+    ClassSymbol(std::string name);
+    std::vector <MethodSymbol*> methods;
+    std::vector <VariableSymbol*> fields;
+
+    int SymbolType();
 };

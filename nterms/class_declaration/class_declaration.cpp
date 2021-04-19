@@ -5,9 +5,10 @@
      scope = value;
  }
 
-Extended_Class_declaration::Extended_Class_declaration(std::string* namee, std::string* base, Declarations* declarations)
-    :  base(base), declarations(declarations)
+Extended_Class_declaration::Extended_Class_declaration(std::string* namee, std::string* base, Declarations* declarationss)
+    :  base(base)
 {
+    declarations = declarationss;
     name = namee;
 }
 
@@ -17,9 +18,9 @@ void Extended_Class_declaration::accept(Visitor* visitor)
 }
 
 
-Not_extended_Class_declaration::Not_extended_Class_declaration(std::string* namee, Declarations* declarations)
-    :  declarations(declarations)
+Not_extended_Class_declaration::Not_extended_Class_declaration(std::string* namee, Declarations* declarationss)
 {
+    declarations = declarationss;
     name = namee;
 }
 

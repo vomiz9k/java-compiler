@@ -383,7 +383,7 @@ void gv_visitor::visit(Field_invocation_Expr* ptr) {
 }
 
 void gv_visitor::visit(New_arr_Expr* ptr) {
-    box(ptr, "new " + *ptr->type + " []");
+    box(ptr, "new " + *ptr->name + " []");
     arrow(ptr, ptr->count, "count");
     ptr->count->accept(this);
     //type(str)

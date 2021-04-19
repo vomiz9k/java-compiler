@@ -8,3 +8,11 @@ ClassSymbol::ClassSymbol(Class_declaration* decl) {
 ClassSymbol::ClassSymbol(Main_class* decl) {
     name = *decl->name;
 }
+
+ClassSymbol::ClassSymbol(std::string namee) {
+    name = namee;
+}
+
+int ClassSymbol::SymbolType() {
+    return SYMBOL_CLASS;
+}

@@ -12,5 +12,5 @@ class BaseScope {
     Base* holder; 
     std::unordered_map<std::string, BaseSymbol*> symbols;
     std::vector<BaseScope*> children;
-    BaseScope* parent;
+    BaseScope* parent = nullptr;
 };

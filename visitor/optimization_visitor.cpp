@@ -17,7 +17,6 @@ void optimization_visitor::visit(Main_class* ptr) {
 }
 
 void optimization_visitor::visit(Not_empty_Class_declarations* ptr) {
-    
     ptr->prev_class_decls->accept(this);
     ptr->class_decl->accept(this);
 }
@@ -126,19 +125,16 @@ void optimization_visitor::visit(Declarations_with_variable* ptr) {
 }
 
 void optimization_visitor::visit(Declarations_with_method* ptr) {
-    
     ptr->prev_decls->accept(this);
     curr_class->decls.push_back(ptr->method_decl);
     ptr->method_decl->accept(this);
 }
 
 void optimization_visitor::visit(Empty_Declarations* ptr) {
-
     //nochildren
 }
 
 void optimization_visitor::visit(Method_declaration* ptr) {
-
 
     ptr->type->accept(this);
     ptr->args->accept(this);
@@ -147,7 +143,6 @@ void optimization_visitor::visit(Method_declaration* ptr) {
 }
 
 void optimization_visitor::visit(Variable_declaration* ptr) {
-
     ptr->type->accept(this);
     //name
 }

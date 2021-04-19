@@ -13,8 +13,12 @@ int main(int argc, char* argv[2])
         d.print(argv[3]);
     }
     else if (cmd == "scope") {
-        d.parse(argv[2]);
-        d.symb();
+        try {
+            d.parse(argv[2]);
+            d.symb();
+        } catch(const std::string& e) {
+            std::cout << e << '\n';
+        }
     }
     else if (cmd == "errors") {
         Driver::error_test();

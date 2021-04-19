@@ -35,7 +35,6 @@ class Driver {
 
         symbol_table_visitor v;
         v.visit(program);
-        //v.dump();
     }
 
     static void error_test();

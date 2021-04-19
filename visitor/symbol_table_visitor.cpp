@@ -189,7 +189,7 @@ void symbol_table_visitor::visit(If_Statement* ptr) {
 
 void symbol_table_visitor::visit(Assert_Statement* ptr) {
     ptr->check->accept(this);
-    assert_type(ptr->check->type, int_simple);
+    assert_type(ptr->check->type, bool_simple);
 }
 
 void symbol_table_visitor::visit(Var_decl_Statement* ptr) {

@@ -1,6 +1,5 @@
 ### build: in root dir:
 ## cmake ./ && make
-<<<<<<< HEAD
 ### interpret:
 ## ./Compiler run input-filename
 ### if you have graphviz(dot) installed:
@@ -19,4 +18,3 @@
 ## ./test_ast.sh
 ### test print scope tree:
 ## ./test_scope.sh
->>>>>>> main

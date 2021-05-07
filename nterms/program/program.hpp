@@ -18,6 +18,7 @@ class Program: public Base
     
 
 public:
+
     Program(Main_class* main_class, Class_declarations* class_declarations);
     void accept(Visitor* visitor) override;
 

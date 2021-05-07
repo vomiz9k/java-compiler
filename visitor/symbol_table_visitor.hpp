@@ -16,6 +16,7 @@ class symbol_table_visitor: public Visitor
     ClassSymbol* curr_class;
     MethodSymbol* curr_method;
 
+
 public:
     symbol_table_visitor();
 
@@ -58,6 +59,8 @@ public:
         return Find(*name);
     }
 
+
+    size_t get_size(const Type* type);
 
 
     void assert_declared(std::string* name, int type);

@@ -14,6 +14,7 @@ class Body: public Base
     Statements* statements;;
     
 public:
+
     void SetScope(BaseScope* scope);
     Body(Statements* statements);
     void accept(Visitor* visitor) override;

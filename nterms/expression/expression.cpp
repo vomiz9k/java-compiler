@@ -16,7 +16,7 @@ void Value_Expr::accept(Visitor* visitor)
 
 Id_Expr::Id_Expr(std::string* name) : name(name)
 {
-
+    is_lvalue = true;
 }
 
 void Id_Expr::accept(Visitor* visitor) 
@@ -29,7 +29,7 @@ void Id_Expr::accept(Visitor* visitor)
 Array_el_Expr::Array_el_Expr(Expr* array, Expr* index)
     :array(array), index(index)
 {
-
+    is_lvalue = true;
 }
 
 void Array_el_Expr::accept(Visitor* visitor) 
@@ -54,7 +54,7 @@ void Length_Expr::accept(Visitor* visitor)
 Field_invocation_Expr::Field_invocation_Expr(Field_invocation* invocation)
     :invocation(invocation)
 {
-
+    is_lvalue = true;
 }
 void Field_invocation_Expr::accept(Visitor* visitor) 
 {

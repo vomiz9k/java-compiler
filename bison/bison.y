@@ -60,7 +60,7 @@
     RETURN "return"
 
     LENGTH "length"
-    THIS "this"
+    THIS "this."
     NEW "new"
 
     TRUE "true"
@@ -122,7 +122,6 @@
 %nterm <Expr*> expr
 
 %nterm <Body*> body
-%nterm <Lvalue*> lvalue
 
 
 %token <std::string*> IDENTIFIER 
@@ -134,15 +133,13 @@
 
 %left "+" "-";
 %left "*" "/" "%";
-%left "(";
-%left "[";
-%left ".";
+%left "(" ")";
+%left "[" "[]" "]";
 %left "!";
 %left "||";
 %left "&&";
 %left ">" "<" "==" "!=";
-%left "=";
-%left ";";
+%left ".";
 
 %nonassoc "then";
 %nonassoc "else";
@@ -219,19 +216,14 @@ statement:
 
 
 assignment:
-    lvalue "=" expr[rvalue] {$$ = new Assignment($lvalue, $rvalue);};
-
-lvalue:
-    IDENTIFIER {$$ = new Single_Lvalue($IDENTIFIER);}
-    | IDENTIFIER "[" expr "]" {$$ = new Arr_el_Lvalue($IDENTIFIER, $expr);}
-    | field_invocation {$$ = new Field_Lvalue($field_invocation);}
-    | field_invocation "[" expr "]" {$$ = new Field_arr_el_Lvalue($field_invocation, $expr);}
+    expr[lvalue] "=" expr[rvalue] {$$ = new Assignment($lvalue, $rvalue);};
 
 method_invocation:
-    expr "." IDENTIFIER "(" expressions ")" {$$ = new Method_invocation($expr, $IDENTIFIER, $expressions);};
+    expr "." IDENTIFIER "(" expressions ")" {$$ = new Method_invocation($expr, $IDENTIFIER, $expressions);}
+    | "this." IDENTIFIER "(" expressions ")" {$$ = new Method_invocation(new This_Expr(), $IDENTIFIER, $expressions);};
 
 field_invocation:
-    "this" "." IDENTIFIER {$$ = new Field_invocation($IDENTIFIER);};
+    "this." IDENTIFIER {$$ = new Field_invocation($IDENTIFIER);};
 
 expressions:
     %empty {$$ = new Empty_Expressions();}
@@ -242,17 +234,14 @@ multiple_expressions:
     expr  {$$ = new Single_Multiple_expressions($expr);}
     | multiple_expressions[prev] "," expr  {$$ = new Many_Multiple_expressions($prev, $expr);};
 
-expr: 
+expr:
     value {$$ = new Value_Expr($value);}
     | IDENTIFIER {$$ = new Id_Expr($IDENTIFIER);}
     | expr[arr] "[" expr[index] "]" {$$ = new Array_el_Expr($arr, $index);}
     | expr[arr] "." "length" {$$ = new Length_Expr($arr);}
-    | field_invocation {$$ = new Field_invocation_Expr($field_invocation);}
     | "new" simple_type "[" expr[index] "]" {$$ = new New_arr_Expr($simple_type, $index);}
     | "new" IDENTIFIER "(" ")" {$$ = new New_single_Expr($IDENTIFIER);}
     | "!" expr[neg] {$$ = new Not_Expr($neg);}
-    | "this" {$$ = new This_Expr();}
-    | method_invocation {$$ = new Method_invocation_Expr($method_invocation);}
     | expr[first] "+" expr[second] {$$ = new Plus_Expr($first, $second);}
     | expr[first] "-" expr[second] {$$ = new Minus_Expr($first, $second);}
     | expr[first] "*" expr[second] {$$ = new Star_Expr($first, $second);}
@@ -264,7 +253,9 @@ expr:
     | expr[first] ">" expr[second] {$$ = new Bigger_Expr($first, $second);}
     | expr[first] "==" expr[second] {$$ = new Equal_Expr($first, $second);}
     | expr[first] "!=" expr[second] {$$ = new Not_equal_Expr($first, $second);}
-    | "(" expr[in] ")" {$$ = new Brackets_Expr($in);};
+    | "(" expr[in] ")" {$$ = new Brackets_Expr($in);}
+    | method_invocation {$$ = new Method_invocation_Expr($method_invocation);}
+    | field_invocation {$$ = new Field_invocation_Expr($field_invocation);};
 
 value:
     NUMBER {$$ = new Number_Value($NUMBER);}

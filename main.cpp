@@ -1,6 +1,6 @@
 #include <driver.hpp>
 
-int main(int argc, char* argv[2])
+int main(int argc, char* argv[])
 {
     Driver d;
     std::string cmd = argv[1];

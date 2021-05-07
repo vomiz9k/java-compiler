@@ -10,6 +10,7 @@ class Expr: public Base
     virtual void accept(Visitor* visitor) = 0;
 
 public:
+    bool is_lvalue = false;
     Type* type;
 };
 

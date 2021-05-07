@@ -98,15 +98,15 @@ class Number_Value;
 class TF_Value;
 
 class Visitor
-{   
-    
+{
+
 public:
     virtual void visit(Program*) = 0; //program
     virtual void visit(Main_class*) = 0;
 
     virtual void visit(Not_empty_Class_declarations*) = 0;
-    virtual void visit(Empty_Class_declarations*) = 0;   
-    
+    virtual void visit(Empty_Class_declarations*) = 0;
+
     virtual void visit(Body*) = 0;
     virtual void visit(Empty_Statements*) = 0;
     virtual void visit(Not_empty_Statements*) = 0;
@@ -125,7 +125,7 @@ public:
 
     virtual void visit(Extended_Class_declaration*) = 0;
     virtual void visit(Not_extended_Class_declaration*) = 0;
-    
+
 
     virtual void visit(Declarations_with_variable*) = 0;
     virtual void visit(Declarations_with_method*) = 0;
@@ -133,7 +133,7 @@ public:
 
     virtual void visit(Method_declaration*) = 0;
     virtual void visit(Variable_declaration*) = 0;
-    
+
     virtual void visit(Empty_Method_args*) = 0;
     virtual void visit(Single_Method_args*) = 0;
     virtual void visit(Many_Method_args*) = 0;
@@ -190,6 +190,7 @@ public:
     virtual void visit(TF_Value*) = 0;
 };
 
+
 #include "template_visitor.hpp" //template for other visitors
 
 #include "delete_visitor.hpp"
@@ -197,6 +198,7 @@ public:
 #include "optimization_visitor.hpp"
 #include "interpreter_visitor.hpp"
 #include "symbol_table_visitor.hpp"
+#include "ir_tree_visitor.hpp"
 
 
 

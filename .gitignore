@@ -1,8 +1,10 @@
+.gitignore
 CMakeFiles/
 .vscode/
 lexer/lexer.cpp
 bison/bison.cpp
 bison/bison.hpp
+bison/bison.output
 cmake_install.cmake
 CMakeCache.txt
 Compiler
@@ -21,4 +23,8 @@ tests/scope_tree/test1_result.txt
 tests/scope_tree/test2_result.txt
 tests/scope_tree/test3_result.txt
 tests/scope_tree/test4_result.txt
-.gitignore
+.idea/
+Compiler.cbp
+Testing/
+
+/irtree/CMakeFiles/

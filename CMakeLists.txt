@@ -6,6 +6,10 @@ cmake_minimum_required(VERSION 3.16)
 project(Compiler)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_FLAGS -Wall)
+
+set(CURRENT_EXECUTABLE "${PROJECT_NAME}")
+set(IR_LIB "${PROJECT_NAME}IrLib")
 
 set(
     HEADERS
@@ -16,9 +20,7 @@ set(
     ${Compiler_SOURCE_DIR}/nterms/base/base.hpp
     ${Compiler_SOURCE_DIR}/visitor/visitor.hpp
     ${Compiler_SOURCE_DIR}/friends_visitors/friends_visitors
-
     ${Compiler_SOURCE_DIR}/scope/base_scope.hpp
-
     ${Compiler_SOURCE_DIR}/scope/base_symbol.hpp
     )
 
@@ -31,7 +33,10 @@ BISON_TARGET(
     ${Compiler_SOURCE_DIR}/bison/bison.cpp
 
     DEFINES_FILE ${Compiler_SOURCE_DIR}/bison/bison.hpp
+        VERBOSE bison.xxx
+
 )
+
 
 FLEX_TARGET(
     MyScanner
@@ -41,13 +46,16 @@ FLEX_TARGET(
 
 ADD_FLEX_BISON_DEPENDENCY(MyScanner MyParser)
 
+
+add_subdirectory(irtree)
+
 add_executable(
     Compiler
     main.cpp
+
     ${Compiler_SOURCE_DIR}/driver/driver.cpp
     ${BISON_MyParser_OUTPUTS}
     ${FLEX_MyScanner_OUTPUTS}
-
     ${Compiler_SOURCE_DIR}/nterms/assignment/assignment.cpp
     ${Compiler_SOURCE_DIR}/nterms/class_declarations/class_declarations.cpp
     ${Compiler_SOURCE_DIR}/nterms/class_declaration/class_declaration.cpp
@@ -78,8 +86,9 @@ add_executable(
     ${Compiler_SOURCE_DIR}/symbols/class_symbol.cpp
     ${Compiler_SOURCE_DIR}/symbols/variable_symbol.cpp
     ${Compiler_SOURCE_DIR}/symbols/method_symbol.cpp
-
+    visitor/ir_tree_visitor.cpp visitor/ir_tree_visitor.hpp
 )
+
 target_include_directories(Compiler PUBLIC
     ${Compiler_SOURCE_DIR}/driver
     ${Compiler_SOURCE_DIR}/bison
@@ -90,7 +99,11 @@ target_include_directories(Compiler PUBLIC
     ${Compiler_SOURCE_DIR}/friends_visitors
     ${Compiler_SOURCE_DIR}/scope
     ${Compiler_SOURCE_DIR}/symbols
+    ${Compiler_SOURCE_DIR}
 )
+
+target_link_libraries(${CURRENT_EXECUTABLE} ${IR_LIB})
+
 
 
 

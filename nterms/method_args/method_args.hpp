@@ -60,8 +60,9 @@ public:
 class Many_Method_multiple_arg : public Method_multiple_arg
 {
     #include <friends_visitors>
-    Method_arg* arg;
     Method_multiple_arg* prev_args;
+    Method_arg* arg;
+
 public:
     Many_Method_multiple_arg(Method_multiple_arg* prev_args, Method_arg* arg);     
     void accept(Visitor* visitor) override;

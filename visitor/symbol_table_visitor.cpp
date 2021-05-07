@@ -6,6 +6,29 @@
 
 
 
+symbol_table_visitor::symbol_table_visitor() {
+    int_simple = new Simple_Type(new std::string("int"));
+    bool_simple = new Simple_Type(new std::string("bool"));
+}
+
+symbol_table_visitor::~symbol_table_visitor() {
+    delete int_simple;
+    delete bool_simple;
+}
+
+
+
+size_t symbol_table_visitor::get_size(const Type* type) {
+    if (!type->is_array) {
+        if (*type->name == "int") {
+            return 4;
+        } else if (*type->name == "bool") {
+            return 1;
+        }
+    }
+    return 8;
+}
+
 void symbol_table_visitor::assert_declared(std::string* name, int type) {
     BaseSymbol* symbol = Find(name);
     if (symbol == nullptr) {
@@ -16,16 +39,6 @@ void symbol_table_visitor::assert_declared(std::string* name, int type) {
     }
 }
 
-symbol_table_visitor::~symbol_table_visitor() {
-    delete int_simple;
-    delete bool_simple;
-}
-
-
-symbol_table_visitor::symbol_table_visitor() {
-    int_simple = new Simple_Type(new std::string("int"));
-    bool_simple = new Simple_Type(new std::string("bool"));
-}
 
 void symbol_table_visitor::assert_not_declared_in_this_scope(std::string* name) {
     if (curr->symbols.count(*name) > 0) {
@@ -64,7 +77,7 @@ void symbol_table_visitor::visit(Main_class* ptr) {
     auto old = curr;
     curr_class = new ClassSymbol(ptr);
     old->symbols[*ptr->name] = curr_class;
-    curr = new BaseScope();
+    curr = new MethodScope();
     ptr->SetScope(curr);
     curr->parent = old;
     old->children.push_back(curr);
@@ -107,7 +120,7 @@ void symbol_table_visitor::visit(Extended_Class_declaration* ptr) {
     curr->parent = old;
     old->children.push_back(curr);
     
-    auto parent_class = reinterpret_cast<ClassSymbol*>(Find(ptr->base));
+    auto parent_class = reinterpret_cast<ClassSymbol*>(base_symbol);
     for(auto& field: parent_class->fields) {
         curr_class->fields.push_back(field);
     }
@@ -286,7 +299,7 @@ void symbol_table_visitor::visit(Method_declaration* ptr) {
     curr_method = new MethodSymbol(ptr);
     curr->symbols[*ptr->name] = curr_method;
     auto old = curr;
-    curr = new BaseScope();
+    curr = new MethodScope();
     ptr->SetScope(curr);
     curr->parent = old;
     old->children.push_back(curr);
@@ -372,7 +385,9 @@ void symbol_table_visitor::visit(Array_Type* ptr) {
 void symbol_table_visitor::visit(Assignment* ptr) {
     ptr->lvalue->accept(this);
     ptr->rvalue->accept(this);
-
+    if (!ptr->lvalue->is_lvalue) {
+        throw std::string("syntax error: not lvalue in left part of assignment");
+    }
     assert_type(ptr->rvalue->type, ptr->lvalue->type);
 }
 
@@ -406,7 +421,7 @@ void symbol_table_visitor::visit(Method_invocation* ptr) {
     if (ptr->args->exprs.size() != calling_method->arguments.size()) {
         throw "syntax error: can't call " + method_holder->name + "." + calling_method->name + " with this count of arguments";
     }
-    for(int i = 0; i < calling_method->arguments.size(); ++i) {
+    for(size_t i = 0; i < calling_method->arguments.size(); ++i) {
         assert_type(ptr->args->exprs[i]->type, calling_method->arguments[i]->type);
     }
 

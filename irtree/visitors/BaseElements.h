@@ -7,6 +7,7 @@
 #include "../nodes/expressions/BinopExpression.h"
 #include "../nodes/expressions/ConstExpression.h"
 #include "../nodes/expressions/MemExpression.h"
+#include "../nodes/expressions/MallocExpression.h"
 #include "../nodes/expressions/TempExpression.h"
 
 #include "../nodes/statements/ExpStatement.h"

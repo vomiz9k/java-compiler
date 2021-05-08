@@ -6,11 +6,11 @@
 
 namespace IRT {
 void ExpressionList::Accept(Visitor *visitor) {
-  visitor->Visit(this);
+    visitor->Visit(this);
 
 }
 void ExpressionList::Add(Expression *expression) {
-  expressions_.push_back(expression);
+    expressions_.push_back(expression);
 }
 
 }

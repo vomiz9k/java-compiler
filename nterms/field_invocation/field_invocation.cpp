@@ -1,12 +1,13 @@
 #include "field_invocation.hpp"
+#include <visitor.hpp>
 
-Field_invocation::Field_invocation(std::string* name)
+FieldInvocation::FieldInvocation(std::string* name)
     :name(name)
 {
 
 }
 
-void Field_invocation::accept(Visitor* visitor)
+void FieldInvocation::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }

@@ -22,7 +22,11 @@ set(
     ${Compiler_SOURCE_DIR}/friends_visitors/friends_visitors
     ${Compiler_SOURCE_DIR}/scope/base_scope.hpp
     ${Compiler_SOURCE_DIR}/scope/base_symbol.hpp
-    )
+
+        function-mechanisms/address/Address.h
+        function-mechanisms/address/AddressInFrame.h
+        function-mechanisms/address/AddressInRegister.h
+)
 
 find_package(FLEX REQUIRED)
 find_package(BISON REQUIRED)
@@ -31,10 +35,7 @@ BISON_TARGET(
     MyParser
     ${Compiler_SOURCE_DIR}/bison/bison.y
     ${Compiler_SOURCE_DIR}/bison/bison.cpp
-
     DEFINES_FILE ${Compiler_SOURCE_DIR}/bison/bison.hpp
-        VERBOSE bison.xxx
-
 )
 
 
@@ -74,7 +75,6 @@ add_executable(
     ${Compiler_SOURCE_DIR}/nterms/value/value.cpp
     ${Compiler_SOURCE_DIR}/nterms/declaration/declaration.cpp
     ${Compiler_SOURCE_DIR}/nterms/body/body.cpp
-    ${Compiler_SOURCE_DIR}/nterms/lvalue/lvalue.cpp
 
     ${Compiler_SOURCE_DIR}/visitor/gv_visitor.cpp
     ${Compiler_SOURCE_DIR}/visitor/optimization_visitor.cpp
@@ -87,6 +87,10 @@ add_executable(
     ${Compiler_SOURCE_DIR}/symbols/variable_symbol.cpp
     ${Compiler_SOURCE_DIR}/symbols/method_symbol.cpp
     visitor/ir_tree_visitor.cpp visitor/ir_tree_visitor.hpp
+
+
+        function-mechanisms/address/AddressInFrame.cpp
+        function-mechanisms/address/AddressInRegister.cpp
 )
 
 target_include_directories(Compiler PUBLIC

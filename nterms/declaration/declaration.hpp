@@ -7,6 +7,7 @@ class Type;
 class Method_args;
 class Statements;
 class BaseScope;
+class Body;
 
 class Declaration : public Base 
 {
@@ -15,7 +16,7 @@ public:
     virtual void accept(Visitor* visitor) = 0;
 };
 
-class Method_declaration: public Declaration
+class MethodDeclaration: public Declaration
 {
     #include <friends_visitors>
     BaseScope* scope;
@@ -25,10 +26,10 @@ class Method_declaration: public Declaration
     Body* body;
 public:
 
-    Method_declaration (Type* type,
-                        std::string* name,
-                        Method_args* args,
-                        Body* body);
+    MethodDeclaration (Type* type,
+                       std::string* name,
+                       Method_args* args,
+                       Body* body);
                         
     void accept(Visitor* visitor) override;
 
@@ -39,13 +40,13 @@ class Type;
 class Method_args;
 class Statements;
 
-class Variable_declaration: public Declaration {
+class VariableDeclaration: public Declaration {
     
     #include <friends_visitors>
     Type* type;
     std::string* name;
 
 public:
-    Variable_declaration (Type* type, std::string* name);      
+    VariableDeclaration (Type* type, std::string* name);
     void accept(Visitor* visitor) override;
 };

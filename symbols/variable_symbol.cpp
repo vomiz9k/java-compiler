@@ -6,7 +6,7 @@ VariableSymbol::VariableSymbol(Method_arg* arg) {
     type = arg->type;
 }
 
-VariableSymbol::VariableSymbol(Variable_declaration* decl) {
+VariableSymbol::VariableSymbol(VariableDeclaration* decl) {
     name = *decl->name;
     type = decl->type;
 }

@@ -5,7 +5,8 @@
 namespace IRT {
 
 class Expression : public BaseElement {
- public:
-  virtual ~Expression() = default;
+public:
+    virtual ~Expression() = default;
 };
+
 }

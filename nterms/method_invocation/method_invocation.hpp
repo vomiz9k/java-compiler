@@ -7,7 +7,7 @@ class Expr;
 class Expressions;
 class Type;
 
-class Method_invocation: public Base
+class MethodInvocation: public Base
 {
     #include <friends_visitors>
     Type* type;
@@ -16,6 +16,6 @@ class Method_invocation: public Base
     Expressions* args;
     
 public:
-    Method_invocation(Expr* from, std::string* name, Expressions* args);
+    MethodInvocation(Expr* from, std::string* name, Expressions* args);
     void accept(Visitor* visitor) override;
 };

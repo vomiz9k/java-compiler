@@ -23,6 +23,7 @@ class PrintVisitor: public Visitor {
   void Visit(BinopExpression *binop_statement) override;
   void Visit(TempExpression *temp_exression) override;
   void Visit(MemExpression *mem_expression) override;
+  void Visit(MallocExpression* malloc_expression) override;
   void Visit(JumpStatement *jump_statement) override;
   void Visit(CallExpression *call_expression) override;
   void Visit(ExpressionList *expression_list) override;

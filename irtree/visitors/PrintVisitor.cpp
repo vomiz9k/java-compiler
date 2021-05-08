@@ -85,6 +85,14 @@ void PrintVisitor::Visit(MemExpression *mem_expression) {
   --num_tabs_;
 }
 
+void PrintVisitor::Visit(MallocExpression* malloc_expression) {
+    PrintTabs();
+    stream_ << "MallocExpression: " << std::endl;
+    ++num_tabs_;
+    malloc_expression->expression_->Accept(this);
+    --num_tabs_;
+}
+
 void PrintVisitor::Visit(JumpStatement *jump_statement) {
   PrintTabs();
   stream_ << "JumpStatement: " << jump_statement->label_.ToString() << std::endl;

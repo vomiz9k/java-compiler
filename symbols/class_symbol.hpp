@@ -2,15 +2,21 @@
 
 #include "base_symbol.hpp"
 
-#include <big_include.hpp>
+class Class_declaration;
+class MainClass;
 
 class MethodSymbol;
 class VariableSymbol;
+
+
 class ClassSymbol: public BaseSymbol {
 public:
     ClassSymbol(Class_declaration* decl);
-    ClassSymbol(Main_class* decl);
+    ClassSymbol(MainClass* decl);
     ClassSymbol(std::string name);
+
+    void append(VariableSymbol* var);
+
     std::vector <MethodSymbol*> methods;
     std::vector <VariableSymbol*> fields;
 

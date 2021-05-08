@@ -14,6 +14,8 @@ std::string IRT::ToString(BinaryOperatorType type) {
       return "MUL";
     case BinaryOperatorType::DIV:
       return "DIV";
+    case BinaryOperatorType::PERCENT:
+      return "DIV";
     case BinaryOperatorType::AND:
       return "AND";
     case BinaryOperatorType::OR:

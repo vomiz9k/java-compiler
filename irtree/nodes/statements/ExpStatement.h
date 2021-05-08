@@ -12,14 +12,14 @@
 namespace IRT {
 
 class ExpStatement : public Statement {
- public:
-  explicit ExpStatement(Expression* expression);
-  Expression* GetExpression();
-  ~ExpStatement() override = default;
-  void Accept(Visitor *visitor) override;
+public:
+    explicit ExpStatement(Expression* expression);
+    Expression* GetExpression();
+    ~ExpStatement() override = default;
+    void Accept(Visitor *visitor) override;
 
- private:
-  Expression* expression_;
+private:
+    Expression* expression_;
 };
 
 }

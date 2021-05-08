@@ -7,7 +7,7 @@
 namespace IRT {
 
 void LabelStatement::Accept(Visitor *visitor) {
-  visitor->Visit(this);
+    visitor->Visit(this);
 
 }
 LabelStatement::LabelStatement(IRT::Label label): label_(label) {

@@ -11,6 +11,7 @@ class SeqStatement;
 class LabelStatement;
 class BinopExpression;
 class MemExpression;
+class MallocExpression;
 class JumpStatement;
 class CallExpression;
 class ExpressionList;
@@ -30,6 +31,7 @@ class Visitor {
   virtual void Visit(BinopExpression* binop_statement) = 0;
   virtual void Visit(TempExpression* temp_exression) = 0;
   virtual void Visit(MemExpression* mem_expression) = 0;
+  virtual void Visit(MallocExpression* mem_expression) = 0;
   virtual void Visit(JumpStatement* jump_statement) = 0;
   virtual void Visit(CallExpression* call_expression) = 0;
   virtual void Visit(ExpressionList* expression_list) = 0;

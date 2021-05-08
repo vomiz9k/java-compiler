@@ -1,16 +1,18 @@
 #include "main_class.hpp"
 #include <base_scope.hpp>
-Main_class::Main_class(std::string* class_name, Body* body)
+#include <visitor.hpp>
+
+MainClass::MainClass(std::string* class_name, Body* body)
     :name(class_name), body(body)
 {
 
 }
 
-void Main_class::accept(Visitor* visitor)
+void MainClass::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }
 
-void Main_class::SetScope(BaseScope* value){
+void MainClass::SetScope(BaseScope* value){
      scope = value;
 }

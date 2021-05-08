@@ -9,10 +9,10 @@
 namespace IRT {
 
 class LabelStatement : public Statement {
- public:
-  explicit LabelStatement(IRT::Label label);
-  void Accept(Visitor *visitor) override;
-  Label label_;
+public:
+    explicit LabelStatement(IRT::Label label);
+    void Accept(Visitor *visitor) override;
+    Label label_;
 };
 
 }

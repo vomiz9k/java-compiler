@@ -10,15 +10,16 @@
 namespace IRT {
 
 class ExpressionWrapper : public SubtreeWrapper {
- public:
+public:
 
-  explicit ExpressionWrapper(Expression* expression);
-  virtual ~ExpressionWrapper() = default;
-  Expression *ToExpression() override;
-  Statement *ToStatement() override;
-  Statement *ToConditional(Label true_label, Label false_label) override;
- private:
-  Expression* expression_;
+    explicit ExpressionWrapper(Expression* expression);
+    virtual ~ExpressionWrapper() = default;
+    Expression *ToExpression() override;
+    Statement *ToStatement() override;
+    Statement *ToConditional(Label true_label, Label false_label) override;
+
+private:
+    Expression* expression_;
 };
 
 }

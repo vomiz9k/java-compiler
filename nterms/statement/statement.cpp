@@ -1,28 +1,28 @@
 #include "statement.hpp"
+#include <visitor.hpp>
 
 
 
 
 
-
-If_else_Statement::If_else_Statement(Expr* condition, Statement* do_if_true, Statement* do_else)
+IfElseStatement::IfElseStatement(Expr* condition, Statement* do_if_true, Statement* do_else)
     : condition(condition), do_if_true(do_if_true), do_else(do_else)
 {
 
 }
 
-void If_else_Statement::accept(Visitor* visitor)
+void IfElseStatement::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }
 
-If_Statement::If_Statement(Expr* condition, Statement* do_if_true)
+IfStatement::IfStatement(Expr* condition, Statement* do_if_true)
     : condition(condition), do_if_true(do_if_true)
 {
 
 }
 
-void If_Statement::accept(Visitor* visitor)
+void IfStatement::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }
@@ -30,96 +30,96 @@ void If_Statement::accept(Visitor* visitor)
 
 
 
-Assert_Statement::Assert_Statement(Expr* check)
+AssertStatement::AssertStatement(Expr* check)
     :check(check)
 {
 
 }
 
-void Assert_Statement::accept(Visitor* visitor)
+void AssertStatement::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }
 
 
 
-Var_decl_Statement::Var_decl_Statement(Variable_declaration* decl)
+VarDeclStatement::VarDeclStatement(VariableDeclaration* decl)
     :decl(decl)
 {
 
 }
 
-void Var_decl_Statement::accept(Visitor* visitor)
+void VarDeclStatement::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }
 
 
-Big_Statement::Big_Statement(Body* body) : body(body)
+ScopeStatement::ScopeStatement(Body* body) : body(body)
 {
 
 }
 
-void Big_Statement::accept(Visitor* visitor)
+void ScopeStatement::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }
 
 
-While_Statement::While_Statement(Expr* condition, Statement* do_if_true)
+WhileStatement::WhileStatement(Expr* condition, Statement* do_if_true)
     :condition(condition), do_if_true(do_if_true)
 {
 
 }
 
-void While_Statement::accept(Visitor* visitor)
+void WhileStatement::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }
 
 
-Print_Statement::Print_Statement(Expr* to_print)
+PrintStatement::PrintStatement(Expr* to_print)
     :to_print(to_print)
 {
 
 }
 
-void Print_Statement::accept(Visitor* visitor)
+void PrintStatement::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }
 
 
-Assignment_Statement::Assignment_Statement(Assignment* assignment)
+AssignmentStatement::AssignmentStatement(Assignment* assignment)
     :assignment(assignment)
 {
 
 }
 
-void Assignment_Statement::accept(Visitor* visitor)
+void AssignmentStatement::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }
 
 
-Return_Statement::Return_Statement(Expr* to_return)
+ReturnStatement::ReturnStatement(Expr* to_return)
     :to_return(to_return)
 {
 
 }
 
-void Return_Statement::accept(Visitor* visitor)
+void ReturnStatement::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }
 
-Method_invocation_Statement::Method_invocation_Statement(Method_invocation* invocation)
+MethodInvocationStatement::MethodInvocationStatement(MethodInvocation* invocation)
     :invocation(invocation)
 {
 
 }
 
-void Method_invocation_Statement::accept(Visitor* visitor)
+void MethodInvocationStatement::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }

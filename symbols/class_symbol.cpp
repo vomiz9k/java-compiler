@@ -5,7 +5,7 @@ ClassSymbol::ClassSymbol(Class_declaration* decl) {
     name = *decl->name;
 }
 
-ClassSymbol::ClassSymbol(Main_class* decl) {
+ClassSymbol::ClassSymbol(MainClass* decl) {
     name = *decl->name;
 }
 

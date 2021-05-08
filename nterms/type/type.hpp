@@ -14,19 +14,19 @@ public:
     bool is_array;
 };
 
-class Simple_Type: public Type
+class SimpleType: public Type
 {
     #include <friends_visitors>
 
 public:
-    Simple_Type(std::string* name);
+    SimpleType(std::string* name);
     void accept(Visitor* visitor) override;
 };
 
-class Array_Type: public Type
+class ArrayType: public Type
 {
     #include <friends_visitors>
 public:
-    Array_Type(std::string* name);
+    ArrayType(std::string* name);
     void accept(Visitor* visitor) override;
 };

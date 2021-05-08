@@ -11,6 +11,7 @@ enum class BinaryOperatorType : char {
   MINUS,
   MUL,
   DIV,
+  PERCENT,
   AND,
   OR
 };

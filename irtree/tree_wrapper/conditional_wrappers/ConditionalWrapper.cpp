@@ -13,29 +13,29 @@
 
 namespace IRT {
 Expression *IRT::ConditionalWrapper::ToExpression() {
-  auto* temp_expression = new TempExpression(Temporary());
-  Label label_true;
-  Label label_false;
-  return new EseqExpression(
-    new SeqStatement(
-      new MoveStatement(temp_expression, new ConstExpression(1)),
+    auto* temp_expression = new TempExpression(Temporary());
+    Label label_true;
+    Label label_false;
+    return new EseqExpression(
       new SeqStatement(
-        ToConditional(label_true, label_false),
+        new MoveStatement(temp_expression, new ConstExpression(1)),
         new SeqStatement(
-          new LabelStatement(label_false),
+          ToConditional(label_true, label_false),
           new SeqStatement(
-            new MoveStatement(temp_expression, new ConstExpression(0)),
-            new LabelStatement(label_true)
+            new LabelStatement(label_false),
+            new SeqStatement(
+              new MoveStatement(temp_expression, new ConstExpression(0)),
+              new LabelStatement(label_true)
+            )
           )
         )
-      )
-    ),
-    temp_expression
-  );
+      ),
+      temp_expression
+    );
 }
 
 Statement *IRT::ConditionalWrapper::ToStatement() {
-  return nullptr;
+    return nullptr;
 }
 
 }

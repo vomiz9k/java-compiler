@@ -9,10 +9,10 @@
 namespace IRT {
 
 class MemExpression : public Expression {
- public:
-  MemExpression(Expression *expression);
-  void Accept(Visitor *visitor) override;
-  Expression* expression_;
+public:
+    MemExpression(Expression *expression);
+    void Accept(Visitor *visitor) override;
+    Expression* expression_;
 };
 
 }

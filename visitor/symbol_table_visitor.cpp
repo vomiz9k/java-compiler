@@ -7,8 +7,8 @@
 
 
 symbol_table_visitor::symbol_table_visitor() {
-    int_simple = new Simple_Type(new std::string("int"));
-    bool_simple = new Simple_Type(new std::string("bool"));
+    int_simple = new SimpleType(new std::string("int"));
+    bool_simple = new SimpleType(new std::string("bool"));
 }
 
 symbol_table_visitor::~symbol_table_visitor() {
@@ -17,17 +17,6 @@ symbol_table_visitor::~symbol_table_visitor() {
 }
 
 
-
-size_t symbol_table_visitor::get_size(const Type* type) {
-    if (!type->is_array) {
-        if (*type->name == "int") {
-            return 4;
-        } else if (*type->name == "bool") {
-            return 1;
-        }
-    }
-    return 8;
-}
 
 void symbol_table_visitor::assert_declared(std::string* name, int type) {
     BaseSymbol* symbol = Find(name);
@@ -41,7 +30,7 @@ void symbol_table_visitor::assert_declared(std::string* name, int type) {
 
 
 void symbol_table_visitor::assert_not_declared_in_this_scope(std::string* name) {
-    if (curr->symbols.count(*name) > 0) {
+    if (curr_scope->symbols.count(*name) > 0) {
         throw "syntax error: " + *name + " already declared";
     }
 }
@@ -62,10 +51,10 @@ void symbol_table_visitor::assert_array(Type* type) {
 
 
 void symbol_table_visitor::visit(Program* ptr) {
-    curr = new BaseScope();
-    curr->symbols["int"] = new ClassSymbol("int");
-    curr->symbols["bool"] = new ClassSymbol("bool");
-    ptr->SetScope(curr);
+    curr_scope = new BaseScope();
+    curr_scope->symbols["int"] = new ClassSymbol("int");
+    curr_scope->symbols["bool"] = new ClassSymbol("bool");
+    ptr->SetScope(curr_scope);
 
     for (auto i : ptr->declarations) {
         i->accept(this);
@@ -73,25 +62,28 @@ void symbol_table_visitor::visit(Program* ptr) {
     ptr->main_class->accept(this);
 }
 
-void symbol_table_visitor::visit(Main_class* ptr) {
-    auto old = curr;
+void symbol_table_visitor::visit(MainClass* ptr) {
+    auto old = curr_scope;
     curr_class = new ClassSymbol(ptr);
     old->symbols[*ptr->name] = curr_class;
-    curr = new MethodScope();
-    ptr->SetScope(curr);
-    curr->parent = old;
-    old->children.push_back(curr);
+
+    curr_frame = new MethodScope("main");
+    curr_scope = curr_frame;
+    ptr->SetScope(curr_scope);
+    curr_scope->parent = old;
+    old->children.push_back(curr_scope);
     
     ptr->body->accept(this);
 
-    curr = old;
+    curr_scope = old;
+    curr_frame = nullptr;
     curr_class = nullptr;
     //class_name
 }
 
 
 //unused
-void symbol_table_visitor::visit(Not_empty_Class_declarations* ptr) {
+void symbol_table_visitor::visit(NotEmptyClassDeclarations* ptr) {
     
     // ptr->class_decl->accept(this);
     // ptr->prev_class_decls->accept(this);
@@ -99,26 +91,26 @@ void symbol_table_visitor::visit(Not_empty_Class_declarations* ptr) {
 }
 
 //unused
-void symbol_table_visitor::visit(Empty_Class_declarations* ptr) {
+void symbol_table_visitor::visit(EmptyClassDeclarations* ptr) {
     
     //nochildren
 }
 
-void symbol_table_visitor::visit(Extended_Class_declaration* ptr) {
+void symbol_table_visitor::visit(ExtendedClassDeclaration* ptr) {
 
     assert_declared(ptr->base, SYMBOL_CLASS);
     assert_not_declared_in_this_scope(ptr->name);
 
     auto base_symbol = Find(ptr->base);
-    auto old = curr;
+    auto old = curr_scope;
 
     curr_class = new ClassSymbol(ptr);
     old->symbols[*ptr->name] = curr_class;
 
-    curr = new BaseScope();
-    ptr->SetScope(curr);
-    curr->parent = old;
-    old->children.push_back(curr);
+    curr_scope = new BaseScope();
+    ptr->SetScope(curr_scope);
+    curr_scope->parent = old;
+    old->children.push_back(curr_scope);
     
     auto parent_class = reinterpret_cast<ClassSymbol*>(base_symbol);
     for(auto& field: parent_class->fields) {
@@ -131,60 +123,61 @@ void symbol_table_visitor::visit(Extended_Class_declaration* ptr) {
     for(auto i : ptr->decls) {
         i->accept(this);
     }
-    
-    curr = old;
+
+    curr_scope = old;
     curr_class = nullptr;
     //name, base
 }
 
-void symbol_table_visitor::visit(Not_extended_Class_declaration* ptr) {
+void symbol_table_visitor::visit(NotExtendedClassDeclaration* ptr) {
     assert_not_declared_in_this_scope(ptr->name);
     
-    auto old = curr;
+    auto old = curr_scope;
 
     curr_class = new ClassSymbol(ptr);
     old->symbols[*ptr->name] = curr_class;
-    curr = new BaseScope();
-    ptr->SetScope(curr);
-    curr->parent = old;
-    old->children.push_back(curr);
+    curr_scope = new BaseScope();
+    ptr->SetScope(curr_scope);
+    curr_scope->parent = old;
+    old->children.push_back(curr_scope);
 
     for(auto i : ptr->decls) {
         i->accept(this);
     }
 
-    curr = old;
+    curr_scope = old;
     curr_class = nullptr;
     //name
 }
 
 void symbol_table_visitor::visit(Body* ptr) {
-    auto old = curr;
-    curr = new BaseScope();
-    old->children.push_back(curr);
-    curr->parent = old;
+    auto old = curr_scope;
+    curr_scope = new BaseScope();
+    ptr->SetScope(curr_scope);
+    old->children.push_back(curr_scope);
+    curr_scope->parent = old;
     for (auto i: ptr->stmts) {
         i->accept(this);
     }
-    curr = old;
+    curr_scope = old;
     //nochildren
 }
 
 
 //unused
-void symbol_table_visitor::visit(Empty_Statements* ptr) {
+void symbol_table_visitor::visit(EmptyStatements* ptr) {
     
     //nochildren
 }
 
 //unused
-void symbol_table_visitor::visit(Not_empty_Statements* ptr) {
+void symbol_table_visitor::visit(NotEmptyStatements* ptr) {
 
     ptr->prev_statements->accept(this);
     ptr->statement->accept(this);
 }
 
-void symbol_table_visitor::visit(If_else_Statement* ptr) {
+void symbol_table_visitor::visit(IfElseStatement* ptr) {
 
     ptr->condition->accept(this);
     assert_type(ptr->condition->type, bool_simple);
@@ -192,7 +185,7 @@ void symbol_table_visitor::visit(If_else_Statement* ptr) {
     ptr->do_else->accept(this);
 }
 
-void symbol_table_visitor::visit(If_Statement* ptr) {
+void symbol_table_visitor::visit(IfStatement* ptr) {
 
     ptr->condition->accept(this);
     assert_type(ptr->condition->type, bool_simple);
@@ -200,109 +193,81 @@ void symbol_table_visitor::visit(If_Statement* ptr) {
 }
 
 
-void symbol_table_visitor::visit(Assert_Statement* ptr) {
+void symbol_table_visitor::visit(AssertStatement* ptr) {
     ptr->check->accept(this);
     assert_type(ptr->check->type, bool_simple);
 }
 
-void symbol_table_visitor::visit(Var_decl_Statement* ptr) {
+void symbol_table_visitor::visit(VarDeclStatement* ptr) {
     ptr->decl->accept(this);
 }
 
-void symbol_table_visitor::visit(Big_Statement* ptr) {
+void symbol_table_visitor::visit(ScopeStatement* ptr) {
     ptr->body->accept(this);
 }
 
-void symbol_table_visitor::visit(While_Statement* ptr) {
+void symbol_table_visitor::visit(WhileStatement* ptr) {
 
     ptr->condition->accept(this);
     assert_type(ptr->condition->type, bool_simple);
     ptr->do_if_true->accept(this);
 }
 
-void symbol_table_visitor::visit(Print_Statement* ptr) {
+void symbol_table_visitor::visit(PrintStatement* ptr) {
 
     ptr->to_print->accept(this);
     assert_type(ptr->to_print->type, int_simple);
 }
 
-void symbol_table_visitor::visit(Assignment_Statement* ptr) {
+void symbol_table_visitor::visit(AssignmentStatement* ptr) {
     ptr->assignment->accept(this);
 }
 
 
-void symbol_table_visitor::visit(Single_Lvalue* ptr) {
-    assert_declared(ptr->name, SYMBOL_VARIABLE);
-    ptr->type = reinterpret_cast<VariableSymbol*>(Find(ptr->name))->type;
-    //name
-}
 
-void symbol_table_visitor::visit(Arr_el_Lvalue* ptr) {
-    assert_declared(ptr->name, SYMBOL_VARIABLE);
-    ptr->type = reinterpret_cast<VariableSymbol*>(Find(ptr->name))->type;
-    ptr->index->accept(this);
-    assert_type(ptr->index->type, int_simple);
-    //name
-}
-
-void symbol_table_visitor::visit(Field_Lvalue* ptr) {
-    ptr->invocation->accept(this);
-    ptr->type = reinterpret_cast<VariableSymbol*>(Find(ptr->invocation->name))->type;
-}
-
-
-void symbol_table_visitor::visit(Field_arr_el_Lvalue* ptr) {
-    ptr->invocation->accept(this);
-    ptr->type = reinterpret_cast<VariableSymbol*>(Find(ptr->invocation->name))->type;
-
-    ptr->index->accept(this);
-    assert_type(ptr->index->type, int_simple);
-}
-
-void symbol_table_visitor::visit(Return_Statement* ptr) {
+void symbol_table_visitor::visit(ReturnStatement* ptr) {
 
     ptr->to_return->accept(this);
     assert_type(ptr->to_return->type, curr_method->type);
 }
 
-void symbol_table_visitor::visit(Method_invocation_Statement* ptr) {
+void symbol_table_visitor::visit(MethodInvocationStatement* ptr) {
     ptr->invocation->accept(this);
 }
 
 
-
-
-
 //unused
-void symbol_table_visitor::visit(Declarations_with_variable* ptr) {
+void symbol_table_visitor::visit(DeclarationsWithVariable* ptr) {
     
     ptr->prev_decls->accept(this);
     ptr->var_decl->accept(this);
 }
 
 //unused
-void symbol_table_visitor::visit(Declarations_with_method* ptr) {
+void symbol_table_visitor::visit(DeclarationsWithMethod* ptr) {
     
     ptr->prev_decls->accept(this);
     ptr->method_decl->accept(this);
 }
 
 //unused
-void symbol_table_visitor::visit(Empty_Declarations* ptr) {
+void symbol_table_visitor::visit(EmptyDeclarations* ptr) {
 
     //nochildren
 }
 
-void symbol_table_visitor::visit(Method_declaration* ptr) {
+void symbol_table_visitor::visit(MethodDeclaration* ptr) {
     assert_not_declared_in_this_scope(ptr->name);
     
     curr_method = new MethodSymbol(ptr);
-    curr->symbols[*ptr->name] = curr_method;
-    auto old = curr;
-    curr = new MethodScope();
-    ptr->SetScope(curr);
-    curr->parent = old;
-    old->children.push_back(curr);
+    curr_scope->symbols[*ptr->name] = static_cast<BaseSymbol *>(curr_method);
+    auto old = curr_scope;
+    curr_frame = new MethodScope(*ptr->name);
+    curr_scope = curr_frame;
+
+    ptr->SetScope(curr_scope);
+    curr_scope->parent = old;
+    old->children.push_back(curr_scope);
     
     curr_class->methods.push_back(curr_method);
 
@@ -314,32 +279,37 @@ void symbol_table_visitor::visit(Method_declaration* ptr) {
     ptr->body->accept(this);
 
     curr_method = nullptr;
-    curr = old;
+    curr_frame = nullptr;
+    curr_scope = old;
     //name
 }
 
-void symbol_table_visitor::visit(Variable_declaration* ptr) {
+void symbol_table_visitor::visit(VariableDeclaration* ptr) {
     assert_not_declared_in_this_scope(ptr->name);
 
     auto var_symbol = new VariableSymbol(ptr);
-    curr->symbols[*ptr->name] = var_symbol;
-    curr_class->fields.push_back(var_symbol);
+    curr_scope->symbols[*ptr->name] = var_symbol;
+
+    if (curr_frame == nullptr) {
+        curr_class->fields.push_back(var_symbol);
+    }
 
     ptr->type->accept(this);
+
     //name
 }
 
-void symbol_table_visitor::visit(Empty_Method_args* ptr) {
+void symbol_table_visitor::visit(EmptyMethodArgs* ptr) {
 
     //nochildren
 }
 
 
-void symbol_table_visitor::visit(Single_Method_args* ptr) {
+void symbol_table_visitor::visit(SingleMethodArg* ptr) {
     ptr->arg->accept(this);
 }
 
-void symbol_table_visitor::visit(Many_Method_args* ptr) {
+void symbol_table_visitor::visit(MoreThanOneMethodArgs* ptr) {
     for(auto i : ptr->args) {
         i->accept(this);
     }
@@ -348,7 +318,7 @@ void symbol_table_visitor::visit(Many_Method_args* ptr) {
 void symbol_table_visitor::visit(Method_arg* ptr) {
     assert_not_declared_in_this_scope(ptr->name);
     auto arg = new VariableSymbol(ptr);
-    curr->symbols[*ptr->name] = arg;
+    curr_scope->symbols[*ptr->name] = arg;
     curr_method->arguments.push_back(arg);
 
     ptr->type->accept(this);
@@ -357,26 +327,26 @@ void symbol_table_visitor::visit(Method_arg* ptr) {
 
 
 //unused
-void symbol_table_visitor::visit(Last_Method_multiple_arg* ptr) {
+void symbol_table_visitor::visit(LastMethodArg* ptr) {
 
     ptr->arg->accept(this);
 }
 
 
 //unused
-void symbol_table_visitor::visit(Many_Method_multiple_arg* ptr) {
+void symbol_table_visitor::visit(NotLastMethodArgs* ptr) {
     
     ptr->prev_args->accept(this);
     ptr->arg->accept(this);
 }
 
-void symbol_table_visitor::visit(Simple_Type* ptr) {
+void symbol_table_visitor::visit(SimpleType* ptr) {
     assert_declared(ptr->name, SYMBOL_CLASS);
     
     //name
 }
 
-void symbol_table_visitor::visit(Array_Type* ptr) {
+void symbol_table_visitor::visit(ArrayType* ptr) {
     assert_declared(ptr->name, SYMBOL_CLASS);
 
     //name
@@ -391,7 +361,7 @@ void symbol_table_visitor::visit(Assignment* ptr) {
     assert_type(ptr->rvalue->type, ptr->lvalue->type);
 }
 
-void symbol_table_visitor::visit(Method_invocation* ptr) {
+void symbol_table_visitor::visit(MethodInvocation* ptr) {
     ptr->from->accept(this);
     ClassSymbol* method_holder = nullptr;
     MethodSymbol* calling_method = nullptr;
@@ -429,7 +399,7 @@ void symbol_table_visitor::visit(Method_invocation* ptr) {
     //name
 }
 
-void symbol_table_visitor::visit(Field_invocation* ptr) {
+void symbol_table_visitor::visit(FieldInvocation* ptr) {
     bool field_exists = false;
     for(auto field : curr_class->fields) {
         if (field->name == *ptr->name) {
@@ -444,45 +414,45 @@ void symbol_table_visitor::visit(Field_invocation* ptr) {
     //name
 }
 
-void symbol_table_visitor::visit(Empty_Expressions* ptr) {
+void symbol_table_visitor::visit(EmptyExpressions* ptr) {
 
     //nochildren
 }
 
-void symbol_table_visitor::visit(Single_Expressions* ptr) {
+void symbol_table_visitor::visit(SingleExpression* ptr) {
 
     ptr->expr->accept(this);
 }
 
-void symbol_table_visitor::visit(Many_Expressions* ptr) {
+void symbol_table_visitor::visit(MoreThanOneExpression* ptr) {
     for(auto i: ptr->exprs) {
         i->accept(this);
     }
 }
 
-void symbol_table_visitor::visit(Single_Multiple_expressions* ptr) {
+void symbol_table_visitor::visit(LastExpression* ptr) {
 
     ptr->expr->accept(this);
 }
 
-void symbol_table_visitor::visit(Many_Multiple_expressions* ptr) {
+void symbol_table_visitor::visit(NotLastExpressions* ptr) {
 
     ptr->prev_exprs->accept(this);
     ptr->expr->accept(this);
 }
 
-void symbol_table_visitor::visit(Value_Expr* ptr) {
+void symbol_table_visitor::visit(ValueExpr* ptr) {
     ptr->type = ptr->value->type;
     ptr->value->accept(this);
 }
 
-void symbol_table_visitor::visit(Id_Expr* ptr) {
+void symbol_table_visitor::visit(IdExpr* ptr) {
     assert_declared(ptr->name, SYMBOL_VARIABLE);
     ptr->type = reinterpret_cast<VariableSymbol*>(Find(*ptr->name))->type;
     //name
 }
 
-void symbol_table_visitor::visit(Array_el_Expr* ptr) {
+void symbol_table_visitor::visit(ArrayElementExpr* ptr) {
     ptr->array->accept(this);
     assert_array(ptr->array->type);
 
@@ -490,51 +460,51 @@ void symbol_table_visitor::visit(Array_el_Expr* ptr) {
     ptr->index->accept(this);
     assert_type(ptr->index->type, int_simple);
 
-    ptr->type = new Simple_Type(ptr->array->type->name);
+    ptr->type = new SimpleType(ptr->array->type->name);
 }
 
-void symbol_table_visitor::visit(Length_Expr* ptr) {
+void symbol_table_visitor::visit(LengthExpr* ptr) {
     ptr->array->accept(this);
     assert_array(ptr->array->type);
     ptr->type = int_simple;
     //type=int
 }
 
-void symbol_table_visitor::visit(Field_invocation_Expr* ptr) {
+void symbol_table_visitor::visit(FieldInvocationExpr* ptr) {
     ptr->invocation->accept(this);
     ptr->type = ptr->invocation->type;
 }
 
-void symbol_table_visitor::visit(New_arr_Expr* ptr) {
+void symbol_table_visitor::visit(NewArrayExpr* ptr) {
     assert_declared(ptr->name, SYMBOL_CLASS);
     ptr->count->accept(this);
     assert_type(ptr->count->type, int_simple);
     
-    ptr->type = new Array_Type(ptr->name);
+    ptr->type = new ArrayType(ptr->name);
 }
 
-void symbol_table_visitor::visit(New_single_Expr* ptr) {
+void symbol_table_visitor::visit(NewSingleExpr* ptr) {
     assert_declared(ptr->name, SYMBOL_CLASS);
-    ptr->type = new Simple_Type(ptr->name);
+    ptr->type = new SimpleType(ptr->name);
 }
 
-void symbol_table_visitor::visit(This_Expr* ptr) {
-    ptr->type = new Simple_Type(&curr_class->name);
+void symbol_table_visitor::visit(ThisExpr* ptr) {
+    ptr->type = new SimpleType(&curr_class->name);
     //nochildren
 }
 
-void symbol_table_visitor::visit(Not_Expr* ptr) {
+void symbol_table_visitor::visit(NotExpr* ptr) {
     ptr->expr->accept(this);
     assert_type(ptr->expr->type, bool_simple);
     ptr->type = ptr->expr->type;
 }
 
-void symbol_table_visitor::visit(Method_invocation_Expr* ptr) {
+void symbol_table_visitor::visit(MethodInvocationExpr* ptr) {
     ptr->invocation->accept(this);
     ptr->type =  ptr->invocation->type;
 }
 
-void symbol_table_visitor::visit(Plus_Expr* ptr) {
+void symbol_table_visitor::visit(PlusExpr* ptr) {
 
     ptr->first->accept(this);
     assert_type(ptr->first->type, int_simple);
@@ -543,7 +513,7 @@ void symbol_table_visitor::visit(Plus_Expr* ptr) {
     ptr->type = int_simple;
 }
 
-void symbol_table_visitor::visit(Minus_Expr* ptr) {
+void symbol_table_visitor::visit(MinusExpr* ptr) {
 
     ptr->first->accept(this);
     assert_type(ptr->first->type, int_simple);
@@ -552,7 +522,7 @@ void symbol_table_visitor::visit(Minus_Expr* ptr) {
     ptr->type = int_simple;
 }
 
-void symbol_table_visitor::visit(Star_Expr* ptr) {
+void symbol_table_visitor::visit(MulExpr* ptr) {
 
     ptr->first->accept(this);
     assert_type(ptr->first->type, int_simple);
@@ -561,7 +531,7 @@ void symbol_table_visitor::visit(Star_Expr* ptr) {
     ptr->type = int_simple;
 }
 
-void symbol_table_visitor::visit(Slash_Expr* ptr) {
+void symbol_table_visitor::visit(DivExpr* ptr) {
 
     ptr->first->accept(this);
     assert_type(ptr->first->type, int_simple);
@@ -570,7 +540,7 @@ void symbol_table_visitor::visit(Slash_Expr* ptr) {
     ptr->type = int_simple;
 }
 
-void symbol_table_visitor::visit(Percent_Expr* ptr) {
+void symbol_table_visitor::visit(PercentExpr* ptr) {
 
     ptr->first->accept(this);
     assert_type(ptr->first->type, int_simple);
@@ -579,7 +549,7 @@ void symbol_table_visitor::visit(Percent_Expr* ptr) {
     ptr->type = int_simple;
 }
 
-void symbol_table_visitor::visit(And_Expr* ptr) {
+void symbol_table_visitor::visit(AndExpr* ptr) {
 
     ptr->first->accept(this);
     assert_type(ptr->first->type, bool_simple);
@@ -588,7 +558,7 @@ void symbol_table_visitor::visit(And_Expr* ptr) {
     ptr->type = bool_simple;
 }
 
-void symbol_table_visitor::visit(Or_Expr* ptr) {
+void symbol_table_visitor::visit(OrExpr* ptr) {
 
     ptr->first->accept(this);
     assert_type(ptr->first->type, bool_simple);
@@ -597,7 +567,7 @@ void symbol_table_visitor::visit(Or_Expr* ptr) {
     ptr->type = bool_simple;
 }
 
-void symbol_table_visitor::visit(Smaller_Expr* ptr) {
+void symbol_table_visitor::visit(SmallerExpr* ptr) {
 
     ptr->first->accept(this);
     assert_type(ptr->first->type, int_simple);
@@ -606,7 +576,7 @@ void symbol_table_visitor::visit(Smaller_Expr* ptr) {
     ptr->type = bool_simple;
 }
 
-void symbol_table_visitor::visit(Bigger_Expr* ptr) {
+void symbol_table_visitor::visit(BiggerExpr* ptr) {
 
     ptr->first->accept(this);
     assert_type(ptr->first->type, int_simple);
@@ -615,7 +585,7 @@ void symbol_table_visitor::visit(Bigger_Expr* ptr) {
     ptr->type = bool_simple;
 }
 
-void symbol_table_visitor::visit(Equal_Expr* ptr) {
+void symbol_table_visitor::visit(EqualExpr* ptr) {
 
     ptr->first->accept(this);
     assert_type(ptr->first->type, int_simple);
@@ -624,7 +594,7 @@ void symbol_table_visitor::visit(Equal_Expr* ptr) {
     ptr->type = bool_simple;
 }
 
-void symbol_table_visitor::visit(Not_equal_Expr* ptr) {
+void symbol_table_visitor::visit(NotEqualExpr* ptr) {
 
     ptr->first->accept(this);
     assert_type(ptr->first->type, int_simple);
@@ -633,17 +603,17 @@ void symbol_table_visitor::visit(Not_equal_Expr* ptr) {
     ptr->type = bool_simple;
 }
 
-void symbol_table_visitor::visit(Brackets_Expr* ptr) {
+void symbol_table_visitor::visit(BracketsExpr* ptr) {
     ptr->expr->accept(this);
     ptr->type = ptr->expr->type;
 }
 
-void symbol_table_visitor::visit(Number_Value* ptr) {
+void symbol_table_visitor::visit(IntValue* ptr) {
 
     //value(int)
 }
 
-void symbol_table_visitor::visit(TF_Value* ptr) {
+void symbol_table_visitor::visit(BoolValue* ptr) {
 
     //value(bool)
 }

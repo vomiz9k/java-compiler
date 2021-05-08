@@ -11,14 +11,14 @@
 
 namespace IRT {
 class RelativeConditionalWrapper: public ConditionalWrapper {
- public:
-  RelativeConditionalWrapper(LogicOperatorType type, Expression *lhs, Expression *rhs);
-  Statement *ToConditional(Label true_label, Label false_label) override;
+public:
+    RelativeConditionalWrapper(LogicOperatorType type, Expression *lhs, Expression *rhs);
+    Statement *ToConditional(Label true_label, Label false_label) override;
 
-  Expression* lhs_;
-  Expression* rhs_;
-  LogicOperatorType operator_type_;
+    LogicOperatorType operator_type_;
 
+    Expression* lhs_;
+    Expression* rhs_;
 };
 
 }

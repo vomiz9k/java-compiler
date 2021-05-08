@@ -1,20 +1,19 @@
 #pragma once
+#include <symbols.hpp>
 #include "visitor.hpp"
 #include <base_scope.hpp>
 #include <iostream>
 
 
-class MethodSymbol;
-class ClassSymbol;
-class Simple_Type;
-class Type;
-
 class symbol_table_visitor: public Visitor
 {
-    Simple_Type* int_simple;
-    Simple_Type* bool_simple;
-    ClassSymbol* curr_class;
-    MethodSymbol* curr_method;
+    SimpleType* int_simple = nullptr;
+    SimpleType* bool_simple = nullptr;
+    ClassSymbol* curr_class = nullptr;
+    MethodSymbol* curr_method = nullptr;
+
+    BaseScope* curr_scope = nullptr;
+    MethodScope* curr_frame = nullptr;
 
 
 public:
@@ -24,11 +23,11 @@ public:
 
     #include "visitor_header_body"
 
-    BaseScope* curr;
+
 
     void dump() {
         tabs = 0;
-        dump(curr);
+        dump(curr_scope);
     }
 
     int tabs = 0;
@@ -48,7 +47,7 @@ public:
     }
 
     BaseSymbol* Find(const std::string& name) {
-        BaseScope* scope = curr;
+        BaseScope* scope = curr_scope;
         while (scope != nullptr && scope->symbols.count(name) == 0)
             scope = scope->parent;
         
@@ -60,7 +59,7 @@ public:
     }
 
 
-    size_t get_size(const Type* type);
+
 
 
     void assert_declared(std::string* name, int type);

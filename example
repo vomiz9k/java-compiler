@@ -1,22 +1,5 @@
 class Main {
     public static void main() {
-        System.out.println(1);
-        NotMain jopa;
-        int x;
-
-        x = jopa.bar();
-    }
-}
-
-class NotMain {
-    int a;
-    public int foo() {
-        return 1;
-    }
-
-    public int bar() {
-        int x;
-        x = this.foo() + this.a;
     }
 }
 

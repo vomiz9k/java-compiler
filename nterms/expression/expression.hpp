@@ -15,230 +15,230 @@ public:
 };
 
 class Value;    
-class Value_Expr: public Expr
+class ValueExpr: public Expr
 {
     #include <friends_visitors>
     Value* value;
 public:
-    Value_Expr(Value* value);
+    ValueExpr(Value* value);
     void accept(Visitor* visitor) override;
 };
 
-class Id_Expr: public Expr
+class IdExpr: public Expr
 {
     #include <friends_visitors>
     std::string* name;
 public:
-    Id_Expr(std::string* name);
+    IdExpr(std::string* name);
     void accept(Visitor* visitor) override;
 };
 
-class Array_el_Expr: public Expr
+class ArrayElementExpr: public Expr
 {
     #include <friends_visitors>
     Expr* array;
     Expr* index;
 public:
-    Array_el_Expr(Expr* array, Expr* index);
+    ArrayElementExpr(Expr* array, Expr* index);
     void accept(Visitor* visitor) override;
 };
 
-class Length_Expr: public Expr
+class LengthExpr: public Expr
 {
     #include <friends_visitors>
     Expr* array;
 public:
-    Length_Expr(Expr* array);
+    LengthExpr(Expr* array);
     void accept(Visitor* visitor) override;
 };
 
-class Field_invocation;
-class Field_invocation_Expr: public Expr
+class FieldInvocation;
+class FieldInvocationExpr: public Expr
 {
     #include <friends_visitors>
-    Field_invocation* invocation;
+    FieldInvocation* invocation;
 public:
-    Field_invocation_Expr(Field_invocation* invocation);
+    FieldInvocationExpr(FieldInvocation* invocation);
     void accept(Visitor* visitor) override;
 };
 
-class New_arr_Expr: public Expr
+class NewArrayExpr: public Expr
 {
     #include <friends_visitors>
     std::string* name;
     Expr* count;
 
 public:
-    New_arr_Expr(std::string* name, Expr* count);
+    NewArrayExpr(std::string* name, Expr* count);
     void accept(Visitor* visitor) override;
 };
 
-class New_single_Expr: public Expr
+class NewSingleExpr: public Expr
 {
     #include <friends_visitors>
     std::string* name;
 
 public:
-    New_single_Expr(std::string* name);
+    NewSingleExpr(std::string* name);
     void accept(Visitor* visitor) override;
 };
 
 
-class Not_Expr: public Expr
+class NotExpr: public Expr
 {
     #include <friends_visitors>
     Expr* expr;
 public:
-    Not_Expr(Expr* expr);
+    NotExpr(Expr* expr);
     void accept(Visitor* visitor) override;
 };
 
-class This_Expr: public Expr
+class ThisExpr: public Expr
 {
     #include <friends_visitors>
 public:
-    This_Expr();
+    ThisExpr();
     void accept(Visitor* visitor) override;
 };
 
-class Method_invocation;
-class Method_invocation_Expr: public Expr
+class MethodInvocation;
+class MethodInvocationExpr: public Expr
 {
     #include <friends_visitors>
-    Method_invocation* invocation;
+    MethodInvocation* invocation;
 public:
-    Method_invocation_Expr(Method_invocation* invocation);
+    MethodInvocationExpr(MethodInvocation* invocation);
     void accept(Visitor* visitor) override;
 };
 
-class Plus_Expr: public Expr
+class PlusExpr: public Expr
 {   
     #include <friends_visitors>
     Expr* first;
     Expr* second;
 public:
-    Plus_Expr(Expr* first, Expr* second);
+    PlusExpr(Expr* first, Expr* second);
 
     void accept(Visitor* visitor) override;
 };
 
-class Minus_Expr: public Expr
+class MinusExpr: public Expr
 {   
     #include <friends_visitors>
     Expr* first;
     Expr* second;
 public:
-    Minus_Expr(Expr* first, Expr* second);
+    MinusExpr(Expr* first, Expr* second);
 
     void accept(Visitor* visitor) override;
 };
 
-class Star_Expr: public Expr
+class MulExpr: public Expr
 {   
     #include <friends_visitors>
     Expr* first;
     Expr* second;
 public:
-    Star_Expr(Expr* first, Expr* second);
+    MulExpr(Expr* first, Expr* second);
 
     void accept(Visitor* visitor) override;
 };
 
-class Slash_Expr: public Expr
+class DivExpr: public Expr
 {   
     #include <friends_visitors>
     Expr* first;
     Expr* second;
 public:
-    Slash_Expr(Expr* first, Expr* second);
+    DivExpr(Expr* first, Expr* second);
 
     void accept(Visitor* visitor) override;
 };
 
-class Percent_Expr: public Expr
+class PercentExpr: public Expr
 {   
     #include <friends_visitors>
     Expr* first;
     Expr* second;
 public:
-    Percent_Expr(Expr* first, Expr* second);
+    PercentExpr(Expr* first, Expr* second);
 
     void accept(Visitor* visitor) override;
 };
 
-class And_Expr: public Expr
+class AndExpr: public Expr
 {   
     #include <friends_visitors>
     Expr* first;
     Expr* second;
 public:
-    And_Expr(Expr* first, Expr* second);
+    AndExpr(Expr* first, Expr* second);
 
     void accept(Visitor* visitor) override;
 };
 
-class Or_Expr: public Expr
+class OrExpr: public Expr
 {   
     #include <friends_visitors>
     Expr* first;
     Expr* second;
 public:
-    Or_Expr(Expr* first, Expr* second);
+    OrExpr(Expr* first, Expr* second);
 
     void accept(Visitor* visitor) override;
 };
 
-class Smaller_Expr: public Expr
+class SmallerExpr: public Expr
 {   
     #include <friends_visitors>
     Expr* first;
     Expr* second;
 public:
-    Smaller_Expr(Expr* first, Expr* second);
+    SmallerExpr(Expr* first, Expr* second);
 
     void accept(Visitor* visitor) override;
 };
 
-class Bigger_Expr: public Expr
+class BiggerExpr: public Expr
 {   
     #include <friends_visitors>
     Expr* first;
     Expr* second;
 public:
-    Bigger_Expr(Expr* first, Expr* second);
+    BiggerExpr(Expr* first, Expr* second);
 
     void accept(Visitor* visitor) override;
 };
 
-class Equal_Expr: public Expr
+class EqualExpr: public Expr
 {   
     #include <friends_visitors>
     Expr* first;
     Expr* second;
 public:
-    Equal_Expr(Expr* first, Expr* second);
+    EqualExpr(Expr* first, Expr* second);
 
     void accept(Visitor* visitor) override;
 };
 
-class Not_equal_Expr: public Expr
+class NotEqualExpr: public Expr
 {   
     #include <friends_visitors>
     Expr* first;
     Expr* second;
 public:
-    Not_equal_Expr(Expr* first, Expr* second);
+    NotEqualExpr(Expr* first, Expr* second);
 
     void accept(Visitor* visitor) override;
 };
 
 
-class Brackets_Expr:public Expr
+class BracketsExpr: public Expr
 {
     #include <friends_visitors>
     Expr* expr;
 public:
-    Brackets_Expr(Expr* expr);
+    BracketsExpr(Expr* expr);
     void accept(Visitor* visitor) override;
 };
 

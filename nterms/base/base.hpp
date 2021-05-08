@@ -1,6 +1,6 @@
 #pragma once
 
-#include <visitor.hpp>
+class Visitor;
 
 
 class Base

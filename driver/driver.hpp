@@ -10,7 +10,7 @@
 #include <lexer.hpp>
 #include <visitor.hpp>
 
-
+#include <irtree/visitors/PrintVisitor.h>
 
 class Driver {
  public:
@@ -37,6 +37,19 @@ class Driver {
         symbol_table_visitor v;
         v.visit(program);
         v.dump();
+    }
+
+    void ir() {
+        symbol_table_visitor v;
+        v.visit(program);
+        ir_tree_visitor ir;
+        ir.visit(program);
+
+
+        for (auto& i: ir.method_trees) {
+            IRT::PrintVisitor p("ir_" + i.first + ".txt");
+            i.second->Accept(&p);
+        }
     }
 
     static void error_test();

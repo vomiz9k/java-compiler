@@ -1,54 +1,54 @@
 #include "method_args.hpp"
-
+#include <visitor.hpp>
      
-void Empty_Method_args::accept(Visitor* visitor)
+void EmptyMethodArgs::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }
 
 
-Single_Method_args::Single_Method_args(Method_arg* arg) : arg(arg)
+SingleMethodArg::SingleMethodArg(Method_arg* arg) : arg(arg)
 {
 
 }   
 
-void Single_Method_args::accept(Visitor* visitor)
+void SingleMethodArg::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }
 
 
-Many_Method_args::Many_Method_args(Method_multiple_arg* prev_args, Method_arg* arg)
+MoreThanOneMethodArgs::MoreThanOneMethodArgs(Method_multiple_arg* prev_args, Method_arg* arg)
 : arg(arg), prev_args(prev_args)
 {
 
 }  
 
-void Many_Method_args::accept(Visitor* visitor)
+void MoreThanOneMethodArgs::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }
 
 
-Last_Method_multiple_arg::Last_Method_multiple_arg(Method_arg* arg): arg(arg)
+LastMethodArg::LastMethodArg(Method_arg* arg): arg(arg)
 {
 
 }     
 
-void Last_Method_multiple_arg::accept(Visitor* visitor)
+void LastMethodArg::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }
 
 
-Many_Method_multiple_arg::Many_Method_multiple_arg(Method_multiple_arg* prev_args, Method_arg* arg)
+NotLastMethodArgs::NotLastMethodArgs(Method_multiple_arg* prev_args, Method_arg* arg)
     :prev_args(prev_args), arg(arg)
 {
 
 }
  
 
-void Many_Method_multiple_arg::accept(Visitor* visitor)
+void NotLastMethodArgs::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }

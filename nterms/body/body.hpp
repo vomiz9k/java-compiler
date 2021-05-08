@@ -5,6 +5,7 @@
 
 class BaseScope;
 class Statements;
+class Statement;
 
 class Body: public Base
 {

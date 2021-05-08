@@ -9,10 +9,10 @@
 #include "../../generators/Temporary.h"
 namespace IRT {
 class TempExpression : public Expression {
- public:
-  explicit TempExpression(const IRT::Temporary &temporary);
-  void Accept(Visitor *visitor) override;
-  Temporary temporary_;
+public:
+    explicit TempExpression(const IRT::Temporary &temporary);
+    void Accept(Visitor *visitor) override;
+    Temporary temporary_;
 };
 
 }

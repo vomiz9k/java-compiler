@@ -8,7 +8,7 @@ void interpreter_visitor::visit(Program* ptr) {
     //ptr->class_declarations->accept(this);
 }
 
-void interpreter_visitor::visit(Main_class* ptr) {
+void interpreter_visitor::visit(MainClass* ptr) {
 
     ptr->body->accept(this);
     //class_name
@@ -22,7 +22,7 @@ void interpreter_visitor::visit(Body* ptr) {
     //nochildren
 }
 
-void interpreter_visitor::visit(If_else_Statement* ptr) {
+void interpreter_visitor::visit(IfElseStatement* ptr) {
 
     ptr->condition->accept(this);
     if(result)
@@ -31,28 +31,28 @@ void interpreter_visitor::visit(If_else_Statement* ptr) {
         ptr->do_else->accept(this);
 }
 
-void interpreter_visitor::visit(If_Statement* ptr) {
+void interpreter_visitor::visit(IfStatement* ptr) {
     ptr->condition->accept(this);
     if (result)
         ptr->do_if_true->accept(this);
 }
 
 
-void interpreter_visitor::visit(Assert_Statement* ptr) {
+void interpreter_visitor::visit(AssertStatement* ptr) {
     ptr->check->accept(this);
     if (!result)
         throw "ASSERTATION";
 }
 
-void interpreter_visitor::visit(Var_decl_Statement* ptr) {
+void interpreter_visitor::visit(VarDeclStatement* ptr) {
     ptr->decl->accept(this);
 }
 
-void interpreter_visitor::visit(Big_Statement* ptr) {
+void interpreter_visitor::visit(ScopeStatement* ptr) {
     ptr->body->accept(this);
 }
 
-void interpreter_visitor::visit(While_Statement* ptr) {
+void interpreter_visitor::visit(WhileStatement* ptr) {
     ptr->condition->accept(this);
     while(result) {
         ptr->do_if_true->accept(this);
@@ -60,23 +60,23 @@ void interpreter_visitor::visit(While_Statement* ptr) {
     }
 }
 
-void interpreter_visitor::visit(Print_Statement* ptr) {
+void interpreter_visitor::visit(PrintStatement* ptr) {
 
     ptr->to_print->accept(this);
     std::cout << "print: " << result << '\n';
 }
 
-void interpreter_visitor::visit(Field_invocation* ptr) {
+void interpreter_visitor::visit(FieldInvocation* ptr) {
     
 }
 
-void interpreter_visitor::visit(Assignment_Statement* ptr) {
+void interpreter_visitor::visit(AssignmentStatement* ptr) {
     ptr->assignment->accept(this);
 }
 
 
 
-void interpreter_visitor::visit(Variable_declaration* ptr) {
+void interpreter_visitor::visit(VariableDeclaration* ptr) {
     ptr->type->accept(this);
     if(!is_array)
         var[*ptr->name];
@@ -87,14 +87,14 @@ void interpreter_visitor::visit(Variable_declaration* ptr) {
 }
 
 
-void interpreter_visitor::visit(Simple_Type* ptr) {
+void interpreter_visitor::visit(SimpleType* ptr) {
     if (*ptr->name != "int" && *ptr->name != "bool")   
         throw "ploxo";
     is_array = false;
     //name
 }
 
-void interpreter_visitor::visit(Array_Type* ptr) {
+void interpreter_visitor::visit(ArrayType* ptr) {
     if (*ptr->name != "int" && *ptr->name != "bool")   
         throw "ploxo";
     is_array = true;
@@ -105,53 +105,34 @@ void interpreter_visitor::visit(Assignment* ptr) {
 
     ptr->lvalue->accept(this);
     if (lvalue == nullptr)
-        throw "bad lvalue";
+        throw std::string("bad lvalue");
     auto val_ptr = lvalue;
     ptr->rvalue->accept(this);
     *val_ptr = result;
 }
 
-void interpreter_visitor::visit(Single_Lvalue* ptr) {
-    if(var.count(*ptr->name) == 0)
-        throw "unknown variable";
-    
-    lvalue = &var[*ptr->name];
-}
 
-void interpreter_visitor::visit(Arr_el_Lvalue* ptr) {
-    //TODO
-}
-
-void interpreter_visitor::visit(Field_Lvalue* ptr) {
-    //TODO
-}
-
-void interpreter_visitor::visit(Field_arr_el_Lvalue* ptr) {
-    //TODO
-}
-
-
-void interpreter_visitor::visit(Value_Expr* ptr) {
+void interpreter_visitor::visit(ValueExpr* ptr) {
     ptr->value->accept(this);
 }
 
-void interpreter_visitor::visit(Id_Expr* ptr) {
+void interpreter_visitor::visit(IdExpr* ptr) {
     result = var[*ptr->name];
 }
 
-void interpreter_visitor::visit(New_arr_Expr* ptr) {
+void interpreter_visitor::visit(NewArrayExpr* ptr) {
 
 }
 
 
-void interpreter_visitor::visit(Not_Expr* ptr) {
+void interpreter_visitor::visit(NotExpr* ptr) {
 
     ptr->expr->accept(this);
     result = !result;
 }
 
 
-void interpreter_visitor::visit(Plus_Expr* ptr) {
+void interpreter_visitor::visit(PlusExpr* ptr) {
 
     ptr->first->accept(this);
     auto first = result;
@@ -159,7 +140,7 @@ void interpreter_visitor::visit(Plus_Expr* ptr) {
     result = (first + result);
 }
 
-void interpreter_visitor::visit(Minus_Expr* ptr) {
+void interpreter_visitor::visit(MinusExpr* ptr) {
 
     ptr->first->accept(this);
     auto first = result;
@@ -167,7 +148,7 @@ void interpreter_visitor::visit(Minus_Expr* ptr) {
     result = (first - result);
 }
 
-void interpreter_visitor::visit(Star_Expr* ptr) {
+void interpreter_visitor::visit(MulExpr* ptr) {
 
     ptr->first->accept(this);
     auto first = result;
@@ -175,7 +156,7 @@ void interpreter_visitor::visit(Star_Expr* ptr) {
     result = (first * result);
 }
 
-void interpreter_visitor::visit(Slash_Expr* ptr) {
+void interpreter_visitor::visit(DivExpr* ptr) {
 
     ptr->first->accept(this);
     auto first = result;
@@ -183,7 +164,7 @@ void interpreter_visitor::visit(Slash_Expr* ptr) {
     result = (first / result);
 }
 
-void interpreter_visitor::visit(Percent_Expr* ptr) {
+void interpreter_visitor::visit(PercentExpr* ptr) {
 
     ptr->first->accept(this);
     auto first = result;
@@ -191,7 +172,7 @@ void interpreter_visitor::visit(Percent_Expr* ptr) {
     result = (first % result);
 }
 
-void interpreter_visitor::visit(And_Expr* ptr) {
+void interpreter_visitor::visit(AndExpr* ptr) {
 
     ptr->first->accept(this);
     auto first = result;
@@ -199,7 +180,7 @@ void interpreter_visitor::visit(And_Expr* ptr) {
     result = (first && result);
 }
 
-void interpreter_visitor::visit(Or_Expr* ptr) {
+void interpreter_visitor::visit(OrExpr* ptr) {
 
     ptr->first->accept(this);
     auto first = result;
@@ -207,7 +188,7 @@ void interpreter_visitor::visit(Or_Expr* ptr) {
     result = (first || result);
 }
 
-void interpreter_visitor::visit(Smaller_Expr* ptr) {
+void interpreter_visitor::visit(SmallerExpr* ptr) {
 
     ptr->first->accept(this);
     auto first = result;
@@ -215,7 +196,7 @@ void interpreter_visitor::visit(Smaller_Expr* ptr) {
     result = (first < result);
 }
 
-void interpreter_visitor::visit(Bigger_Expr* ptr) {
+void interpreter_visitor::visit(BiggerExpr* ptr) {
 
     ptr->first->accept(this);
     auto first = result;
@@ -223,7 +204,7 @@ void interpreter_visitor::visit(Bigger_Expr* ptr) {
     result = (first > result);
 }
 
-void interpreter_visitor::visit(Equal_Expr* ptr) {
+void interpreter_visitor::visit(EqualExpr* ptr) {
 
     ptr->first->accept(this);
     auto first = result;
@@ -231,24 +212,24 @@ void interpreter_visitor::visit(Equal_Expr* ptr) {
     result = (first == result);
 }
 
-void interpreter_visitor::visit(Not_equal_Expr* ptr) {
+void interpreter_visitor::visit(NotEqualExpr* ptr) {
     ptr->first->accept(this);
     auto first = result;
     ptr->second->accept(this);
     result = (first != result);
 }
 
-void interpreter_visitor::visit(Brackets_Expr* ptr) {
+void interpreter_visitor::visit(BracketsExpr* ptr) {
 
     ptr->expr->accept(this);
 }
 
-void interpreter_visitor::visit(Number_Value* ptr) {
+void interpreter_visitor::visit(IntValue* ptr) {
     result = ptr->value;
     //value(int)
 }
 
-void interpreter_visitor::visit(TF_Value* ptr) {
+void interpreter_visitor::visit(BoolValue* ptr) {
     result = ptr->value;
     //value(bool)
 }

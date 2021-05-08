@@ -12,20 +12,20 @@ public:
     virtual void accept(Visitor* visitor) = 0;
 };
 
-class Empty_Class_declarations: public Class_declarations
+class EmptyClassDeclarations: public Class_declarations
 {
     #include <friends_visitors>
 public:
-    Empty_Class_declarations();
+    EmptyClassDeclarations();
     void accept(Visitor* visitor);
 };
 
-class Not_empty_Class_declarations: public Class_declarations
+class NotEmptyClassDeclarations: public Class_declarations
 {
     #include <friends_visitors>
     Class_declarations* prev_class_decls;
     Class_declaration* class_decl;
 public:
-    Not_empty_Class_declarations(Class_declarations* prev_class_decls, Class_declaration* class_decl);
+    NotEmptyClassDeclarations(Class_declarations* prev_class_decls, Class_declaration* class_decl);
     void accept(Visitor* visitor);
 };

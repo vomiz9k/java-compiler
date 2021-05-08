@@ -9,13 +9,13 @@
 namespace IRT {
 
 Statement *RelativeConditionalWrapper::ToConditional(Label true_label, Label false_label) {
-  return new JumpConditionalStatement(
-    operator_type_,
-    lhs_,
-    rhs_,
-    true_label,
-    false_label
-  );
+    return new JumpConditionalStatement(
+        operator_type_,
+        lhs_,
+        rhs_,
+        true_label,
+        false_label
+    );
 }
 RelativeConditionalWrapper::RelativeConditionalWrapper(
     LogicOperatorType type,

@@ -8,6 +8,7 @@
 #include <string>
 #include <fstream>
 #include "Visitor.h"
+
 namespace IRT {
 class PrintVisitor: public Visitor {
 
@@ -29,6 +30,7 @@ class PrintVisitor: public Visitor {
   void Visit(ExpressionList *expression_list) override;
   void Visit(NameExpression *name_expression) override;
   void Visit(EseqExpression *eseq_expression) override;
+  void Visit(PrintStatement *print_statement) override;
 
  private:
   std::ofstream stream_;

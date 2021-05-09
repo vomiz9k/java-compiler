@@ -51,6 +51,14 @@ void PrintVisitor::Visit(MoveStatement *move_statement) {
   --num_tabs_;
 }
 
+void PrintVisitor::Visit(PrintStatement *print_statement) {
+  PrintTabs();
+  stream_ << "PrintStatement:" << std::endl;
+  ++num_tabs_;
+  print_statement->expression_->Accept(this);
+  --num_tabs_;
+}
+
 void PrintVisitor::Visit(SeqStatement *seq_statement) {
   PrintTabs();
   stream_ << "SeqStatement:" << std::endl;

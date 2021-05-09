@@ -16,6 +16,7 @@
 #include <irtree/tree_wrapper/StatementWrapper.h>
 #include <irtree/nodes/statements/LabelStatement.h>
 #include <irtree/nodes/statements/SeqStatement.h>
+#include <irtree/nodes/statements/PrintStatement.h>
 #include <irtree/nodes/statements/JumpStatement.h>
 #include <irtree/nodes/ExpressionList.h>
 #include <irtree/nodes/expressions/CallExpression.h>
@@ -343,10 +344,8 @@ void ir_tree_visitor::visit(PrintStatement* ptr) {
 
     ptr->to_print->accept(this);
     curr_wrapper = new IRT::StatementWrapper(
-            new IRT::MoveStatement(
-                    return_value_address.ToExpression(),
-                    curr_wrapper->ToExpression()
-            ));
+        new IRT::PrintStatement(curr_wrapper->ToExpression())
+    );
 }//TODO
 
 void ir_tree_visitor::visit(AssignmentStatement* ptr) {

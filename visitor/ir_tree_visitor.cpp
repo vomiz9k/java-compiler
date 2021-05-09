@@ -297,10 +297,8 @@ void ir_tree_visitor::visit(AssertStatement* ptr) {
 
     ptr->check->accept(this);
     curr_wrapper = new IRT::StatementWrapper(
-            new IRT::MoveStatement(
-                    return_value_address.ToExpression(),
-                    curr_wrapper->ToExpression()
-            ));
+            new IRT::PrintStatement(curr_wrapper->ToExpression())
+    );
 }//TODO
 
 void ir_tree_visitor::visit(VarDeclStatement* ptr) {
@@ -346,7 +344,7 @@ void ir_tree_visitor::visit(PrintStatement* ptr) {
     curr_wrapper = new IRT::StatementWrapper(
         new IRT::PrintStatement(curr_wrapper->ToExpression())
     );
-}//TODO
+}
 
 void ir_tree_visitor::visit(AssignmentStatement* ptr) {
     ptr->assignment->accept(this);

@@ -11,6 +11,8 @@
     #include "main_class/main_class.hpp"
     #include "method_arg/method_arg.hpp"
     #include "method_args/method_args.hpp"
+    #include "method_declaration/method_declaration.hpp"
+    #include "variable_declaration/variable_declaration.hpp"
     #include "declaration/declaration.hpp"
     #include "method_invocation/method_invocation.hpp"
     #include "program/program.hpp"

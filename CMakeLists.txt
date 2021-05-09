@@ -75,6 +75,8 @@ add_executable(
     ${Compiler_SOURCE_DIR}/nterms/value/value.cpp
     ${Compiler_SOURCE_DIR}/nterms/declaration/declaration.cpp
     ${Compiler_SOURCE_DIR}/nterms/body/body.cpp
+    ${Compiler_SOURCE_DIR}/nterms/variable_declaration/variable_declaration.cpp
+    ${Compiler_SOURCE_DIR}/nterms/method_declaration/method_declaration.cpp
 
     ${Compiler_SOURCE_DIR}/visitor/gv_visitor.cpp
     ${Compiler_SOURCE_DIR}/visitor/optimization_visitor.cpp

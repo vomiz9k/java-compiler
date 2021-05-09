@@ -15,8 +15,11 @@
 ## test compile errors with types:
 ### ./test_ce.sh
 #
+## test ir tree building:
+### ./test_ir_tree.sh
+#
 ## print IR tree splitted by functions:
-### ./Compiler ir input-filename
+### ./Compiler ir input-filename dir_for_output[must exist]
 #
 ## run:
 ### ./Compiler [run/ast/scope/ir] input-filename [_dot-output-filename_ if ast]

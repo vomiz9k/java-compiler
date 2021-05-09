@@ -25,6 +25,6 @@ int main(int argc, char* argv[])
     }
     else if (cmd == "ir") {
         d.parse(argv[2]);
-        d.ir();
+        d.ir(argv[3]);
     }
 }

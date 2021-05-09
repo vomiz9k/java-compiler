@@ -27,8 +27,11 @@ Expression *AddressInFrame::ToExpression() {
         }
         return new MemExpression(offset_expression);
     } else {
-        std::cout << "meme\n";
-        return new MemExpression(converted_);
+        return new BinopExpression(
+            BinaryOperatorType::PLUS,
+            new MemExpression(converted_),
+            new ConstExpression(offset_)
+        );
     }
 }
 
@@ -40,7 +43,7 @@ AddressInFrame::AddressInFrame(
 
 }
 
-AddressInFrame::AddressInFrame(Expression* expr) : converted_(expr){
+AddressInFrame::AddressInFrame(Expression* expr, int offset) : converted_(expr), offset_(offset){
 
 }
 

@@ -51,13 +51,13 @@ bool ir_tree_visitor::is_field(std::string& name) {
 
 void ir_tree_visitor::visit(Program* ptr) {
     curr_scope = ptr->scope;
-    ptr->main_class->accept(this);
+
 
     for (auto i : ptr->declarations) {
         i->accept(this);
     }
 
-
+    ptr->main_class->accept(this);
 }
 
 size_t ir_tree_visitor::get_size(Type* type) {
@@ -80,8 +80,8 @@ void ir_tree_visitor::add_class_symbols(std::string* class_name) {
 
     size_t offset = 0;
     for (auto& symbol: class_symbol->fields) {
-        auto this_addr = (new IRT::AddressInFrame(&frame_pointer_address, offset))->ToExpression();
-        addresses[symbol->name].push(new IRT::AddressInFrame(this_addr));
+        auto this_addr = new IRT::MemExpression(frame_pointer_address.ToExpression());
+        addresses[symbol->name].push(new IRT::AddressInFrame(this_addr, offset));
         offset += get_size(symbol->type);
     }
     class_sizes[*class_name] = offset;
@@ -95,17 +95,24 @@ void ir_tree_visitor::visit(MainClass* ptr) {
 
     curr_class_name = *ptr->name;
     ptr->body->accept(this);
+    auto name = *ptr->name + "::" + "main";
     if (curr_wrapper != nullptr) {
         curr_wrapper = new IRT::StatementWrapper(
-                new IRT::SeqStatement(
-                        new IRT::LabelStatement(IRT::Label(*ptr->name + "::main")),
-                        curr_wrapper->ToStatement()
-                )
+            new IRT::SeqStatement(
+                 new IRT::LabelStatement(IRT::Label(name)),
+                 curr_wrapper->ToStatement()
+            )
         );
     } else {
-        curr_wrapper = new IRT::StatementWrapper(new IRT::LabelStatement(
-                IRT::Label(*ptr->name + "::main")
-        ));
+        curr_wrapper = new IRT::StatementWrapper(
+            new IRT::SeqStatement(
+                new IRT::LabelStatement(IRT::Label(name)),
+                new IRT::MoveStatement(
+                     return_value_address.ToExpression(),
+                    new IRT::ConstExpression(0)
+                )
+            )
+        );
     }
     method_trees[*ptr->name] = curr_wrapper->ToStatement();
 
@@ -177,6 +184,10 @@ void ir_tree_visitor::visit(Body* ptr) {
         if (curr_wrapper) {
             statements.push_back(curr_wrapper->ToStatement());
         }
+    }
+    if (statements.empty()) {
+        curr_wrapper = nullptr;
+        return;
     }
 
     IRT::Statement* suffix = statements.back();
@@ -284,6 +295,11 @@ void ir_tree_visitor::visit(IfStatement* ptr) {
 void ir_tree_visitor::visit(AssertStatement* ptr) {
 
     ptr->check->accept(this);
+    curr_wrapper = new IRT::StatementWrapper(
+            new IRT::MoveStatement(
+                    return_value_address.ToExpression(),
+                    curr_wrapper->ToExpression()
+            ));
 }//TODO
 
 void ir_tree_visitor::visit(VarDeclStatement* ptr) {
@@ -326,6 +342,11 @@ void ir_tree_visitor::visit(WhileStatement* ptr) {
 void ir_tree_visitor::visit(PrintStatement* ptr) {
 
     ptr->to_print->accept(this);
+    curr_wrapper = new IRT::StatementWrapper(
+            new IRT::MoveStatement(
+                    return_value_address.ToExpression(),
+                    curr_wrapper->ToExpression()
+            ));
 }//TODO
 
 void ir_tree_visitor::visit(AssignmentStatement* ptr) {
@@ -373,12 +394,26 @@ void ir_tree_visitor::visit(MethodDeclaration* ptr) {
     ptr->args->accept(this);
     ptr->body->accept(this);
 
-    curr_wrapper = new IRT::StatementWrapper(
+    auto name = curr_class_name + "::" + *ptr->name;
+    if (curr_wrapper != nullptr) {
+        curr_wrapper = new IRT::StatementWrapper(
             new IRT::SeqStatement(
-                    new IRT::LabelStatement(IRT::Label(curr_class_name + "::" + *ptr->name)),
-                    curr_wrapper->ToStatement()
+                new IRT::LabelStatement(IRT::Label(name)),
+                curr_wrapper->ToStatement()
             )
-    );
+        );
+    } else {
+        curr_wrapper = new IRT::StatementWrapper(
+            new IRT::SeqStatement(
+                new IRT::LabelStatement(IRT::Label(name)),
+                new IRT::MoveStatement(
+                   return_value_address.ToExpression(),
+                   new IRT::ConstExpression(0)
+                )
+            )
+        );
+    }
+
     method_trees[*ptr->name] = curr_wrapper->ToStatement();
 
 
@@ -488,6 +523,7 @@ void ir_tree_visitor::visit(MethodInvocation* ptr) {
 
 void ir_tree_visitor::visit(FieldInvocation* ptr) {
     //name
+
     auto address = addresses[*ptr->name].top();
     curr_wrapper = new IRT::ExpressionWrapper(address->ToExpression());
 }
@@ -591,6 +627,7 @@ void ir_tree_visitor::visit(NewSingleExpr* ptr) {
 }
 
 void ir_tree_visitor::visit(ThisExpr* ptr) {
+    std::cout << "THIS?\n";
     curr_wrapper = new IRT::ExpressionWrapper(frame_pointer_address.ToExpression());
     //nochildren
 }//TODO: delete?

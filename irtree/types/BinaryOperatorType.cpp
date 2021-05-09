@@ -21,5 +21,6 @@ std::string IRT::ToString(BinaryOperatorType type) {
     case BinaryOperatorType::OR:
       return "OR";
   }
+  throw std::string("unknown binary operator type");
 }
 

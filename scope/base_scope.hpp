@@ -26,7 +26,6 @@ class BaseScope {
 };
 
 
-
 class MethodScope: public BaseScope {
 public:
     std::string name;
@@ -35,10 +34,6 @@ public:
     inline bool frame_start() const override {
         return true;
     }
-
-
-//    IRT::Address* get_address(const std::string& name) {
-//    }
 };
 
 

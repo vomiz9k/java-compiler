@@ -14,4 +14,5 @@ std::string IRT::ToString(IRT::LogicOperatorType type) {
     case LogicOperatorType::GT:
       return "GT";
   }
+  throw std::string("unknown logic operator type");
 }

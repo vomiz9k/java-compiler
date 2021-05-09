@@ -147,7 +147,7 @@
 %start program;
 
 program: 
-    main_class class_declarations {$$ = new Program($1, $2); driver.program = $$; };
+    main_class class_declarations {$$ = new Program($1, $2); driver.set_program($$); };
 
 main_class: 
     "class" IDENTIFIER "{" "public" "static" "void" "main" "(" ")" "{" body "}" "}" {$$ = new MainClass($IDENTIFIER, $body);};

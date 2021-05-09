@@ -1,6 +1,41 @@
 #include <driver.hpp>
 
 Driver::Driver() : lexer(*this), bison(lexer, *this) {}
+Driver::~Driver() {
+    if (program != nullptr) {
+        delete_visitor v;
+        v.visit(program);
+    }
+}
+
+void Driver::print(const std::string& filename) {
+    gv_visitor v(filename);
+    v.visit(program);
+}
+
+void Driver::interpret() {
+    interpreter_visitor v;
+    v.visit(program);
+}
+
+void Driver::symb() {
+    symbol_table_visitor v;
+    v.visit(program);
+    v.dump();
+}
+
+void Driver::ir(const std::string& dir) {
+    symbol_table_visitor v;
+    v.visit(program);
+    ir_tree_visitor ir;
+    ir.visit(program);
+
+
+    for (auto& i: ir.method_trees) {
+        IRT::PrintVisitor p(dir + "/ir_" + i.first + ".txt");
+        i.second->Accept(&p);
+    }
+}
 
 int Driver::parse(const std::string& filename)
 {

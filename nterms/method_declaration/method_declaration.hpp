@@ -2,24 +2,29 @@
 
 #include <string>
 #include <base.hpp>
+#include "../declaration/declaration.hpp"
 
 class Type;
 class Method_args;
-class Statements;
+class BaseScope;
+class Body;
 
-class Method_declaration: public Base
+class MethodDeclaration: public Declaration
 {
-    #include <friends_visitors>
+#include <friends_visitors>
+    BaseScope* scope;
     Type* type;
     std::string* name;
     Method_args* args;
     Body* body;
 public:
 
-    Method_declaration (Type* type,
-                        std::string* name,
-                        Method_args* args,
-                        Body* body);
-                        
+    MethodDeclaration (Type* type,
+                       std::string* name,
+                       Method_args* args,
+                       Body* body);
+
     void accept(Visitor* visitor) override;
+
+    void SetScope(BaseScope* scope);
 };

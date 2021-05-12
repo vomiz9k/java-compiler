@@ -1,29 +1,30 @@
 #pragma once
 
 #include <base.hpp>
+#include "../type/type.hpp"
 
 class Value: public Base
 {
     #include <friends_visitors>
     virtual void accept(Visitor* visitor) = 0;
 public:
-    Simple_Type* type;
+    SimpleType* type;
 };
 
-class Number_Value: public Value
+class IntValue: public Value
 {
     #include <friends_visitors>
     int value;
 public:
-    Number_Value(int value);
+    IntValue(int value);
     void accept(Visitor* visitor) override;
 };
 
-class TF_Value: public Value
+class BoolValue: public Value
 {
     #include <friends_visitors>
     bool value;
 public:
-    TF_Value(bool value);
+    BoolValue(bool value);
     void accept(Visitor* visitor) override;
 };

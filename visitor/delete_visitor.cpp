@@ -9,7 +9,7 @@ void delete_visitor::visit(Program* ptr) {
     delete ptr;
 }
 
-void delete_visitor::visit(Main_class* ptr) {
+void delete_visitor::visit(MainClass* ptr) {
 
     ptr->body->accept(this);
     
@@ -17,20 +17,20 @@ void delete_visitor::visit(Main_class* ptr) {
     delete ptr;
 }
 
-void delete_visitor::visit(Not_empty_Class_declarations* ptr) {
+void delete_visitor::visit(NotEmptyClassDeclarations* ptr) {
     
     ptr->class_decl->accept(this);
     ptr->prev_class_decls->accept(this);
     delete ptr;
 }
 
-void delete_visitor::visit(Empty_Class_declarations* ptr) {
+void delete_visitor::visit(EmptyClassDeclarations* ptr) {
     
     //nochildren
     delete ptr;
 }
 
-void delete_visitor::visit(Extended_Class_declaration* ptr) {
+void delete_visitor::visit(ExtendedClassDeclaration* ptr) {
 
     ptr->declarations->accept(this);
     
@@ -40,7 +40,7 @@ void delete_visitor::visit(Extended_Class_declaration* ptr) {
     delete ptr;
 }
 
-void delete_visitor::visit(Not_extended_Class_declaration* ptr) {
+void delete_visitor::visit(NotExtendedClassDeclaration* ptr) {
 
     ptr->declarations->accept(this);
     //name
@@ -55,20 +55,20 @@ void delete_visitor::visit(Body* ptr) {
 }
 
 
-void delete_visitor::visit(Empty_Statements* ptr) {
+void delete_visitor::visit(EmptyStatements* ptr) {
     
     //nochildren
     delete ptr;
 }
 
-void delete_visitor::visit(Not_empty_Statements* ptr) {
+void delete_visitor::visit(NotEmptyStatements* ptr) {
 
     ptr->prev_statements->accept(this);
     ptr->statement->accept(this);
     delete ptr;
 }
 
-void delete_visitor::visit(If_else_Statement* ptr) {
+void delete_visitor::visit(IfElseStatement* ptr) {
 
     ptr->condition->accept(this);
     ptr->do_if_true->accept(this);
@@ -76,7 +76,7 @@ void delete_visitor::visit(If_else_Statement* ptr) {
     delete ptr;
 }
 
-void delete_visitor::visit(If_Statement* ptr) {
+void delete_visitor::visit(IfStatement* ptr) {
 
     ptr->condition->accept(this);
     ptr->do_if_true->accept(this);
@@ -84,50 +84,50 @@ void delete_visitor::visit(If_Statement* ptr) {
 }
 
 
-void delete_visitor::visit(Assert_Statement* ptr) {
+void delete_visitor::visit(AssertStatement* ptr) {
 
     ptr->check->accept(this);
     delete ptr;
 }
 
-void delete_visitor::visit(Var_decl_Statement* ptr) {
+void delete_visitor::visit(VarDeclStatement* ptr) {
 
     ptr->decl->accept(this);
     delete ptr;
 }
 
-void delete_visitor::visit(Big_Statement* ptr) {
+void delete_visitor::visit(ScopeStatement* ptr) {
 
     ptr->body->accept(this);
     delete ptr;
 }
 
-void delete_visitor::visit(While_Statement* ptr) {
+void delete_visitor::visit(WhileStatement* ptr) {
 
     ptr->condition->accept(this);
     ptr->do_if_true->accept(this);
     delete ptr;
 }
 
-void delete_visitor::visit(Print_Statement* ptr) {
+void delete_visitor::visit(PrintStatement* ptr) {
 
     ptr->to_print->accept(this);
     delete ptr;
 }
 
-void delete_visitor::visit(Assignment_Statement* ptr) {
+void delete_visitor::visit(AssignmentStatement* ptr) {
 
     ptr->assignment->accept(this);
     delete ptr;
 }
 
-void delete_visitor::visit(Return_Statement* ptr) {
+void delete_visitor::visit(ReturnStatement* ptr) {
 
     ptr->to_return->accept(this);
     delete ptr;
 }
 
-void delete_visitor::visit(Method_invocation_Statement* ptr) {
+void delete_visitor::visit(MethodInvocationStatement* ptr) {
 
     ptr->invocation->accept(this);
     delete ptr;
@@ -137,27 +137,27 @@ void delete_visitor::visit(Method_invocation_Statement* ptr) {
 
 
 
-void delete_visitor::visit(Declarations_with_variable* ptr) {
+void delete_visitor::visit(DeclarationsWithVariable* ptr) {
     
     ptr->prev_decls->accept(this);
     ptr->var_decl->accept(this);
     delete ptr;
 }
 
-void delete_visitor::visit(Declarations_with_method* ptr) {
+void delete_visitor::visit(DeclarationsWithMethod* ptr) {
     
     ptr->prev_decls->accept(this);
     ptr->method_decl->accept(this);
     delete ptr;
 }
 
-void delete_visitor::visit(Empty_Declarations* ptr) {
+void delete_visitor::visit(EmptyDeclarations* ptr) {
 
     //nochildren
     delete ptr;
 }
 
-void delete_visitor::visit(Method_declaration* ptr) {
+void delete_visitor::visit(MethodDeclaration* ptr) {
 
 
     ptr->type->accept(this);
@@ -168,7 +168,7 @@ void delete_visitor::visit(Method_declaration* ptr) {
     delete ptr;
 }
 
-void delete_visitor::visit(Variable_declaration* ptr) {
+void delete_visitor::visit(VariableDeclaration* ptr) {
 
     ptr->type->accept(this);
     //name
@@ -176,19 +176,19 @@ void delete_visitor::visit(Variable_declaration* ptr) {
     delete ptr;
 }
 
-void delete_visitor::visit(Empty_Method_args* ptr) {
+void delete_visitor::visit(EmptyMethodArgs* ptr) {
 
     //nochildren
     delete ptr;
 }
 
-void delete_visitor::visit(Single_Method_args* ptr) {
+void delete_visitor::visit(SingleMethodArg* ptr) {
 
     ptr->arg->accept(this);
     delete ptr;
 }
 
-void delete_visitor::visit(Many_Method_args* ptr) {
+void delete_visitor::visit(MoreThanOneMethodArgs* ptr) {
 
     ptr->prev_args->accept(this);
     ptr->arg->accept(this);
@@ -201,27 +201,27 @@ void delete_visitor::visit(Method_arg* ptr) {
     delete ptr;
 }
 
-void delete_visitor::visit(Last_Method_multiple_arg* ptr) {
+void delete_visitor::visit(LastMethodArg* ptr) {
 
     ptr->arg->accept(this);
     delete ptr;
 }
 
-void delete_visitor::visit(Many_Method_multiple_arg* ptr) {
+void delete_visitor::visit(NotLastMethodArgs* ptr) {
     
     ptr->prev_args->accept(this);
     ptr->arg->accept(this);
     delete ptr;
 }
 
-void delete_visitor::visit(Simple_Type* ptr) {
+void delete_visitor::visit(SimpleType* ptr) {
 
     //name
     delete ptr->name;
     delete ptr;
 }
 
-void delete_visitor::visit(Array_Type* ptr) {
+void delete_visitor::visit(ArrayType* ptr) {
 
     //name
     delete ptr->name;
@@ -235,35 +235,8 @@ void delete_visitor::visit(Assignment* ptr) {
     delete ptr;
 }
 
-void delete_visitor::visit(Single_Lvalue* ptr) {
 
-    delete ptr->name;
-    delete ptr;
-}
-
-void delete_visitor::visit(Arr_el_Lvalue* ptr) {
-
-
-    ptr->index->accept(this);
-    delete ptr->name;
-    delete ptr;
-}
-
-void delete_visitor::visit(Field_Lvalue* ptr) {
-    
-    ptr->invocation->accept(this);
-    delete ptr;
-}
-
-
-void delete_visitor::visit(Field_arr_el_Lvalue* ptr) {
-
-    ptr->invocation->accept(this);
-    ptr->index->accept(this);
-}
-
-
-void delete_visitor::visit(Method_invocation* ptr) {
+void delete_visitor::visit(MethodInvocation* ptr) {
 
     ptr->from->accept(this);
     ptr->args->accept(this);
@@ -272,76 +245,76 @@ void delete_visitor::visit(Method_invocation* ptr) {
     delete ptr;
 }
 
-void delete_visitor::visit(Field_invocation* ptr) {
+void delete_visitor::visit(FieldInvocation* ptr) {
 
     //name
     delete ptr->name;
     delete ptr;
 }
 
-void delete_visitor::visit(Empty_Expressions* ptr) {
+void delete_visitor::visit(EmptyExpressions* ptr) {
 
     //nochildren
     delete ptr;
 }
 
-void delete_visitor::visit(Single_Expressions* ptr) {
+void delete_visitor::visit(SingleExpression* ptr) {
 
     ptr->expr->accept(this);
     delete ptr;
 }
 
-void delete_visitor::visit(Many_Expressions* ptr) {
+void delete_visitor::visit(MoreThanOneExpression* ptr) {
 
     ptr->prev_exprs->accept(this);
     ptr->expr->accept(this);
     delete ptr;
 }
 
-void delete_visitor::visit(Single_Multiple_expressions* ptr) {
+void delete_visitor::visit(LastExpression* ptr) {
 
     ptr->expr->accept(this);
     delete ptr;
 }
 
-void delete_visitor::visit(Many_Multiple_expressions* ptr) {
+void delete_visitor::visit(NotLastExpressions* ptr) {
 
     ptr->prev_exprs->accept(this);
     ptr->expr->accept(this);
     delete ptr;
 }
 
-void delete_visitor::visit(Value_Expr* ptr) {
+void delete_visitor::visit(ValueExpr* ptr) {
 
     ptr->value->accept(this);
     delete ptr;
 }
 
-void delete_visitor::visit(Id_Expr* ptr) {
+void delete_visitor::visit(IdExpr* ptr) {
     
     //name
     delete ptr;
 }
 
-void delete_visitor::visit(Array_el_Expr* ptr) {
+void delete_visitor::visit(ArrayElementExpr* ptr) {
 
     ptr->array->accept(this);
     ptr->index->accept(this);
     delete ptr;
 }
-void delete_visitor::visit(Length_Expr* ptr) {
+void delete_visitor::visit(LengthExpr* ptr) {
 
     ptr->array->accept(this);
     delete ptr;
 }
 
-void delete_visitor::visit(Field_invocation_Expr* ptr) {
+void delete_visitor::visit(FieldInvocationExpr* ptr) {
 
     ptr->invocation->accept(this);
     delete ptr;
 }
 
-void delete_visitor::visit(New_arr_Expr* ptr) {
+void delete_visitor::visit(NewArrayExpr* ptr) {
 
 
     ptr->count->accept(this);
@@ -350,121 +323,121 @@ void delete_visitor::visit(New_arr_Expr* ptr) {
     delete ptr;
 }
 
-void delete_visitor::visit(New_single_Expr* ptr) {
+void delete_visitor::visit(NewSingleExpr* ptr) {
     
     //name
     delete ptr->name;
     delete ptr;
 }
 
-void delete_visitor::visit(This_Expr* ptr) {
+void delete_visitor::visit(ThisExpr* ptr) {
 
     //nochildren
     delete ptr;
 }
 
-void delete_visitor::visit(Not_Expr* ptr) {
+void delete_visitor::visit(NotExpr* ptr) {
 
     ptr->expr->accept(this);
     delete ptr;
 }
 
-void delete_visitor::visit(Method_invocation_Expr* ptr) {
+void delete_visitor::visit(MethodInvocationExpr* ptr) {
     
     ptr->invocation->accept(this);
     delete ptr;
 }
 
-void delete_visitor::visit(Plus_Expr* ptr) {
+void delete_visitor::visit(PlusExpr* ptr) {
 
     ptr->first->accept(this);
     ptr->second->accept(this);
     delete ptr;
 }
 
-void delete_visitor::visit(Minus_Expr* ptr) {
+void delete_visitor::visit(MinusExpr* ptr) {
 
     ptr->first->accept(this);
     ptr->second->accept(this);
     delete ptr;
 }
 
-void delete_visitor::visit(Star_Expr* ptr) {
+void delete_visitor::visit(MulExpr* ptr) {
 
     ptr->first->accept(this);
     ptr->second->accept(this);
     delete ptr;
 }
 
-void delete_visitor::visit(Slash_Expr* ptr) {
+void delete_visitor::visit(DivExpr* ptr) {
 
     ptr->first->accept(this);
     ptr->second->accept(this);
     delete ptr;
 }
 
-void delete_visitor::visit(Percent_Expr* ptr) {
+void delete_visitor::visit(PercentExpr* ptr) {
 
     ptr->first->accept(this);
     ptr->second->accept(this);
     delete ptr;
 }
 
-void delete_visitor::visit(And_Expr* ptr) {
+void delete_visitor::visit(AndExpr* ptr) {
 
     ptr->first->accept(this);
     ptr->second->accept(this);
     delete ptr;
 }
 
-void delete_visitor::visit(Or_Expr* ptr) {
+void delete_visitor::visit(OrExpr* ptr) {
 
     ptr->first->accept(this);
     ptr->second->accept(this);
     delete ptr;
 }
 
-void delete_visitor::visit(Smaller_Expr* ptr) {
+void delete_visitor::visit(SmallerExpr* ptr) {
 
     ptr->first->accept(this);
     ptr->second->accept(this);
     delete ptr;
 }
 
-void delete_visitor::visit(Bigger_Expr* ptr) {
+void delete_visitor::visit(BiggerExpr* ptr) {
 
     ptr->first->accept(this);
     ptr->second->accept(this);
     delete ptr;
 }
 
-void delete_visitor::visit(Equal_Expr* ptr) {
+void delete_visitor::visit(EqualExpr* ptr) {
 
     ptr->first->accept(this);
     ptr->second->accept(this);
     delete ptr;
 }
 
-void delete_visitor::visit(Not_equal_Expr* ptr) {
+void delete_visitor::visit(NotEqualExpr* ptr) {
 
     ptr->first->accept(this);
     ptr->second->accept(this);
     delete ptr;
 }
 
-void delete_visitor::visit(Brackets_Expr* ptr) {
+void delete_visitor::visit(BracketsExpr* ptr) {
 
     ptr->expr->accept(this);
     delete ptr;
 }
 
-void delete_visitor::visit(Number_Value* ptr) {
+void delete_visitor::visit(IntValue* ptr) {
 
     //value(int)
     delete ptr;
 }
 
-void delete_visitor::visit(TF_Value* ptr) {
+void delete_visitor::visit(BoolValue* ptr) {
 
     //value(bool)
     delete ptr;

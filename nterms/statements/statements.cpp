@@ -1,22 +1,23 @@
 #include "statements.hpp"
+#include <visitor.hpp>
 
-Empty_Statements::Empty_Statements()
+EmptyStatements::EmptyStatements()
 {
 
 }
 
-void Empty_Statements::accept(Visitor* visitor)
+void EmptyStatements::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }
 
-Not_empty_Statements::Not_empty_Statements(Statements* prev_statements, Statement* statement)
+NotEmptyStatements::NotEmptyStatements(Statements* prev_statements, Statement* statement)
     : prev_statements(prev_statements), statement(statement)
 {
 
 }
 
-void Not_empty_Statements::accept(Visitor* visitor)
+void NotEmptyStatements::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }

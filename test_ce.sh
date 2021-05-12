@@ -1,1 +1,1 @@
-./Compiler errors
+./Compiler errors >> 1.txt

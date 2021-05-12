@@ -84,7 +84,7 @@ number         [0-9]+
                         return yy::parser::make_LENGTH ();
                     }
 
-"this"              {
+"this."             {
                         return yy::parser::make_THIS ();
                     }
 

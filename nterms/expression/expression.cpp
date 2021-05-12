@@ -1,250 +1,250 @@
 #include "expression.hpp"
-
+#include <visitor.hpp>
    
 
-Value_Expr::Value_Expr(Value* value): value(value)
+ValueExpr::ValueExpr(Value* value): value(value)
 {
 
 }
 
-void Value_Expr::accept(Visitor* visitor) 
-{
-    visitor->visit(this);
-}
-
-
-
-Id_Expr::Id_Expr(std::string* name) : name(name)
-{
-
-}
-
-void Id_Expr::accept(Visitor* visitor) 
+void ValueExpr::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }
 
 
 
-Array_el_Expr::Array_el_Expr(Expr* array, Expr* index)
+IdExpr::IdExpr(std::string* name) : name(name)
+{
+    is_lvalue = true;
+}
+
+void IdExpr::accept(Visitor* visitor)
+{
+    visitor->visit(this);
+}
+
+
+
+ArrayElementExpr::ArrayElementExpr(Expr* array, Expr* index)
     :array(array), index(index)
 {
-
+    is_lvalue = true;
 }
 
-void Array_el_Expr::accept(Visitor* visitor) 
+void ArrayElementExpr::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }
 
 
 
-Length_Expr::Length_Expr(Expr* array)
+LengthExpr::LengthExpr(Expr* array)
     :array(array)
 {
 
 }
-void Length_Expr::accept(Visitor* visitor) 
+void LengthExpr::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }
 
 
 
-Field_invocation_Expr::Field_invocation_Expr(Field_invocation* invocation)
+FieldInvocationExpr::FieldInvocationExpr(FieldInvocation* invocation)
     :invocation(invocation)
 {
-
+    is_lvalue = true;
 }
-void Field_invocation_Expr::accept(Visitor* visitor) 
+void FieldInvocationExpr::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }
 
-New_arr_Expr::New_arr_Expr(std::string* name, Expr* count)
+NewArrayExpr::NewArrayExpr(std::string* name, Expr* count)
     :name(name), count(count)
 {
     
 }
 
-void New_arr_Expr::accept(Visitor* visitor) 
+void NewArrayExpr::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }
 
-New_single_Expr::New_single_Expr(std::string* name) : name(name)
+NewSingleExpr::NewSingleExpr(std::string* name) : name(name)
 {
 
 }
 
-void New_single_Expr::accept(Visitor* visitor) 
-{
-    visitor->visit(this);
-}
-
-
-Not_Expr::Not_Expr(Expr* expr): expr(expr)
-{
-
-}
-
-void Not_Expr::accept(Visitor* visitor) 
+void NewSingleExpr::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }
 
 
-This_Expr::This_Expr()
+NotExpr::NotExpr(Expr* expr): expr(expr)
 {
 
 }
-void This_Expr::accept(Visitor* visitor) 
+
+void NotExpr::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }
 
 
-Method_invocation_Expr::Method_invocation_Expr(Method_invocation* invocation)
+ThisExpr::ThisExpr()
+{
+
+}
+void ThisExpr::accept(Visitor* visitor)
+{
+    visitor->visit(this);
+}
+
+
+MethodInvocationExpr::MethodInvocationExpr(MethodInvocation* invocation)
     :invocation(invocation)
 {
 
 }
-void Method_invocation_Expr::accept(Visitor* visitor) 
+void MethodInvocationExpr::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }
 
 
 
-Plus_Expr::Plus_Expr(Expr* first, Expr* second)
+PlusExpr::PlusExpr(Expr* first, Expr* second)
     : first(first), second(second)
 {
 
 }
 
-void Plus_Expr::accept(Visitor* visitor) 
+void PlusExpr::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }
 
 
-Minus_Expr::Minus_Expr(Expr* first, Expr* second)
+MinusExpr::MinusExpr(Expr* first, Expr* second)
     : first(first), second(second)
 {
     
 }
 
-void Minus_Expr::accept(Visitor* visitor) 
+void MinusExpr::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }
 
-Star_Expr::Star_Expr(Expr* first, Expr* second)
+MulExpr::MulExpr(Expr* first, Expr* second)
     : first(first), second(second)
 {
     
 }
 
-void Star_Expr::accept(Visitor* visitor) 
+void MulExpr::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }
 
-Slash_Expr::Slash_Expr(Expr* first, Expr* second)
+DivExpr::DivExpr(Expr* first, Expr* second)
     : first(first), second(second)
 {
     
 }
 
-void Slash_Expr::accept(Visitor* visitor) 
+void DivExpr::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }
 
-Percent_Expr::Percent_Expr(Expr* first, Expr* second)
+PercentExpr::PercentExpr(Expr* first, Expr* second)
     : first(first), second(second)
 {
     
 }
 
-void Percent_Expr::accept(Visitor* visitor) 
+void PercentExpr::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }
 
-And_Expr::And_Expr(Expr* first, Expr* second)
+AndExpr::AndExpr(Expr* first, Expr* second)
     : first(first), second(second)
 {
     
 }
 
-void And_Expr::accept(Visitor* visitor) 
+void AndExpr::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }
 
-Or_Expr::Or_Expr(Expr* first, Expr* second)
+OrExpr::OrExpr(Expr* first, Expr* second)
     : first(first), second(second)
 {
     
 }
 
-void Or_Expr::accept(Visitor* visitor) 
+void OrExpr::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }
 
-Smaller_Expr::Smaller_Expr(Expr* first, Expr* second)
+SmallerExpr::SmallerExpr(Expr* first, Expr* second)
     : first(first), second(second)
 {
     
 }
 
-void Smaller_Expr::accept(Visitor* visitor) 
+void SmallerExpr::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }
 
-Bigger_Expr::Bigger_Expr(Expr* first, Expr* second)
+BiggerExpr::BiggerExpr(Expr* first, Expr* second)
     : first(first), second(second)
 {
     
 }
 
-void Bigger_Expr::accept(Visitor* visitor) 
+void BiggerExpr::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }
 
-Equal_Expr::Equal_Expr(Expr* first, Expr* second)
+EqualExpr::EqualExpr(Expr* first, Expr* second)
     : first(first), second(second)
 {
     
 }
 
-void Equal_Expr::accept(Visitor* visitor) 
+void EqualExpr::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }
 
-Not_equal_Expr::Not_equal_Expr(Expr* first, Expr* second)
+NotEqualExpr::NotEqualExpr(Expr* first, Expr* second)
     : first(first), second(second)
 {
     
 }
 
-void Not_equal_Expr::accept(Visitor* visitor) 
+void NotEqualExpr::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }
 
 
 
-Brackets_Expr::Brackets_Expr(Expr* expr): expr(expr)
+BracketsExpr::BracketsExpr(Expr* expr): expr(expr)
 {
     
 }
-void Brackets_Expr::accept(Visitor* visitor) 
+void BracketsExpr::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }

@@ -7,7 +7,7 @@ class BaseScope;
 
 class Body;
 
-class Main_class: public Base
+class MainClass: public Base
 {
     #include <friends_visitors>
     BaseScope* scope;    
@@ -16,6 +16,6 @@ class Main_class: public Base
     
 public:
     void SetScope(BaseScope* scope);
-    Main_class(std::string* class_name, Body* body);
+    MainClass(std::string* class_name, Body* body);
     void accept(Visitor* visitor) override;
 };

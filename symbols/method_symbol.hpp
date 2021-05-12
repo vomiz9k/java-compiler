@@ -1,13 +1,16 @@
 #pragma once
 
 #include "base_symbol.hpp"
+#include <vector>
+
 
 class VariableSymbol;
-class Method_declaration;
+class MethodDeclaration;
+class Type;
 
 class MethodSymbol: public BaseSymbol {
 public:
-    MethodSymbol(Method_declaration* decl);
+    MethodSymbol(MethodDeclaration* decl);
     std::vector <VariableSymbol*> arguments;
     Type* type;
 

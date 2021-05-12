@@ -12,9 +12,4 @@ class BaseSymbol {
 public:
     std::string name;
     virtual int SymbolType() = 0;
-
 };
-
-#include "class_symbol.hpp"
-#include "method_symbol.hpp"
-#include "variable_symbol.hpp"

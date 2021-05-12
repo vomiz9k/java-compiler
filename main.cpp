@@ -1,6 +1,6 @@
 #include <driver.hpp>
 
-int main(int argc, char* argv[2])
+int main(int argc, char* argv[])
 {
     Driver d;
     std::string cmd = argv[1];
@@ -22,5 +22,9 @@ int main(int argc, char* argv[2])
     }
     else if (cmd == "errors") {
         Driver::error_test();
-    }    
+    }
+    else if (cmd == "ir") {
+        d.parse(argv[2]);
+        d.ir(argv[3]);
+    }
 }

@@ -18,92 +18,83 @@ class interpreter_visitor: public Visitor
 
 public:
     void visit(Program*) override;
-    void visit(Main_class*) override;
+    void visit(MainClass*) override;
 
-    void visit(Not_empty_Class_declarations*) override {};
-    void visit(Empty_Class_declarations*) override {};   
+    void visit(NotEmptyClassDeclarations*) override {};
+    void visit(EmptyClassDeclarations*) override {};
     
     void visit(Body*) override;
-    void visit(Empty_Statements*) override {};
-    void visit(Not_empty_Statements*) override {};
+    void visit(EmptyStatements*) override {};
+    void visit(NotEmptyStatements*) override {};
 
-    void visit(If_else_Statement*) override;
-    void visit(If_Statement*) override;
-    void visit(Assert_Statement*) override;
-    void visit(Var_decl_Statement*) override;
-    void visit(Big_Statement*) override;
-    void visit(While_Statement*) override;
-    void visit(Print_Statement*) override;
-    void visit(Assignment_Statement*) override;
-    void visit(Return_Statement*) override {};
-    void visit(Method_invocation_Statement*) override {};
+    void visit(IfElseStatement*) override;
+    void visit(IfStatement*) override;
+    void visit(AssertStatement*) override;
+    void visit(VarDeclStatement*) override;
+    void visit(ScopeStatement*) override;
+    void visit(WhileStatement*) override;
+    void visit(PrintStatement*) override;
+    void visit(AssignmentStatement*) override;
+    void visit(ReturnStatement*) override {};
+    void visit(MethodInvocationStatement*) override {};
 
-    void visit(Single_Lvalue* ptr)  override;
-    void visit(Arr_el_Lvalue* ptr) override ;
-
-    void visit(Field_Lvalue* ptr) override ;
-
-
-    void visit(Field_arr_el_Lvalue* ptr)  override;
-
-
-    void visit(Extended_Class_declaration*) override {};
-    void visit(Not_extended_Class_declaration*) override {};
+    void visit(ExtendedClassDeclaration*) override {};
+    void visit(NotExtendedClassDeclaration*) override {};
     
 
-    void visit(Declarations_with_variable*) override {};
-    void visit(Declarations_with_method*) override {};
-    void visit(Empty_Declarations*) override {};
+    void visit(DeclarationsWithVariable*) override {};
+    void visit(DeclarationsWithMethod*) override {};
+    void visit(EmptyDeclarations*) override {};
 
-    void visit(Method_declaration*) override {};
-    void visit(Variable_declaration*) override;
+    void visit(MethodDeclaration*) override {};
+    void visit(VariableDeclaration*) override;
     
-    void visit(Empty_Method_args*) override {};
-    void visit(Single_Method_args*) override {};
-    void visit(Many_Method_args*) override {};
+    void visit(EmptyMethodArgs*) override {};
+    void visit(SingleMethodArg*) override {};
+    void visit(MoreThanOneMethodArgs*) override {};
     void visit(Method_arg*) override {};
-    void visit(Last_Method_multiple_arg*) override {};
-    void visit(Many_Method_multiple_arg*) override {};
+    void visit(LastMethodArg*) override {};
+    void visit(NotLastMethodArgs*) override {};
 
-    void visit(Simple_Type*) override;
-    void visit(Array_Type*) override;
+    void visit(SimpleType*) override;
+    void visit(ArrayType*) override;
 
     void visit(Assignment*) override;
-    void visit(Method_invocation*) override {};
-    void visit(Field_invocation*) override;
+    void visit(MethodInvocation*) override {};
+    void visit(FieldInvocation*) override;
 
-    void visit(Empty_Expressions*) override {};
-    void visit(Single_Expressions*) override {};
-    void visit(Many_Expressions*) override {};
-    void visit(Single_Multiple_expressions*) override {};
-    void visit(Many_Multiple_expressions*) override {};
+    void visit(EmptyExpressions*) override {};
+    void visit(SingleExpression*) override {};
+    void visit(MoreThanOneExpression*) override {};
+    void visit(LastExpression*) override {};
+    void visit(NotLastExpressions*) override {};
 
-    void visit(Value_Expr*) override;
-    void visit(Id_Expr*) override;
-    void visit(Array_el_Expr*) override {};
-    void visit(Length_Expr*) override {};
+    void visit(ValueExpr*) override;
+    void visit(IdExpr*) override;
+    void visit(ArrayElementExpr*) override {};
+    void visit(LengthExpr*) override {};
 
-    void visit(Field_invocation_Expr*) override {};
+    void visit(FieldInvocationExpr*) override {};
 
-    void visit(New_arr_Expr*) override;
-    void visit(New_single_Expr*) override {};
-    void visit(This_Expr*) override {};
+    void visit(NewArrayExpr*) override;
+    void visit(NewSingleExpr*) override {};
+    void visit(ThisExpr*) override {};
 
-    void visit(Not_Expr*) override;
-    void visit(Method_invocation_Expr*) override {};
-    void visit(Plus_Expr*) override;
-    void visit(Minus_Expr*) override;
-    void visit(Star_Expr*) override;
-    void visit(Slash_Expr*) override;
-    void visit(Percent_Expr*) override;
-    void visit(And_Expr*) override;
-    void visit(Or_Expr*) override;
-    void visit(Smaller_Expr*) override;
-    void visit(Bigger_Expr*) override;
-    void visit(Equal_Expr*) override;
-    void visit(Not_equal_Expr*) override;
-    void visit(Brackets_Expr*) override;
+    void visit(NotExpr*) override;
+    void visit(MethodInvocationExpr*) override {};
+    void visit(PlusExpr*) override;
+    void visit(MinusExpr*) override;
+    void visit(MulExpr*) override;
+    void visit(DivExpr*) override;
+    void visit(PercentExpr*) override;
+    void visit(AndExpr*) override;
+    void visit(OrExpr*) override;
+    void visit(SmallerExpr*) override;
+    void visit(BiggerExpr*) override;
+    void visit(EqualExpr*) override;
+    void visit(NotEqualExpr*) override;
+    void visit(BracketsExpr*) override;
 
-    void visit(Number_Value*) override;
-    void visit(TF_Value*) override;
+    void visit(IntValue*) override;
+    void visit(BoolValue*) override;
 };

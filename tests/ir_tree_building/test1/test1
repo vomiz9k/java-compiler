@@ -1,0 +1,21 @@
+gitclass Main {
+    public static void main() {
+    }
+}
+
+
+class jija {
+    int q;
+    public int joja(int a) {
+        int b;
+        {
+            int c;
+            int d;
+        }
+        {
+            int h;
+        }
+        int f;
+        System.out.println(f);
+    }
+}

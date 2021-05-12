@@ -1,13 +1,13 @@
 #include "variable_declaration.hpp"
+#include <visitor.hpp>
 
-
- Variable_declaration::Variable_declaration (Type* type, std::string* name)
- : type(type), name(name)
+VariableDeclaration::VariableDeclaration (Type* type, std::string* name)
+        : type(type), name(name)
 {
 
 }
-                        
-void  Variable_declaration::accept(Visitor* visitor)
+
+void  VariableDeclaration::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }

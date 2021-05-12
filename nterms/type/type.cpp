@@ -1,25 +1,26 @@
 #include "type.hpp"
+#include <visitor.hpp>
 
 
-Simple_Type::Simple_Type(std::string* namee)
+SimpleType::SimpleType(std::string* namee)
 {
     name = namee;
     is_array = false;
 }
 
-void Simple_Type::accept(Visitor* visitor)
+void SimpleType::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }
 
 
-Array_Type::Array_Type(std::string* namee)
+ArrayType::ArrayType(std::string* namee)
 {
     name = namee;
     is_array = true;
 }
     
-void Array_Type::accept(Visitor* visitor)
+void ArrayType::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }

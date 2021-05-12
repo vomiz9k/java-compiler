@@ -1,24 +1,25 @@
 #include "class_declarations.hpp"
+#include <visitor.hpp>
 
-Empty_Class_declarations::Empty_Class_declarations()
+EmptyClassDeclarations::EmptyClassDeclarations()
 {
 
 }
     
-void Empty_Class_declarations::accept(Visitor* visitor)
+void EmptyClassDeclarations::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }
 
 
 
-Not_empty_Class_declarations::Not_empty_Class_declarations(Class_declarations* prev_class_decls, Class_declaration* class_decl)
+NotEmptyClassDeclarations::NotEmptyClassDeclarations(Class_declarations* prev_class_decls, Class_declaration* class_decl)
     :prev_class_decls(prev_class_decls), class_decl(class_decl)
 {
 
 }
 
-void  Not_empty_Class_declarations::accept(Visitor* visitor)
+void  NotEmptyClassDeclarations::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }

@@ -1,59 +1,59 @@
 #include "expressions.hpp"
+#include <visitor.hpp>
 
 
-
-Empty_Expressions::Empty_Expressions()
+EmptyExpressions::EmptyExpressions()
 {
 
 }
 
-void Empty_Expressions::accept(Visitor* visitor)
+void EmptyExpressions::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }
 
-Single_Expressions::Single_Expressions(Expr* expr)
+SingleExpression::SingleExpression(Expr* expr)
     :expr(expr)
 {
 
 }
-void Single_Expressions::accept(Visitor* visitor)
+void SingleExpression::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }
 
 
-Many_Expressions::Many_Expressions(Multiple_expressions* prev_exprs, Expr* expr)
+MoreThanOneExpression::MoreThanOneExpression(Multiple_expressions* prev_exprs, Expr* expr)
     :expr(expr), prev_exprs(prev_exprs)
 {
     
 }
 
-void Many_Expressions::accept(Visitor* visitor)
+void MoreThanOneExpression::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }
 
 
-Single_Multiple_expressions::Single_Multiple_expressions(Expr* expr)
+LastExpression::LastExpression(Expr* expr)
     :expr(expr)
 {
 
 }
 
-void Single_Multiple_expressions::accept(Visitor* visitor)
+void LastExpression::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }
 
 
-Many_Multiple_expressions::Many_Multiple_expressions(Multiple_expressions* prev_exprs, Expr* expr)
+NotLastExpressions::NotLastExpressions(Multiple_expressions* prev_exprs, Expr* expr)
     :prev_exprs(prev_exprs), expr(expr)
 {
 
 }
  
-void Many_Multiple_expressions::accept(Visitor* visitor)
+void NotLastExpressions::accept(Visitor* visitor)
 {
     visitor->visit(this);
 }

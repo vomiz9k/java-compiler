@@ -4,10 +4,10 @@
 #include <string>
 
 class Expr;
-class Variable_declaration;
+class VariableDeclaration;
 class Statements;
 class Assignment;
-class Method_invocation;
+class MethodInvocation;
 
 
 class Statement: public Base
@@ -16,7 +16,7 @@ class Statement: public Base
     virtual void accept(Visitor* visitor) = 0;
 };
 
-class If_else_Statement: public Statement
+class IfElseStatement: public Statement
 {
     #include <friends_visitors>
     Expr* condition;
@@ -24,99 +24,99 @@ class If_else_Statement: public Statement
     Statement* do_else;
 public:
 
-    If_else_Statement(Expr* condition, Statement* do_if_true, Statement* do_else);
+    IfElseStatement(Expr* condition, Statement* do_if_true, Statement* do_else);
     void accept(Visitor* visitor) override;
 };
 
-class If_Statement: public Statement
+class IfStatement: public Statement
 {
     #include <friends_visitors>
     Expr* condition;
     Statement* do_if_true;
 
 public:
-    If_Statement(Expr* condition, Statement* do_if_true);
+    IfStatement(Expr* condition, Statement* do_if_true);
     void accept(Visitor* visitor) override;
 };
 
-class Assert_Statement: public Statement
+class AssertStatement: public Statement
 {
     #include <friends_visitors>
     Expr* check;
 
 public:
-    Assert_Statement(Expr* check);
+    AssertStatement(Expr* check);
     void accept(Visitor* visitor) override;
 };
 
-class Var_decl_Statement: public Statement
+class VarDeclStatement: public Statement
 {
     #include <friends_visitors>
-    Variable_declaration* decl;
+    VariableDeclaration* decl;
 
 public:
-    Var_decl_Statement(Variable_declaration* decl);
+    VarDeclStatement(VariableDeclaration* decl);
     void accept(Visitor* visitor) override;  
 };
 
 class Body;
-class Big_Statement: public Statement
+class ScopeStatement: public Statement
 {
     #include <friends_visitors>
     Body* body;
     
 public:
-    Big_Statement(Body* body);
+    ScopeStatement(Body* body);
     void accept(Visitor* visitor) override;
 };
 
-class While_Statement: public Statement
+class WhileStatement: public Statement
 {
     #include <friends_visitors>
     Expr* condition;
     Statement* do_if_true;
 
 public:
-    While_Statement(Expr* condition, Statement* do_if_true);
+    WhileStatement(Expr* condition, Statement* do_if_true);
     void accept(Visitor* visitor) override;
 };
 
-class Print_Statement: public Statement
+class PrintStatement: public Statement
 {
     #include <friends_visitors>
     Expr* to_print;
 
 public:
-    Print_Statement(Expr* to_print);
+    PrintStatement(Expr* to_print);
     void accept(Visitor* visitor) override;
 };
 
-class Assignment_Statement: public Statement
+class AssignmentStatement: public Statement
 {
     #include <friends_visitors>
     Assignment* assignment;
 
 public:
-    Assignment_Statement(Assignment* assignment);
+    AssignmentStatement(Assignment* assignment);
     void accept(Visitor* visitor) override;
 };
 
-class Return_Statement: public Statement
+class ReturnStatement: public Statement
 {
     #include <friends_visitors>
     Expr* to_return;
 
 public:
-    Return_Statement(Expr* to_return);
+    ReturnStatement(Expr* to_return);
     void accept(Visitor* visitor) override;
 };
 
-class Method_invocation_Statement: public Statement
+class MethodInvocationStatement: public Statement
 {
     #include <friends_visitors>
-    Method_invocation* invocation;
+    MethodInvocation* invocation;
 public:
-    Method_invocation_Statement(Method_invocation* invocation);
+    MethodInvocationStatement(MethodInvocation* invocation);
     void accept(Visitor* visitor) override;
 };
 

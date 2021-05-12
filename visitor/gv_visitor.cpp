@@ -40,15 +40,15 @@ void gv_visitor::visit(Program* ptr) {
     out << "}";
 }
 
-void gv_visitor::visit(Main_class* ptr) {
-    box(ptr, "Main_class: " + *ptr->name);
+void gv_visitor::visit(MainClass* ptr) {
+    box(ptr, "MainClass: " + *ptr->name);
     arrow(ptr, ptr->body);
     ptr->body->accept(this);
     //class_name
 }
 
-void gv_visitor::visit(Not_empty_Class_declarations* ptr) {
-    box(ptr, "Not_empty_Class_declarations");
+void gv_visitor::visit(NotEmptyClassDeclarations* ptr) {
+    box(ptr, "NotEmptyClassDeclarations");
    
     arrow(ptr, ptr->prev_class_decls);
     ptr->prev_class_decls->accept(this);
@@ -57,12 +57,12 @@ void gv_visitor::visit(Not_empty_Class_declarations* ptr) {
     ptr->class_decl->accept(this);
 }
 
-void gv_visitor::visit(Empty_Class_declarations* ptr) {
+void gv_visitor::visit(EmptyClassDeclarations* ptr) {
     box(ptr, "Empty_Class_Declarations");
     //nochildren
 }
 
-void gv_visitor::visit(Extended_Class_declaration* ptr) {
+void gv_visitor::visit(ExtendedClassDeclaration* ptr) {
     box(ptr, "Class Declaration: " + *ptr->name + ". Extended by " + *ptr->base);
 
     for(auto i : ptr->decls) {
@@ -73,7 +73,7 @@ void gv_visitor::visit(Extended_Class_declaration* ptr) {
     //name, base
 }
 
-void gv_visitor::visit(Not_extended_Class_declaration* ptr) {
+void gv_visitor::visit(NotExtendedClassDeclaration* ptr) {
     box(ptr, "Class Decalration: " + *ptr->name);
 
     for(auto i : ptr->decls) {
@@ -92,12 +92,12 @@ void gv_visitor::visit(Body* ptr) {
     //nochildren
 }
 
-void gv_visitor::visit(Empty_Statements* ptr) {
+void gv_visitor::visit(EmptyStatements* ptr) {
     box(ptr, "Empty");
     //nochildren
 }
 
-void gv_visitor::visit(Not_empty_Statements* ptr) {
+void gv_visitor::visit(NotEmptyStatements* ptr) {
     box(ptr, "Not empty statements");
     arrow(ptr, ptr->prev_statements);
     ptr->prev_statements->accept(this);
@@ -105,7 +105,7 @@ void gv_visitor::visit(Not_empty_Statements* ptr) {
     ptr->statement->accept(this);
 }
 
-void gv_visitor::visit(If_else_Statement* ptr) {
+void gv_visitor::visit(IfElseStatement* ptr) {
     box(ptr, "if else statement");
     arrow(ptr, ptr->condition, "condition");
     ptr->condition->accept(this);
@@ -115,7 +115,7 @@ void gv_visitor::visit(If_else_Statement* ptr) {
     ptr->do_else->accept(this);
 }
 
-void gv_visitor::visit(If_Statement* ptr) {
+void gv_visitor::visit(IfStatement* ptr) {
     box(ptr, "if statement");
     arrow(ptr, ptr->condition, "condition");
     ptr->condition->accept(this);
@@ -124,25 +124,25 @@ void gv_visitor::visit(If_Statement* ptr) {
 }
 
 
-void gv_visitor::visit(Assert_Statement* ptr) {
+void gv_visitor::visit(AssertStatement* ptr) {
     box(ptr, "assert");
     arrow(ptr, ptr->check);
     ptr->check->accept(this);
 }
 
-void gv_visitor::visit(Var_decl_Statement* ptr) {
+void gv_visitor::visit(VarDeclStatement* ptr) {
     box(ptr, "Var decl stmt");
     arrow(ptr, ptr->decl);
     ptr->decl->accept(this);
 }
 
-void gv_visitor::visit(Big_Statement* ptr) {
+void gv_visitor::visit(ScopeStatement* ptr) {
     box(ptr, "new scope");
     arrow(ptr, ptr->body);
     ptr->body->accept(this);
 }
 
-void gv_visitor::visit(While_Statement* ptr) {
+void gv_visitor::visit(WhileStatement* ptr) {
     box(ptr, "while");
     arrow(ptr, ptr->condition, "condition");
     ptr->condition->accept(this);
@@ -150,25 +150,25 @@ void gv_visitor::visit(While_Statement* ptr) {
     ptr->do_if_true->accept(this);
 }
 
-void gv_visitor::visit(Print_Statement* ptr) {
+void gv_visitor::visit(PrintStatement* ptr) {
     box(ptr, "print");
     arrow(ptr, ptr->to_print);
     ptr->to_print->accept(this);
 }
 
-void gv_visitor::visit(Assignment_Statement* ptr) {
+void gv_visitor::visit(AssignmentStatement* ptr) {
     box(ptr, "assignment stmt");
     arrow(ptr, ptr->assignment);
     ptr->assignment->accept(this);
 }
 
-void gv_visitor::visit(Return_Statement* ptr) {
+void gv_visitor::visit(ReturnStatement* ptr) {
     box(ptr, "return");
     arrow(ptr, ptr->to_return);
     ptr->to_return->accept(this);
 }
 
-void gv_visitor::visit(Method_invocation_Statement* ptr) {
+void gv_visitor::visit(MethodInvocationStatement* ptr) {
     box(ptr, "method invoce stmt");
     arrow(ptr, ptr->invocation);
     ptr->invocation->accept(this);
@@ -178,7 +178,7 @@ void gv_visitor::visit(Method_invocation_Statement* ptr) {
 
 
 
-void gv_visitor::visit(Declarations_with_variable* ptr) {
+void gv_visitor::visit(DeclarationsWithVariable* ptr) {
     box(ptr, "decl with variable");
     arrow(ptr, ptr->prev_decls, "decls");
     ptr->prev_decls->accept(this);
@@ -186,7 +186,7 @@ void gv_visitor::visit(Declarations_with_variable* ptr) {
     ptr->var_decl->accept(this);
 }
 
-void gv_visitor::visit(Declarations_with_method* ptr) {
+void gv_visitor::visit(DeclarationsWithMethod* ptr) {
     box(ptr, "decl with method");
     arrow(ptr, ptr->prev_decls, "decls");
     ptr->prev_decls->accept(this);
@@ -194,12 +194,12 @@ void gv_visitor::visit(Declarations_with_method* ptr) {
     ptr->method_decl->accept(this);
 }
 
-void gv_visitor::visit(Empty_Declarations* ptr) {
+void gv_visitor::visit(EmptyDeclarations* ptr) {
     box(ptr, "empty");
     //nochildren
 }
 
-void gv_visitor::visit(Method_declaration* ptr) {
+void gv_visitor::visit(MethodDeclaration* ptr) {
     box(ptr, "method decl: " + *ptr->name);
     arrow(ptr, ptr->type, "type");
     ptr->type->accept(this);
@@ -210,25 +210,25 @@ void gv_visitor::visit(Method_declaration* ptr) {
     //name
 }
 
-void gv_visitor::visit(Variable_declaration* ptr) {
+void gv_visitor::visit(VariableDeclaration* ptr) {
     box(ptr, "var decl: " + *ptr->name);
     arrow(ptr, ptr->type, "type");
     ptr->type->accept(this);
     //name
 }
 
-void gv_visitor::visit(Empty_Method_args* ptr) {
+void gv_visitor::visit(EmptyMethodArgs* ptr) {
     box(ptr, "empty");
     //nochildren
 }
 
-void gv_visitor::visit(Single_Method_args* ptr) {
+void gv_visitor::visit(SingleMethodArg* ptr) {
     box(ptr, "single arg");
     arrow(ptr, ptr->arg);
     ptr->arg->accept(this);
 }
 
-void gv_visitor::visit(Many_Method_args* ptr) {
+void gv_visitor::visit(MoreThanOneMethodArgs* ptr) {
     box(ptr, "mnogo args");
     for(auto i : ptr->args) {
         arrow(ptr, i);
@@ -242,13 +242,13 @@ void gv_visitor::visit(Method_arg* ptr) {
     ptr->type->accept(this);
 }
 
-void gv_visitor::visit(Last_Method_multiple_arg* ptr) {
+void gv_visitor::visit(LastMethodArg* ptr) {
     box(ptr, "first");
     arrow(ptr, ptr->arg);
     ptr->arg->accept(this);
 }
 
-void gv_visitor::visit(Many_Method_multiple_arg* ptr) {
+void gv_visitor::visit(NotLastMethodArgs* ptr) {
     box(ptr, "mnogo args2");
     arrow(ptr, ptr->prev_args, "prev");
     ptr->prev_args->accept(this);
@@ -256,12 +256,12 @@ void gv_visitor::visit(Many_Method_multiple_arg* ptr) {
     ptr->arg->accept(this);
 }
 
-void gv_visitor::visit(Simple_Type* ptr) {
+void gv_visitor::visit(SimpleType* ptr) {
     box(ptr, "simple type: " + *ptr->name);
     //name
 }
 
-void gv_visitor::visit(Array_Type* ptr) {
+void gv_visitor::visit(ArrayType* ptr) {
     box(ptr, "array type: " + *ptr->name);
     //name
 }
@@ -275,37 +275,8 @@ void gv_visitor::visit(Assignment* ptr) {
 }
 
 
-void gv_visitor::visit(Single_Lvalue* ptr) {
-    box(ptr, "lvalue: " + *ptr->name);
-    //name
-}
 
-void gv_visitor::visit(Arr_el_Lvalue* ptr) {
-
-    box(ptr, "lvalue: " + *ptr->name);
-    arrow(ptr, ptr->index, "index");
-    ptr->index->accept(this);
-    //name
-}
-
-void gv_visitor::visit(Field_Lvalue* ptr) {
-    box(ptr, "field_invoc_lvalue");
-    arrow(ptr, ptr->invocation);
-    ptr->invocation->accept(this);
-}
-
-
-void gv_visitor::visit(Field_arr_el_Lvalue* ptr) {
-    box(ptr, "field_invoc_lvalue ARRAY");
-    arrow(ptr, ptr->invocation, "invocation");
-    ptr->invocation->accept(this);
-    arrow(ptr, ptr->index, "index");
-    ptr->index->accept(this);
-}
-
-
-
-void gv_visitor::visit(Method_invocation* ptr) {
+void gv_visitor::visit(MethodInvocation* ptr) {
     box(ptr, "method invocation: " + *ptr->name);
     arrow(ptr, ptr->from, "caller");
     ptr->from->accept(this);
@@ -314,23 +285,23 @@ void gv_visitor::visit(Method_invocation* ptr) {
     //name
 }
 
-void gv_visitor::visit(Field_invocation* ptr) {
+void gv_visitor::visit(FieldInvocation* ptr) {
     box(ptr, "field invoce: " + *ptr->name);
     //name
 }
 
-void gv_visitor::visit(Empty_Expressions* ptr) {
+void gv_visitor::visit(EmptyExpressions* ptr) {
     box(ptr, "empty");
     //nochildren
 }
 
-void gv_visitor::visit(Single_Expressions* ptr) {
+void gv_visitor::visit(SingleExpression* ptr) {
     box(ptr, "single expr");
     arrow(ptr, ptr->expr);
     ptr->expr->accept(this);
 }
 
-void gv_visitor::visit(Many_Expressions* ptr) {
+void gv_visitor::visit(MoreThanOneExpression* ptr) {
     box(ptr, "mnogo expr");
     for(auto i: ptr->exprs) {
         arrow(ptr, i);
@@ -338,13 +309,13 @@ void gv_visitor::visit(Many_Expressions* ptr) {
     }
 }
 
-void gv_visitor::visit(Single_Multiple_expressions* ptr) {
+void gv_visitor::visit(LastExpression* ptr) {
     box(ptr, "single expr 2");
     arrow(ptr, ptr->expr);
     ptr->expr->accept(this);
 }
 
-void gv_visitor::visit(Many_Multiple_expressions* ptr) {
+void gv_visitor::visit(NotLastExpressions* ptr) {
     box(ptr, "mnogo expr2");
     arrow(ptr, ptr->prev_exprs, "prev");
     ptr->prev_exprs->accept(this);
@@ -352,66 +323,66 @@ void gv_visitor::visit(Many_Multiple_expressions* ptr) {
     ptr->expr->accept(this);
 }
 
-void gv_visitor::visit(Value_Expr* ptr) {
+void gv_visitor::visit(ValueExpr* ptr) {
     box(ptr, "Value expr");
     arrow(ptr, ptr->value);
     ptr->value->accept(this);
 }
 
-void gv_visitor::visit(Id_Expr* ptr) {
+void gv_visitor::visit(IdExpr* ptr) {
     box(ptr, "id expr: " + *ptr->name);
     //name
 }
 
-void gv_visitor::visit(Array_el_Expr* ptr) {
+void gv_visitor::visit(ArrayElementExpr* ptr) {
     box(ptr, "array el expr");
     arrow(ptr, ptr->array, "arr");
     ptr->array->accept(this);
     arrow(ptr, ptr->index, "index");
     ptr->index->accept(this);
 }
-void gv_visitor::visit(Length_Expr* ptr) {
+void gv_visitor::visit(LengthExpr* ptr) {
     box(ptr, "Length of");
     arrow(ptr, ptr->array);
     ptr->array->accept(this);
 }
 
-void gv_visitor::visit(Field_invocation_Expr* ptr) {
+void gv_visitor::visit(FieldInvocationExpr* ptr) {
     box(ptr, "field invoce expr");
     arrow(ptr, ptr->invocation);
     ptr->invocation->accept(this);
 }
 
-void gv_visitor::visit(New_arr_Expr* ptr) {
+void gv_visitor::visit(NewArrayExpr* ptr) {
     box(ptr, "new " + *ptr->name + " []");
     arrow(ptr, ptr->count, "count");
     ptr->count->accept(this);
     //type(str)
 }
 
-void gv_visitor::visit(New_single_Expr* ptr) {
+void gv_visitor::visit(NewSingleExpr* ptr) {
     box(ptr, "new " + *ptr->name + " ()");
     //name
 }
 
-void gv_visitor::visit(This_Expr* ptr) {
+void gv_visitor::visit(ThisExpr* ptr) {
     box(ptr, "this");
     //nochildren
 }
 
-void gv_visitor::visit(Not_Expr* ptr) {
+void gv_visitor::visit(NotExpr* ptr) {
     box(ptr, "Not(!)");
     arrow(ptr, ptr->expr);
     ptr->expr->accept(this);
 }
 
-void gv_visitor::visit(Method_invocation_Expr* ptr) {
+void gv_visitor::visit(MethodInvocationExpr* ptr) {
     box(ptr, "method invoce expr");
     arrow(ptr, ptr->invocation);
     ptr->invocation->accept(this);
 }
 
-void gv_visitor::visit(Plus_Expr* ptr) {
+void gv_visitor::visit(PlusExpr* ptr) {
     box(ptr, "+");
     arrow(ptr, ptr->first, "left");
     ptr->first->accept(this);
@@ -419,7 +390,7 @@ void gv_visitor::visit(Plus_Expr* ptr) {
     ptr->second->accept(this);
 }
 
-void gv_visitor::visit(Minus_Expr* ptr) {
+void gv_visitor::visit(MinusExpr* ptr) {
     box(ptr, "-");
     arrow(ptr, ptr->first, "left");
     ptr->first->accept(this);
@@ -427,7 +398,7 @@ void gv_visitor::visit(Minus_Expr* ptr) {
     ptr->second->accept(this);
 }
 
-void gv_visitor::visit(Star_Expr* ptr) {
+void gv_visitor::visit(MulExpr* ptr) {
     box(ptr, "*");
     arrow(ptr, ptr->first, "left");
     ptr->first->accept(this);
@@ -435,7 +406,7 @@ void gv_visitor::visit(Star_Expr* ptr) {
     ptr->second->accept(this);
 }
 
-void gv_visitor::visit(Slash_Expr* ptr) {
+void gv_visitor::visit(DivExpr* ptr) {
     box(ptr, "/");
     arrow(ptr, ptr->first, "left");
     ptr->first->accept(this);
@@ -443,7 +414,7 @@ void gv_visitor::visit(Slash_Expr* ptr) {
     ptr->second->accept(this);
 }
 
-void gv_visitor::visit(Percent_Expr* ptr) {
+void gv_visitor::visit(PercentExpr* ptr) {
     box(ptr, "%");
     arrow(ptr, ptr->first, "left");
     ptr->first->accept(this);
@@ -451,7 +422,7 @@ void gv_visitor::visit(Percent_Expr* ptr) {
     ptr->second->accept(this);
 }
 
-void gv_visitor::visit(And_Expr* ptr) {
+void gv_visitor::visit(AndExpr* ptr) {
     box(ptr, "&&");
     arrow(ptr, ptr->first, "left");
     ptr->first->accept(this);
@@ -459,7 +430,7 @@ void gv_visitor::visit(And_Expr* ptr) {
     ptr->second->accept(this);
 }
 
-void gv_visitor::visit(Or_Expr* ptr) {
+void gv_visitor::visit(OrExpr* ptr) {
     box(ptr, "or");
     arrow(ptr, ptr->first, "left");
     ptr->first->accept(this);
@@ -467,7 +438,7 @@ void gv_visitor::visit(Or_Expr* ptr) {
     ptr->second->accept(this);
 }
 
-void gv_visitor::visit(Smaller_Expr* ptr) {
+void gv_visitor::visit(SmallerExpr* ptr) {
     box(ptr, "<");
     arrow(ptr, ptr->first, "left");
     ptr->first->accept(this);
@@ -475,7 +446,7 @@ void gv_visitor::visit(Smaller_Expr* ptr) {
     ptr->second->accept(this);
 }
 
-void gv_visitor::visit(Bigger_Expr* ptr) {
+void gv_visitor::visit(BiggerExpr* ptr) {
     box(ptr, ">");
     arrow(ptr, ptr->first, "left");
     ptr->first->accept(this);
@@ -483,7 +454,7 @@ void gv_visitor::visit(Bigger_Expr* ptr) {
     ptr->second->accept(this);
 }
 
-void gv_visitor::visit(Equal_Expr* ptr) {
+void gv_visitor::visit(EqualExpr* ptr) {
     box(ptr, "==");
     arrow(ptr, ptr->first, "left");
     ptr->first->accept(this);
@@ -491,7 +462,7 @@ void gv_visitor::visit(Equal_Expr* ptr) {
     ptr->second->accept(this);
 }
 
-void gv_visitor::visit(Not_equal_Expr* ptr) {
+void gv_visitor::visit(NotEqualExpr* ptr) {
     box(ptr, "!=");
     arrow(ptr, ptr->first, "left");
     ptr->first->accept(this);
@@ -499,20 +470,20 @@ void gv_visitor::visit(Not_equal_Expr* ptr) {
     ptr->second->accept(this);
 }
 
-void gv_visitor::visit(Brackets_Expr* ptr) {
+void gv_visitor::visit(BracketsExpr* ptr) {
     box(ptr, "into brackets");
     arrow(ptr, ptr->expr);
     ptr->expr->accept(this);
 }
 
-void gv_visitor::visit(Number_Value* ptr) {
+void gv_visitor::visit(IntValue* ptr) {
     std::stringstream stream;
     stream << "int: " << ptr->value;
     box(ptr, stream.str());
     //value(int)
 }
 
-void gv_visitor::visit(TF_Value* ptr) {
+void gv_visitor::visit(BoolValue* ptr) {
     std::stringstream stream;
     stream << "bool: " << ptr->value;
     box(ptr, stream.str());

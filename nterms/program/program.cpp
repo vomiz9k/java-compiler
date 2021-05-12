@@ -1,6 +1,6 @@
 #include "program.hpp"
 
-Program::Program(Main_class* main_class, Class_declarations* class_declarations)
+Program::Program(MainClass* main_class, Class_declarations* class_declarations)
     : main_class(main_class), class_declarations(class_declarations)
 {
 

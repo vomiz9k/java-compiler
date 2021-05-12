@@ -1,8 +1,7 @@
 #include "assignment.hpp"
+#include <visitor.hpp>
 
-
-Assignment::Assignment(Lvalue* lvalue, Expr* rvalue)
-    :lvalue(lvalue), rvalue(rvalue)
+Assignment::Assignment(Expr *lValue, Expr *rvalue) : lvalue(lValue), rvalue(rvalue)
 {
 
 }

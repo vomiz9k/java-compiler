@@ -1,21 +1,18 @@
-gitclass Main {
+class Main {
     public static void main() {
+        int x;
+        jija joja;
+        x = joja.joja(1) + joja.foo();
     }
 }
 
 
 class jija {
     int q;
+    public int foo() {
+        return 5;
+    }
     public int joja(int a) {
-        int b;
-        {
-            int c;
-            int d;
-        }
-        {
-            int h;
-        }
-        int f;
-        System.out.println(f);
+       return a;
     }
 }

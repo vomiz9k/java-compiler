@@ -1,16 +1,21 @@
 class Main {
     public static void main() {
-        int a;
-        a = 2 + 2 * 2 + (2 + 2) * 2;
-        bool b;
-        b = true;
+        A a;
+        int b;
+        b = a.square(b) + a.double(b) + a.inc(b);
+    }
+}
 
-        if (a > 5 && b)
-            if (a > 3)
-                System.out.println(a + a);
-            else
-                System.out.println(a + 1);
-        
-        assert(a > 0);
+class A {
+    public int square(int a) {
+        return a * a;
+    }
+
+    public int double(int a) {
+        return 2 * a;
+    }
+
+    public int inc(int a) {
+        return a + 1;
     }
 }

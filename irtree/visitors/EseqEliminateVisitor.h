@@ -1,19 +1,17 @@
 //
-// Created by akhtyamovpavel on 4/14/20.
+// Created by akhtyamovpavel on 4/20/20.
 //
 
 
 #pragma once
 
-#include <string>
-#include <fstream>
-#include "Visitor.h"
+#include "TemplateVisitor.h"
+#include "VisitorStruct.h"
 
 namespace IRT {
-class PrintVisitor : public Visitor {
+
+class EseqEliminateVisitor : public TemplateVisitor<IrtStorage> {
 public:
-    explicit PrintVisitor(const std::string &filename);
-    ~PrintVisitor() override;
     void Visit(ExpStatement *stmt) override;
     void Visit(ConstExpression *const_expression) override;
     void Visit(JumpConditionalStatement *jump_conditional_statement) override;
@@ -23,19 +21,17 @@ public:
     void Visit(BinopExpression *binop_statement) override;
     void Visit(TempExpression *temp_exression) override;
     void Visit(MemExpression *mem_expression) override;
-    void Visit(MallocExpression *malloc_expression) override;
     void Visit(JumpStatement *jump_statement) override;
     void Visit(CallExpression *call_expression) override;
     void Visit(ExpressionList *expression_list) override;
     void Visit(NameExpression *name_expression) override;
     void Visit(EseqExpression *eseq_expression) override;
-    void Visit(PrintStatement *print_statement) override;
     void Visit(AssertStatement *assert_statement) override;
-private:
-    std::ofstream stream_;
-    int num_tabs_ = 0;
+    void Visit(PrintStatement *print_statement) override;
+    void Visit(MallocExpression *malloc_expression) override;
 
-    void PrintTabs();
+private:
+    EseqExpression *CastToEseq(Expression *expression);
 };
 
 }

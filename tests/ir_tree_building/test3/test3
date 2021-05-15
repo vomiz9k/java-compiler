@@ -3,9 +3,12 @@ class Main {
         int a;
         a = 10;
 
-        while (a > 0) {
-            System.out.println(a);
+        if (a > 0) {
             a = a - 1;
+        } else {
+            a = a + 1;
         }
+
+        a = 2 * a + 1 + 3;
     }
 }

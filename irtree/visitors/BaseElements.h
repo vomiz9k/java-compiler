@@ -9,7 +9,7 @@
 #include "../nodes/expressions/MemExpression.h"
 #include "../nodes/expressions/MallocExpression.h"
 #include "../nodes/expressions/TempExpression.h"
-
+#include "../nodes/expressions/EseqExpression.h"
 
 #include "../nodes/statements/ExpStatement.h"
 #include "../nodes/statements/JumpConditionalStatement.h"
@@ -18,5 +18,6 @@
 #include "../nodes/statements/MoveStatement.h"
 #include "../nodes/statements/SeqStatement.h"
 #include "../nodes/statements/PrintStatement.h"
+#include "../nodes/statements/AssertStatement.h"
 
 #include "../nodes/ExpressionList.h"

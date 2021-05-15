@@ -32,8 +32,20 @@ void Driver::ir(const std::string& dir) {
 
 
     for (auto& i: ir.method_trees) {
-        IRT::PrintVisitor p(dir + "/ir_" + i.first + ".txt");
-        i.second->Accept(&p);
+        IRT::PrintVisitor pv(dir + "/ir_before_optimization_" + i.first + ".txt");
+        i.second->Accept(&pv);
+    }
+
+    for (auto& i: ir.method_trees) {
+        IRT::DoubleCallEliminateVisitor dcev;
+        i.second->Accept(&dcev);
+        i.second = dcev.GetTree();
+
+        IRT::EseqEliminateVisitor eev;
+        i.second->Accept(&eev);
+
+        IRT::PrintVisitor pv(dir + "/ir_after_optimization_" + i.first + ".txt");
+        i.second->Accept(&pv);
     }
 }
 

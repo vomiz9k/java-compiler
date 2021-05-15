@@ -297,7 +297,7 @@ void ir_tree_visitor::visit(AssertStatement* ptr) {
 
     ptr->check->accept(this);
     curr_wrapper = new IRT::StatementWrapper(
-            new IRT::PrintStatement(curr_wrapper->ToExpression())
+            new IRT::AssertStatement(curr_wrapper->ToExpression())
     );
 }//TODO
 

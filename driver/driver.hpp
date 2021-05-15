@@ -12,6 +12,8 @@
 
 #include <irtree/visitors/PrintVisitor.h>
 
+#include <irtree/visitors/DoubleCallEliminateVisitor.h>
+#include <irtree/visitors/EseqEliminateVisitor.h>
 class Driver {
  public:
     Driver();
